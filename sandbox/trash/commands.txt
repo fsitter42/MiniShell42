@@ -1,0 +1,1 @@
+echo hello > hello.txt | cat hello.txt | grep hello | wc -l

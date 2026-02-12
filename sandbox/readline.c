@@ -31,12 +31,22 @@ int handle_pipes(char *prompt, int pipe_count)
 {
 		int i = 0;
 		int index = 1;
+		int j;
 		char **pipes = ft_split(prompt, '|');
 		if (!pipes)
 			return (1);
 		while (pipes[i])
 		{
-			printf("Pipe %i, %s\n",index + i, pipes[i]);
+			//printf("Pipe %i, %s\n",index + i, pipes[i]);
+			char **words = ft_split(pipes[i], ' ');
+			if (!words)
+					return (free(pipes), 1); // free each pipe missing
+			j = 0;
+			while (words[j])
+			{
+					printf("Pipe %i, Word %i: x%sx\n",index + i, index + j, words[j]);
+					j++;
+			}
 			i++;
 		}
 		return (0);

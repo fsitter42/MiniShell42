@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 10:41:43 by fsitter           #+#    #+#             */
-/*   Updated: 2026/02/09 11:18:32 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/02/16 12:33:01 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 #include <term.h> //tgetent
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 
 #endif

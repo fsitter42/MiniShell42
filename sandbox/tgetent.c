@@ -1,4 +1,4 @@
-#include "../shinimell/minishell.h"
+#include "../minishell/minishell.h"
 #include <curses.h>
 
 

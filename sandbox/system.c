@@ -2,5 +2,5 @@
 
 int main(int ac, char **av, char **envp)
 {
-    system("echo hello > hello.txt");
+    system("echo hello | grep h | wc -l");
 }

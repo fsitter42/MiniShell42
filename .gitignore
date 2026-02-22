@@ -1,0 +1,15 @@
+# Ignore everything
+/*
+
+# Unignore this file itself
+!.gitignore
+
+# Allow directories
+!*/
+
+# Allowed files
+!*.c
+!*.h
+!*.json
+!Makefile
+

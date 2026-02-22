@@ -6,10 +6,11 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/11 02:44:04 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/22 15:12:04 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "./libft/libft.h"
 #include <stdio.h>
 #include <readline/history.h>
 #include <readline/readline.h>

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 10:48:22 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/22 14:22:27 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/22 17:11:21 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,78 +45,83 @@
 	-
 	*/
 
-
 /*  we want to split the line into certain tokens.
-    possible tokens are:
-    - WORD
-    - PIPE (|)
-    - REDIR_IN (<)
-    - REDIR_OUT (>)
-    - REDIR_APPEND (>>)
-    - HEREDOC (<<)
+	possible tokens are:
+	- WORD
+	- PIPE (|)
+	- REDIR_IN (<)
+	- REDIR_OUT (>)
+	- REDIR_APPEND (>>)
+	- HEREDOC (<<)
 
 */
 
-int is_part_of_word(char c);
+int		is_part_of_word(char c);
 
-void tokenizer (char *line)
+void	tokenizer(char *line)
 {
-    int i;
+	int	i;
 
-    i = -1;
-    while (line[++i])
-    {
-        if (isspace(line[i]))
-            continue;
-        if (line[i] == '|')
-        {
-            printf("PIPE "); 
-            continue;
-        }
-        if (line[i] == '<' && line[i + 1] == '<')
-        {
-            printf("HEREDOC ");
-            i++;
-            continue;
-        }
-        if (line[i] == '<')
-        {
-            printf("REDIR_IN "); 
-            continue;
-        }
-        if (line[i] == '>' && line[i + 1] == '>')
-        {
-            printf("REDIR_APPEND ");
-            i++;
-            continue;
-        }
-        if (line[i] == '>')
-        {
-            printf("REDIR_OUT "); 
-            continue;
-        }
-        //WORD
-        while (is_part_of_word(line[i]))
-            i++;
-        i--;
-        printf("WORD "); 
-    }
-    printf("\n");
+	i = -1;
+	while (line[++i])
+	{
+		if (isspace(line[i]))
+			continue ;
+		if (line[i] == '|')
+		{
+			printf("PIPE ");
+			continue ;
+		}
+		if (line[i] == '<' && line[i + 1] == '<')
+		{
+			printf("HEREDOC ");
+			i++;
+			continue ;
+		}
+		if (line[i] == '<')
+		{
+			printf("REDIR_IN ");
+			continue ;
+		}
+		if (line[i] == '>' && line[i + 1] == '>')
+		{
+			printf("REDIR_APPEND ");
+			i++;
+			continue ;
+		}
+		if (line[i] == '>')
+		{
+			printf("REDIR_OUT ");
+			continue ;
+		}
+		// WORD
+		while (is_part_of_word(line[i]))
+			i++;
+		printf("WORD ");
+	}
+	printf("\n");
 }
 
-int is_part_of_word(char c)
+int	is_part_of_word(char c)
 {
-    if (c == '|' || c == '<' || c == '>' || isspace(c))
-        return 0;
-    return 1;
+	if (c == '|' || c == '<' || c == '>' || isspace(c) || c == '\0')
+		return (0);
+	return (1);
 }
-/*  1. wait for input
-	2. input parsing
-	3. execution
-	4. output
-	5. repeat
+
+/* this is where the magic happens, same in debug and in normal mode
 */
-int	main(int argc, char **argv, char **envp)
+int loop (char *line)
+{
+    //1. tokenizer
+	printf("'%s' is going to be tokenized\n", line);
+    tokenizer(line);
+    free(line);
+}
+
+/* this is the default mode in where the users enters stuff
+*/
+int	normal_mode(int argc, char **argv, char **envp)
 {
 	char	*line;
 
@@ -125,18 +130,53 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("minishell$ ");
 		if (!line)
 			return (-1);
-        if (!strcmp(line, ""))
-            add_history((const char *)line);
-        tokenizer(line);
-        //syntax check , if negative return error msg and return prompt
-        //if positive, continue
-        // create list of structs that are relevant for execution.
-        // this includes:
-        // - expansion
-        // - quotes 
-        // - list of cmds
-        free (line);
-        //pass this list to execute part of program (frido)
-       
+		if (!strcmp(line, ""))
+			add_history((const char *)line);
+		tokenizer(line);
+		// syntax check , if negative return error msg and return prompt
+		// if positive, continue
+		// create list of structs that are relevant for execution.
+		// this includes:
+		// - expansion
+		// - quotes
+		// - list of cmds
+		free(line);
+		// pass this list to execute part of program (frido)
 	}
+}
+
+/* the difference here is that we have one string that is given to
+*  minishell, no interactions with the user. all lines have to be separated
+*  by a semicolon (;) and will be executed one after each other.
+*/
+int    debug_mode(char *input, char **envp)
+{
+    char **strs = NULL;
+    int i;
+    
+    strs = ft_split (input, ';');
+    if (!strs)
+        exit(EXIT_FAILURE);
+    i = -1;
+    while (strs[++i])
+        loop(strs[i]);
+}
+
+/* we can start minishell in normal (user input) mode (argc = 1) or in 
+ * debug mode (with the -d flag followed by a string) - argc = 3
+*/
+int	main(int argc, char **argv, char **envp)
+{
+    //if the program was compiled with the -d flag and argc is 2
+    // we run minishell in debug mode, otherwise normal mode
+    if (argc != 1 && argc != 3)
+        return (printf("wrong syntax - argc not 1 or 3\n"), 1);
+    if (argc == 1)
+        normal_mode(argc, argv, envp);
+    else
+    {
+        if (ft_strncmp(argv[1], "-d", 2) != 0)
+            return (printf("wrong syntax - did you use the -d flag?\n"), 1);
+        debug_mode(argv[2], envp);
+    }
 }

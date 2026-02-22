@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 10:48:22 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/11 03:00:12 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/22 14:22:27 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,15 @@ int	main(int argc, char **argv, char **envp)
         if (!strcmp(line, ""))
             add_history((const char *)line);
         tokenizer(line);
+        //syntax check , if negative return error msg and return prompt
+        //if positive, continue
+        // create list of structs that are relevant for execution.
+        // this includes:
+        // - expansion
+        // - quotes 
+        // - list of cmds
         free (line);
+        //pass this list to execute part of program (frido)
+       
 	}
 }

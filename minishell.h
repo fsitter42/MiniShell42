@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/23 17:01:13 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/23 17:23:31 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,17 @@ typedef struct s_token
 
 }					t_token;
 
+
+//TODO pipes & fds
 typedef struct s_cmd
 {
-	
+	char	*cmd;
+	int		is_builtin;
+	char	**args;
+	char	*path;
+	int		in_fd;
+	int		out_fd;
+	struct s_cmd *next;	//if the command has a next one, we need a pipe
 }					t_cmd;
 
 // enums

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/22 15:12:04 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/23 12:28:10 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,31 @@
 
 typedef struct s_token
 {
-	// TODO aus type ein enum machen
-	int		type;
-	// wird standardmäßig auf NULL gesetzt und nur bei einem WORD befüllt
-	char	*value;
-    struct s_token *next;
-}			t_token;
+	int type; // enum
+	char			*str;
+	int				status;
+	struct s_token	*next;
+	//struct s_token	*previous;
 
-void		tokenizer(char *line);
+}					t_token;
+
+// enums
+enum				e_token_types
+{
+	START = 0,
+	WORD,
+	VAR,
+	PIPE,
+	HEREDOC,
+	REDIR_IN,
+	REDIR_APPEND,
+	REDIR_OUT,
+};
+
+enum	e_token_status
+{
+	WIP = 0,
+	DONE
+};
+
+t_token*				tokenizer(char *line);

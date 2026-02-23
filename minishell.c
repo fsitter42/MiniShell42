@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 10:48:22 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/23 12:34:37 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/23 13:32:11 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ int		is_part_of_word(char c);
 */
 
 // this function does everything that is needed that ONE LINE is being executed correctly
-int	loop(char *line)
+int	handle_single_line(char *line)
 {
-	t_token	*cur_elem;
+	t_token	*token_list;
 
 	// 1. tokenizer
 	printf("'%s' is going to be tokenized\n", line);
-	cur_elem = NULL;
-	cur_elem = tokenizer(line);
+	token_list = NULL;
+	token_list = tokenizer(line);
 	free(line);
 }
 
@@ -77,7 +77,7 @@ void	init_token(t_token *token)
 {
 	token->type = START;
 	token->str = NULL;
-	token->status = WIP;
+	token->status = STATUS_UNSET;
 	token->next = NULL;
 }
 
@@ -85,15 +85,51 @@ void	tokenlist_add(t_token *list_start, int type, char *str)
 {
 	t_token	*new_token;
 
-	new_token = ft_calloc(1, sizeof(t_token));
-	// if (!new_token)
-	// error handling
-	while (list_start->next)
-		list_start = list_start->next;
-	list_start->next = new_token;
-	init_token(new_token);
+	if (list_start->status == STATUS_SET)
+	{
+		new_token = ft_calloc(1, sizeof(t_token));
+		// if (!new_token) 
+		// error handling
+		while (list_start->next)
+			list_start = list_start->next;
+		list_start->next = new_token;
+		init_token(new_token);
+	}
+	else
+	{
+		new_token = list_start;
+		init_token(new_token);
+	}
 	new_token->type = type;
 	new_token->str = str;
+	new_token->status = STATUS_SET;
+}
+
+/* 2 modes: WORD mode just handles a normal word. VAR mode is executed if a $ is found and starts form i+1
+ */
+int	word_and_var_handler(int i, char *line, t_token *list_start, int mode)
+{
+	int		word_start;
+	char	*word;
+
+	word_start = i;
+	while (is_part_of_word(line[i]))
+		i++;
+	i--;
+	word = ft_strdup(ft_substr(line, word_start, i - word_start + 1));
+	// if (!word)
+	// error hanlding
+	if (mode == MODE_WORD)
+	{
+		tokenlist_add(list_start, WORD, word);
+		printf("WORD ");
+	}
+	else if (mode == MODE_VAR)
+	{
+		tokenlist_add(list_start, VAR, word);
+		printf("VAR ");
+	}
+	return (i);
 }
 
 /* we want to structure the input and save it in a linked list. in order to know what elements
@@ -111,8 +147,6 @@ t_token	*tokenizer(char *line)
 {
 	t_token	*list_start;
 	int		i;
-	int		word_start;
-	char	*word = NULL;
 
 	// TODO difference between these 2 cases
 	if (!line || ft_strncmp(line, "", 1) == 0)
@@ -148,29 +182,27 @@ t_token	*tokenizer(char *line)
 		if (line[i] == '>' && line[i + 1] == '>')
 		{
 			printf("REDIR_APPEND ");
-			tokenlist_add(list_start, REDIR_APPEND, NULL);			
+			tokenlist_add(list_start, REDIR_APPEND, NULL);
 			i++;
 			continue ;
 		}
 		if (line[i] == '>')
 		{
 			printf("REDIR_OUT ");
-			tokenlist_add(list_start, REDIR_OUT, NULL);			
+			tokenlist_add(list_start, REDIR_OUT, NULL);
+			continue ;
+		}
+		if (line[i] == '$')
+		{
+			i++;
+			i = word_and_var_handler(i, line, list_start, MODE_VAR);
 			continue ;
 		}
 		// WORD
-		word_start = i;
-		while (is_part_of_word(line[i]))
-			i++;
-		i--;
-		word = ft_strdup(ft_substr(line, word_start, i - word_start + 1));
-		//if (!word)
-		//error hanlding
-		tokenlist_add(list_start, WORD, word);
-		printf("WORD ");
+		i = word_and_var_handler(i, line, list_start, MODE_WORD);
 	}
 	printf("\n");
-	return list_start;
+	return (list_start);
 }
 
 int	is_part_of_word(char c)
@@ -193,13 +225,17 @@ int	normal_mode(int argc, char **argv, char **envp)
 			return (-1);
 		if (!strcmp(line, ""))
 			add_history((const char *)line);
-		loop(line);
+		handle_single_line(line);
 	}
 }
 
 /* the difference here is that we have one string that is given to
  *  minishell, no interactions with the user. all lines have to be separated
  *  by a semicolon (;) and will be executed one after each other.
+
+	*  note: if we want to use a $ sign (var) we have to explicitly escape that character (\\ before §).
+
+	*  otherwise the shell tries to expand the variable before it is given to minishell as an input
  */
 int	debug_mode(char *input, char **envp)
 {
@@ -212,7 +248,7 @@ int	debug_mode(char *input, char **envp)
 		exit(EXIT_FAILURE);
 	i = -1;
 	while (strs[++i])
-		loop(strs[i]);
+		handle_single_line(strs[i]);
 }
 
 /* we can start minishell in normal (user input) mode (argc = 1) or in

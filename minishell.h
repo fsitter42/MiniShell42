@@ -6,12 +6,12 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/23 12:28:10 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/23 13:29:16 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libft/libft.h"
 #include <stdio.h>
+#include "./libft/libft.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdlib.h>
@@ -22,7 +22,7 @@ typedef struct s_token
 	char			*str;
 	int				status;
 	struct s_token	*next;
-	//struct s_token	*previous;
+	// struct s_token	*previous;
 
 }					t_token;
 
@@ -39,10 +39,17 @@ enum				e_token_types
 	REDIR_OUT,
 };
 
-enum	e_token_status
+// is used in tokenizer, word_and_var_handler
+enum				word_mode
 {
-	WIP = 0,
-	DONE
+	MODE_WORD = 0,
+	MODE_VAR
 };
 
-t_token*				tokenizer(char *line);
+enum				e_token_status
+{
+	STATUS_UNSET = 0,
+	STATUS_SET
+};
+
+t_token				*tokenizer(char *line);

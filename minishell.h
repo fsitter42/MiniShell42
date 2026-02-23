@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/23 13:29:16 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/23 15:00:53 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 
 typedef struct s_token
 {
-	int type; // enum
+	int type; 				// enum e_word_mode
 	char			*str;
-	int				status;
+	int				status;	// enum e_token_status
 	struct s_token	*next;
 	// struct s_token	*previous;
 
@@ -40,7 +40,7 @@ enum				e_token_types
 };
 
 // is used in tokenizer, word_and_var_handler
-enum				word_mode
+enum				e_word_mode
 {
 	MODE_WORD = 0,
 	MODE_VAR

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 10:48:22 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/23 13:32:11 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/23 15:06:49 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,19 @@
 
 int		is_part_of_word(char c);
 
+void cleanup_token_list(t_token *token_list)
+{
+	t_token	*temp = NULL;
+	
+	while (token_list)
+	{
+		temp = token_list->next;
+		free (token_list->str);
+		free (token_list);
+		token_list = temp;
+	}
+}
+
 /* this is where the magic happens, same in debug and in normal mode
 	tokenizer(line);
 	syntax check , if negative return error msg and return prompt
@@ -60,7 +73,6 @@ int		is_part_of_word(char c);
 	free(line);
 	pass this list to execute part of program (frido)
 */
-
 // this function does everything that is needed that ONE LINE is being executed correctly
 int	handle_single_line(char *line)
 {
@@ -68,9 +80,10 @@ int	handle_single_line(char *line)
 
 	// 1. tokenizer
 	printf("'%s' is going to be tokenized\n", line);
-	token_list = NULL;
 	token_list = tokenizer(line);
+	//do something with token_list
 	free(line);
+	cleanup_token_list(token_list);
 }
 
 void	init_token(t_token *token)
@@ -96,10 +109,7 @@ void	tokenlist_add(t_token *list_start, int type, char *str)
 		init_token(new_token);
 	}
 	else
-	{
 		new_token = list_start;
-		init_token(new_token);
-	}
 	new_token->type = type;
 	new_token->str = str;
 	new_token->status = STATUS_SET;
@@ -111,12 +121,15 @@ int	word_and_var_handler(int i, char *line, t_token *list_start, int mode)
 {
 	int		word_start;
 	char	*word;
+	char	*temp;
 
 	word_start = i;
 	while (is_part_of_word(line[i]))
 		i++;
 	i--;
-	word = ft_strdup(ft_substr(line, word_start, i - word_start + 1));
+	temp = ft_substr(line, word_start, i - word_start + 1);
+	word = ft_strdup(temp);
+	free(temp);
 	// if (!word)
 	// error hanlding
 	if (mode == MODE_WORD)
@@ -129,6 +142,7 @@ int	word_and_var_handler(int i, char *line, t_token *list_start, int mode)
 		tokenlist_add(list_start, VAR, word);
 		printf("VAR ");
 	}
+	//free (word);
 	return (i);
 }
 
@@ -223,7 +237,7 @@ int	normal_mode(int argc, char **argv, char **envp)
 		line = readline("minishell$ ");
 		if (!line)
 			return (-1);
-		if (!strcmp(line, ""))
+		if (*line)
 			add_history((const char *)line);
 		handle_single_line(line);
 	}
@@ -239,7 +253,9 @@ int	normal_mode(int argc, char **argv, char **envp)
  */
 int	debug_mode(char *input, char **envp)
 {
-	char	**strs;
+	char	**strs;		//strategy to free this on error: we have to get that pointer somehow in the 
+						//cleanup function, so i assume we have to store it somewhere in the linked list
+						//BUT: this function is only for testing, so actually we don't have to care
 	int		i;
 
 	strs = NULL;
@@ -249,6 +265,7 @@ int	debug_mode(char *input, char **envp)
 	i = -1;
 	while (strs[++i])
 		handle_single_line(strs[i]);
+	free(strs);	//this is memory safe because the actual lines are freed in handle_single_line
 }
 
 /* we can start minishell in normal (user input) mode (argc = 1) or in

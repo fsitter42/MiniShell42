@@ -6,13 +6,13 @@
 #    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/02/22 16:09:34 by slambert         ###   ########.fr        #
+#    Updated: 2026/02/23 16:57:32 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC =	minishell.c
+SRC =	main/minishell.c AST/ast.c cleanup/cleanup.c tokenizer/tokenizer.c
 #BONUS_SRC = pipex_bonus.c pipex_utils1_bonus.c pipex_utils2_bonus.c \
 			pipex_utils3_bonus.c
 

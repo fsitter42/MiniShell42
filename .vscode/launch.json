@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/minishell",
-            "args": ["-d", "\\$cat hello.txt | wc -l > beidl.txt"],
+            "args": ["-d", ""],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

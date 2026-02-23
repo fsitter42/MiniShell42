@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/23 15:00:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/23 17:01:13 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,18 @@
 
 typedef struct s_token
 {
-	int type; 				// enum e_word_mode
+	int type; // enum e_word_mode
 	char			*str;
-	int				status;	// enum e_token_status
+	int status; // enum e_token_status
 	struct s_token	*next;
 	// struct s_token	*previous;
 
 }					t_token;
+
+typedef struct s_cmd
+{
+	
+}					t_cmd;
 
 // enums
 enum				e_token_types
@@ -52,4 +57,16 @@ enum				e_token_status
 	STATUS_SET
 };
 
-t_token				*tokenizer(char *line);
+//main
+
+
+//AST
+void create_command_list(t_token *token_list);
+
+//cleanup
+void my_exit_function();
+void cleanup_token_list(t_token *token_list);
+//tokenizer
+int	handle_single_line(char *line);
+t_token	*tokenizer(char *line);
+

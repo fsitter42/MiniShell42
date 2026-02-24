@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/24 17:49:28 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/24 18:59:55 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@
  * 
 */
 
+void	init_cmd(t_cmd *cmd)
+{
+    cmd->cmd = NULL;
+    cmd->is_builtin = -1;
+    cmd->args = NULL;
+    cmd->path = NULL;
+    cmd->infile = NULL;
+    cmd->in_fd = -1;
+    cmd->outfile = NULL;
+    cmd->out_fd = -1;
+    cmd->next = NULL;
+}
+
 int return_distance_to_next_pipe(t_token *token_list)
 {
     int i;
@@ -67,14 +80,24 @@ void shift_token_list_by_x(t_token **token_list, int x)
     }      
 }
 
-t_cmd create_single_cmd(t_token *token_list, int no_tokens)
+t_cmd *create_single_cmd(t_token *token_list, int no_tokens)
 {
+    t_cmd *cmd;
+    
     printf("trying to create a cmd with %d tokens\n", no_tokens);
+    cmd = ft_calloc(sizeof(t_cmd), 1);
+    //if (!cmd)
+    //error handling
+    init_cmd(cmd);
+    //HERE WE NEED TO ACTUALLY FILL THE CMD WITH STUFF
+    return cmd;
 }
 
-void add_cmd_to_cmd_list(t_cmd *cmd_list, t_cmd cmd)
+void add_cmd_to_cmd_list(t_cmd *cmd_list, t_cmd *cmd)
 {
-    
+    while (cmd_list->next)
+        cmd_list = cmd_list->next;
+    cmd_list->next = cmd;
 }
 
 /*
@@ -88,7 +111,7 @@ t_cmd	*create_command_list(t_token *token_list)
     int i;
     int dist_to_next_pipe;
     t_cmd *cmd_list;
-    t_cmd cmd;
+    t_cmd *cmd;
     
     token_list_copy = token_list;
     pipes_count = 0;
@@ -100,9 +123,10 @@ t_cmd	*create_command_list(t_token *token_list)
     }
     //now we know that we have pipes_count pipes
     //that means we have pipes_count + 1 cmds
-    cmd_list = ft_calloc(sizeof(t_cmd*), pipes_count);  //last element is NULL
+    cmd_list = ft_calloc(sizeof(t_cmd*), 1);  //only allocate one bc it's a list
     //if (!cmd_list)
     //error handling
+    init_cmd(cmd_list);
     i = -1;
     while (++i < pipes_count + 1)
     {

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/24 12:30:14 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/24 18:09:59 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	init_token(t_token *token)
 	token->next = NULL;
 }
 
+//TODO eventuell ohne malloc, einfach normale variable
 void	tokenlist_add(t_token *list_start, int type, char *str)
 {
 	t_token	*new_token;

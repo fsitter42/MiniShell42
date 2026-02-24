@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/23 17:23:31 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/24 12:55:39 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ typedef struct s_cmd
 	int		is_builtin;
 	char	**args;
 	char	*path;
+	char	*infile;
 	int		in_fd;
+	char	*outfile;
 	int		out_fd;
 	struct s_cmd *next;	//if the command has a next one, we need a pipe
 }					t_cmd;
@@ -46,10 +48,10 @@ enum				e_token_types
 	WORD,
 	VAR,
 	PIPE,
-	HEREDOC,
-	REDIR_IN,
-	REDIR_APPEND,
-	REDIR_OUT,
+	HEREDOC, 		//<<
+	REDIR_IN,		//<
+	REDIR_APPEND,	//>>
+	REDIR_OUT,		//>
 };
 
 // is used in tokenizer, word_and_var_handler
@@ -69,12 +71,12 @@ enum				e_token_status
 
 
 //AST
-void create_command_list(t_token *token_list);
+t_cmd* create_command_list(t_token *token_list);
 
 //cleanup
 void my_exit_function();
 void cleanup_token_list(t_token *token_list);
 //tokenizer
-int	handle_single_line(char *line);
+void	handle_single_line(char *line);
 t_token	*tokenizer(char *line);
 

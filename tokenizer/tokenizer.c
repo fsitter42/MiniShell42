@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/23 16:58:13 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/24 12:30:14 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		is_part_of_word(char c);
 	pass this list to execute part of program (frido)
 */
 // this function does everything that is needed that ONE LINE is being executed correctly
-int	handle_single_line(char *line)
+void	handle_single_line(char *line)
 {
 	t_token	*token_list;
 	int should_exit;
@@ -40,7 +40,6 @@ int	handle_single_line(char *line)
 	token_list = tokenizer(line);
 	//do something with token_list
 	free(line);
-	//ENTRY POINT FOR THE CREATION OF THE COMMAND LINKED LIST
 	create_command_list(token_list);
 	cleanup_token_list(token_list);
 	if (should_exit)
@@ -105,6 +104,22 @@ int	word_and_var_handler(int i, char *line, t_token *list_start, int mode)
 	}
 	//free (word);
 	return (i);
+}
+
+//this is for debugging only, will be removed!
+void print_tokens(t_token *start)
+{
+	int i = 0;
+	
+	while (start)
+	{
+		printf("Token %d: %d, ", ++i, start->type);
+		if (start->type == WORD || start->type == VAR)
+			printf(" value: %s\n", start->str);
+		else
+			printf("\n");
+		start = start->next;
+	}
 }
 
 /* we want to structure the input and save it in a linked list. in order to know what elements
@@ -177,6 +192,7 @@ t_token	*tokenizer(char *line)
 		i = word_and_var_handler(i, line, list_start, MODE_WORD);
 	}
 	printf("\n");
+	print_tokens(list_start);
 	return (list_start);
 }
 

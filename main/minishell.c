@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/23 16:59:35 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 16:54:13 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,38 @@
 	- ctrl-\ does nothing
 */
 
+/* this is where the magic happens, same in debug and in normal mode
+	tokenizer(line);
+	syntax check , if negative return error msg and return prompt
+	if positive, continue
+	create list of structs that are relevant for execution.
+	this includes:
+	- expansion
+	- quotes
+	- list of cmds
+	free(line);
+	pass this list to execute part of program (frido)
+*/
+// this function does everything that is needed that ONE LINE is being executed correctly
+void	handle_single_line(char *line)
+{
+	t_token	*token_list;
+	t_cmd	*cmd_list;
+
+	if (ft_strncmp(line, "exit", 4) == 0)
+		my_exit_function();
+	printf("'%s' is going to be tokenized\n", line);
+	token_list = tokenizer(line);
+	free(line);
+	cmd_list = create_command_list(token_list);
+	cleanup_token_list(token_list);
+	//execute entry point with command_list
+	cleanup_command_list(cmd_list);
+}
+
 /* this is the default mode in where the users enters stuff
  */
-int	normal_mode(int argc, char **argv, char **envp)
+void	normal_mode(int argc, char **argv, char **envp)
 {
 	char	*line;
 
@@ -54,7 +83,7 @@ int	normal_mode(int argc, char **argv, char **envp)
 	{
 		line = readline("minishell$ ");
 		if (!line)
-			return (-1);
+			return;
 		if (*line)
 			add_history((const char *)line);
 		handle_single_line(line);
@@ -69,7 +98,7 @@ int	normal_mode(int argc, char **argv, char **envp)
 
 	*  otherwise the shell tries to expand the variable before it is given to minishell as an input
  */
-int	debug_mode(char *input, char **envp)
+void	debug_mode(char *input, char **envp)
 {
 	char	**strs;		//strategy to free this on error: we have to get that pointer somehow in the 
 						//cleanup function, so i assume we have to store it somewhere in the linked list

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 16:04:35 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 17:10:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,6 @@ int return_distance_to_next_pipe(t_token *token_list)
     return i;
 }
 
-//if x would go too far (after the end of the list), the function returns
-void shift_token_list_by_x(t_token **token_list, int x)
-{
-    int i;
-
-    i = -1;
-    while (++i < x)
-    {
-        if (!*token_list)
-            return ;
-        *token_list = (*token_list)->next;
-    }      
-}
-
 void shift_and_consume_token_list_by_x (t_token **token, int x)
 {
     int i;
@@ -106,16 +92,23 @@ int is_token_type_redirection(t_token *token)
 void handle_redirection(t_token **token_list, t_cmd* cmd)
 {
     if ((*token_list)->type == REDIR_IN)
-        cmd->infile = (*token_list)->next->str;
+    {
+        cmd->infile = ft_strdup((*token_list)->next->str);
+        //error handling
+    }
     else if ((*token_list)->type == REDIR_OUT)
-        cmd->outfile = (*token_list)->next->str;
+    {
+        cmd->outfile = ft_strdup((*token_list)->next->str);
+        //error handling
+    }
     else if ((*token_list)->type == HEREDOC)
     {
         //HEREDOC STUFF
     }
     else if ((*token_list)->type == REDIR_APPEND)
     {
-        cmd->outfile = (*token_list)->next->str;
+        cmd->outfile = ft_strdup((*token_list)->next->str);
+        //error handling
         cmd->append = TRUE;
     }
     shift_and_consume_token_list_by_x(token_list, 2);
@@ -127,7 +120,11 @@ int handle_word(t_token **token_list, t_cmd* cmd)
     
     i = 0;
     if (cmd->cmd == NULL)
-        cmd->cmd = (*token_list)->str;
+    {
+        cmd->cmd = ft_strdup((*token_list)->str);
+        //error handling
+    }
+        
     //add (*token_list)->str to args
     while (cmd->args[i])
         i++;
@@ -167,6 +164,7 @@ int init_args_array(t_cmd *cmd, int size)
         return 0;
     //we can't alloc for the actual strings here because we don't know
     //their lengths here
+    return 1;
 }
 
 /* in this function we will have to fill the following members of the 
@@ -178,14 +176,14 @@ int init_args_array(t_cmd *cmd, int size)
 *
 *  if there is a REDIR_OUT encountered, the next token defines the outfile
 */
-t_cmd *create_single_cmd(t_token *token_list, int no_tokens)
+t_cmd *create_single_cmd(t_token *token_list)
 {
     t_cmd *cmd;
     t_token *token_list_copy;
     int size;
     
     token_list_copy = token_list;
-    printf("trying to create a cmd with %d tokens\n", no_tokens);
+    printf("trying to create a cmd\n");
     cmd = ft_calloc(sizeof(t_cmd), 1);
     //if (!cmd)
     //error handling
@@ -234,14 +232,17 @@ t_cmd *create_single_cmd(t_token *token_list, int no_tokens)
 
 void add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd)
 {
+    t_cmd *current;
+    
     if (!(*cmd_list))
     {
         *cmd_list = cmd;
         return;
-    } 
-    while ((*cmd_list)->next)
-        *cmd_list = (*cmd_list)->next;
-    (*cmd_list)->next = cmd;
+    }
+    current = *cmd_list; 
+    while (current->next)
+        current = current->next;
+    current->next = cmd;
 }
 
 void print_args_array(char **args)
@@ -267,56 +268,56 @@ void print_command_list (t_cmd *start)
 	}
 }
 
+int count_pipes (t_token *token_list)
+{
+    int pipe_count;
+
+    pipe_count = 0;
+    while (token_list)
+    {
+        if (token_list->type == PIPE)
+            pipe_count++;
+        token_list = token_list->next;
+    }
+    return pipe_count;
+}
+
+//if x would go too far (after the end of the list), the function returns
+void shift_token_list_to_next_pipe(t_token **token_list)
+{
+    while (*token_list && (*token_list)->type != PIPE)
+    {
+        *token_list = (*token_list)->next;
+    }
+    if (!*token_list)
+        return ;
+    *token_list = (*token_list)->next; 
+}
+
 /*
  * Step 1: go through the token list and count how many pipes there are.
  * Step 2: for each command (pipes + 1): call separate function create_single_cmd
 */
 t_cmd	*create_command_list(t_token *token_list)
 {
-    t_token *token_list_copy;
     int pipes_count;
     int i;
     int dist_to_next_pipe;
     t_cmd *cmd_list;
     t_cmd *cmd;
     
-    token_list_copy = token_list;
-    pipes_count = 0;
-    while (token_list_copy)
-    {
-        if (token_list_copy->type == PIPE)
-            pipes_count++;
-        token_list_copy = token_list_copy->next;
-    }
+    pipes_count = count_pipes (token_list);
     //now we know that we have pipes_count pipes
     //that means we have pipes_count + 1 cmds
     cmd_list = NULL;
     i = -1;
     while (++i < pipes_count + 1)
     {
-        dist_to_next_pipe = return_distance_to_next_pipe(token_list);
-        cmd = create_single_cmd(token_list, dist_to_next_pipe);
+        //dist_to_next_pipe = return_distance_to_next_pipe(token_list);
+        cmd = create_single_cmd(token_list);
         add_cmd_to_cmd_list(&cmd_list, cmd);
-        shift_token_list_by_x(&token_list, dist_to_next_pipe + 1);
+        shift_token_list_to_next_pipe(&token_list);
     }
     print_command_list(cmd_list);
-    /*
-	t_token	*prev_token;
-	t_token	*cur_token;
-    t_cmd   *cmd;
-
-	cur_token = token_list;
-	prev_token = NULL;
-	cmd = ft_calloc(1, sizeof(t_cmd));
-    if (!cmd)
-    //error mgmt
-    while (cur_token)
-	{
-		if (cur_token->type == REDIR_IN && cur_token->next->type == WORD)
-            cmd->infile = cur_token->next->str;
-        else if (cur_token->type == WORD)
-        //else if (cur_token->type == HEREDOC)
-        //do heredoc stuff
-        
-	}*/
+    return cmd_list;
 }

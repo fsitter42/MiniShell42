@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 15:37:31 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 16:52:49 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,16 @@ typedef struct s_token
 //TODO pipes & fds
 typedef struct s_cmd
 {
-	char	*cmd;
+	char	*cmd;			//filled by bert
 	int		is_builtin;
-	char	**args;
+	char	**args;			//filled by bert
 	char	*path;
-	char	*infile;
+	char	*infile;		//filled by bert
 	int		in_fd;
-	char	*outfile;
+	char	*outfile;		//filled by bert
 	int		out_fd;
-	int		append;
-	struct s_cmd *next;	//if the command has a next one, we need a pipe
+	int		append;			//filled by bert
+	struct s_cmd *next;
 }					t_cmd;
 
 // enums

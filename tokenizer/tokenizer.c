@@ -6,41 +6,13 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 12:50:58 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 16:27:51 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 int		is_part_of_word(char c);
-
-/* this is where the magic happens, same in debug and in normal mode
-	tokenizer(line);
-	syntax check , if negative return error msg and return prompt
-	if positive, continue
-	create list of structs that are relevant for execution.
-	this includes:
-	- expansion
-	- quotes
-	- list of cmds
-	free(line);
-	pass this list to execute part of program (frido)
-*/
-// this function does everything that is needed that ONE LINE is being executed correctly
-void	handle_single_line(char *line)
-{
-	t_token	*token_list;
-
-	if (ft_strncmp(line, "exit", 4) == 0)
-		my_exit_function();
-	printf("'%s' is going to be tokenized\n", line);
-	token_list = tokenizer(line);
-	free(line);
-	create_command_list(token_list);
-	cleanup_token_list(token_list);
-	//execute entry point with command_list
-	//cleanup_command_list		
-}
 
 void	init_token(t_token *token)
 {

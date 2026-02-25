@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 14:29:08 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 16:04:35 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	init_cmd(t_cmd *cmd)
     cmd->outfile = NULL;
     cmd->out_fd = -1;
     cmd->next = NULL;
+    cmd->append = FALSE;
 }
 
 int return_distance_to_next_pipe(t_token *token_list)
@@ -114,15 +115,58 @@ void handle_redirection(t_token **token_list, t_cmd* cmd)
     }
     else if ((*token_list)->type == REDIR_APPEND)
     {
-        //REDIR APPEND STUFF
+        cmd->outfile = (*token_list)->next->str;
+        cmd->append = TRUE;
     }
     shift_and_consume_token_list_by_x(token_list, 2);
 }
 
-void handle_word(t_token **token_list, t_cmd* cmd)
+int handle_word(t_token **token_list, t_cmd* cmd)
 {
-    //handle word
+    int i;
+    
+    i = 0;
+    if (cmd->cmd == NULL)
+        cmd->cmd = (*token_list)->str;
+    //add (*token_list)->str to args
+    while (cmd->args[i])
+        i++;
+    //cmd->args[i] = ft_calloc(ft_strlen((*token_list)->str) + 1, sizeof (char));
+    cmd->args[i] = ft_strdup((*token_list)->str);
+    if (!(cmd->args[i]))
+        return 0;
     shift_and_consume_token_list_by_x(token_list, 1);
+    return 1;
+}
+
+int count_size_for_args_array(t_token *token_list)
+{
+    int size;
+
+    size = 0;
+    while (token_list && token_list->type != PIPE)
+    {
+        if (is_token_type_redirection(token_list))
+            token_list = token_list->next;
+        else
+            size++;
+        token_list = token_list->next;
+    }   
+    printf("size for args array is %d\n", size);
+    return size;
+}
+
+// does the mallocing stuff, returns 0 on success and -1 on error
+int init_args_array(t_cmd *cmd, int size)
+{
+    int i;
+
+    i = 0;
+    cmd->args = ft_calloc(size + 1, sizeof(char*));
+    if (!(cmd->args))
+        return 0;
+    //we can't alloc for the actual strings here because we don't know
+    //their lengths here
 }
 
 /* in this function we will have to fill the following members of the 
@@ -138,6 +182,7 @@ t_cmd *create_single_cmd(t_token *token_list, int no_tokens)
 {
     t_cmd *cmd;
     t_token *token_list_copy;
+    int size;
     
     token_list_copy = token_list;
     printf("trying to create a cmd with %d tokens\n", no_tokens);
@@ -145,6 +190,11 @@ t_cmd *create_single_cmd(t_token *token_list, int no_tokens)
     //if (!cmd)
     //error handling
     init_cmd(cmd);
+    size = count_size_for_args_array(token_list);
+    if (!init_args_array(cmd, size))
+    {
+        //error handling
+    }
     //NOW WE NEED TO ACTUALLY FILL THE CMD WITH STUFF
     
     while (token_list && token_list->type != PIPE)
@@ -155,7 +205,13 @@ t_cmd *create_single_cmd(t_token *token_list, int no_tokens)
             continue;
         }
         else
-            handle_word(&token_list, cmd);        
+        {
+            if (!handle_word(&token_list, cmd))
+            {
+                //error handling
+            }
+        }
+                 
     }
 
     /*
@@ -188,14 +244,26 @@ void add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd)
     (*cmd_list)->next = cmd;
 }
 
+void print_args_array(char **args)
+{
+    int i = -1;
+
+    printf("args: ");
+    while (args[++i])
+        printf("%s ", args[i]);
+}
+
 void print_command_list (t_cmd *start)
 {
 	int i = 0;
-	
+	int j = 0;
+    
 	while (start)
 	{
-		printf("Command %d: %s\n", ++i, start->cmd);
-		start = start->next;
+		printf("Command %d: %s, ", ++i, start->cmd);
+		print_args_array(start->args);
+        printf("\n");
+        start = start->next;
 	}
 }
 

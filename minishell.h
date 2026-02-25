@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 12:50:46 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 15:37:31 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_cmd
 	int		in_fd;
 	char	*outfile;
 	int		out_fd;
+	int		append;
 	struct s_cmd *next;	//if the command has a next one, we need a pipe
 }					t_cmd;
 
@@ -60,6 +61,7 @@ enum				e_word_mode
 	MODE_VAR
 };
 
+//used in AST, flagging tokens
 enum				e_consume_status
 {
 	UNCONSUMED = 0,
@@ -73,6 +75,12 @@ enum				e_token_status
 {
 	STATUS_UNSET = 0,
 	STATUS_SET
+};
+
+enum				e_bool
+{
+	FALSE = 0,
+	TRUE
 };
 
 //main

@@ -6,39 +6,38 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 16:52:49 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 17:55:09 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "./libft/libft.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 typedef struct s_token
 {
 	int type; // enum e_word_mode
 	char			*str;
-	int status; // enum e_token_status
-	int consume_status;//enum e_consume_status
+	int status;         // enum e_token_status
+	int consume_status; // enum e_consume_status
 	struct s_token	*next;
 }					t_token;
 
-
-//TODO pipes & fds
+// TODO pipes & fds
 typedef struct s_cmd
 {
-	char	*cmd;			//filled by bert
-	int		is_builtin;
-	char	**args;			//filled by bert
-	char	*path;
-	char	*infile;		//filled by bert
-	int		in_fd;
-	char	*outfile;		//filled by bert
-	int		out_fd;
-	int		append;			//filled by bert
-	struct s_cmd *next;
+	char *cmd; // filled by bert
+	int				is_builtin;
+	char **args; // filled by bert
+	char			*path;
+	char *infile; // filled by bert
+	int				in_fd;
+	char *outfile; // filled by bert
+	int				out_fd;
+	int append; // filled by bert
+	struct s_cmd	*next;
 }					t_cmd;
 
 // enums
@@ -48,10 +47,10 @@ enum				e_token_types
 	WORD,
 	VAR,
 	PIPE,
-	HEREDOC, 		//<<
-	REDIR_IN,		//<
-	REDIR_APPEND,	//>>
-	REDIR_OUT,		//>
+	HEREDOC,      //<<
+	REDIR_IN,     //<
+	REDIR_APPEND, //>>
+	REDIR_OUT,    //>
 };
 
 // is used in tokenizer, word_and_var_handler
@@ -61,16 +60,16 @@ enum				e_word_mode
 	MODE_VAR
 };
 
-//used in AST, flagging tokens
+// used in AST, flagging tokens
 enum				e_consume_status
 {
 	UNCONSUMED = 0,
 	CONSUMED
 };
 
-//TODO this is currently used to use a different strategy to add a token to the
-//list if it is the first element. should be changed to the logic like in the 
-//command list later on
+// TODO this is currently used to use a different strategy to add a token to the
+// list if it is the first element. should be changed to the logic like in the
+// command list later on
 enum				e_token_status
 {
 	STATUS_UNSET = 0,
@@ -83,16 +82,15 @@ enum				e_bool
 	TRUE
 };
 
-//main
+// main
 
+// AST
+t_cmd				*create_command_list(t_token *token_list);
 
-//AST
-t_cmd* create_command_list(t_token *token_list);
-
-//cleanup
-void my_exit_function();
-void cleanup_token_list(t_token *token_list);
-//tokenizer
-void	handle_single_line(char *line);
-t_token	*tokenizer(char *line);
-
+// cleanup
+void				my_exit_function(void);
+void				cleanup_token_list(t_token *token_list);
+void				cleanup_command_list(t_cmd *cmd_list);
+// tokenizer
+void				handle_single_line(char *line);
+t_token				*tokenizer(char *line);

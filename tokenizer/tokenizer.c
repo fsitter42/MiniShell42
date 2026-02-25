@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 16:27:51 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 17:55:17 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_token(t_token *token)
 	token->next = NULL;
 }
 
-//TODO eventuell ohne malloc, einfach normale variable
+// TODO eventuell ohne malloc, einfach normale variable
 void	tokenlist_add(t_token *list_start, int type, char *str)
 {
 	t_token	*new_token;
@@ -31,7 +31,7 @@ void	tokenlist_add(t_token *list_start, int type, char *str)
 	if (list_start->status == STATUS_SET)
 	{
 		new_token = ft_calloc(1, sizeof(t_token));
-		// if (!new_token) 
+		// if (!new_token)
 		// error handling
 		while (list_start->next)
 			list_start = list_start->next;
@@ -72,15 +72,16 @@ int	word_and_var_handler(int i, char *line, t_token *list_start, int mode)
 		tokenlist_add(list_start, VAR, word);
 		printf("VAR ");
 	}
-	//free (word);
+	// free (word);
 	return (i);
 }
 
-//this is for debugging only, will be removed!
-void print_tokens(t_token *start)
+// this is for debugging only, will be removed!
+void	print_tokens(t_token *start)
 {
-	int i = 0;
-	
+	int	i;
+
+	i = 0;
 	while (start)
 	{
 		printf("Token %d: %d, ", ++i, start->type);

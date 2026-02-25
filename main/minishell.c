@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 16:54:13 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 17:54:42 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	handle_single_line(char *line)
 	free(line);
 	cmd_list = create_command_list(token_list);
 	cleanup_token_list(token_list);
-	//execute entry point with command_list
+	// execute entry point with command_list
 	cleanup_command_list(cmd_list);
 }
 
@@ -83,7 +83,7 @@ void	normal_mode(int argc, char **argv, char **envp)
 	{
 		line = readline("minishell$ ");
 		if (!line)
-			return;
+			return ;
 		if (*line)
 			add_history((const char *)line);
 		handle_single_line(line);
@@ -100,11 +100,12 @@ void	normal_mode(int argc, char **argv, char **envp)
  */
 void	debug_mode(char *input, char **envp)
 {
-	char	**strs;		//strategy to free this on error: we have to get that pointer somehow in the 
-						//cleanup function, so i assume we have to store it somewhere in the linked list
-						//BUT: this function is only for testing, so actually we don't have to care
+	char	**strs;
 	int		i;
 
+	/*	strategy to free this on error: we have to get that pointer somehow in the
+		cleanup function, so i assume we have to store it somewhere in the linked list
+		BUT: this function is only for testing, so actually we don't have to care	*/
 	strs = NULL;
 	strs = ft_split(input, ';');
 	if (!strs)
@@ -112,7 +113,8 @@ void	debug_mode(char *input, char **envp)
 	i = -1;
 	while (strs[++i])
 		handle_single_line(strs[i]);
-	free(strs);	//this is memory safe because the actual lines are freed in handle_single_line
+	free(strs);
+		// this is memory safe because the actual lines are freed in handle_single_line
 }
 
 /* we can start minishell in normal (user input) mode (argc = 1) or in

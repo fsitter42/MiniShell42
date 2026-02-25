@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/24 12:55:39 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 12:50:46 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ typedef struct s_token
 	int type; // enum e_word_mode
 	char			*str;
 	int status; // enum e_token_status
+	int consume_status;//enum e_consume_status
 	struct s_token	*next;
-	// struct s_token	*previous;
-
 }					t_token;
 
 
@@ -61,6 +60,15 @@ enum				e_word_mode
 	MODE_VAR
 };
 
+enum				e_consume_status
+{
+	UNCONSUMED = 0,
+	CONSUMED
+};
+
+//TODO this is currently used to use a different strategy to add a token to the
+//list if it is the first element. should be changed to the logic like in the 
+//command list later on
 enum				e_token_status
 {
 	STATUS_UNSET = 0,

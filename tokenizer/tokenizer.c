@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 11:57:51 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 12:50:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	init_token(t_token *token)
 	token->type = START;
 	token->str = NULL;
 	token->status = STATUS_UNSET;
+	token->consume_status = UNCONSUMED;
 	token->next = NULL;
 }
 

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 12:12:52 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 14:29:08 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,99 @@ void shift_token_list_by_x(t_token **token_list, int x)
     }      
 }
 
+void shift_and_consume_token_list_by_x (t_token **token, int x)
+{
+    int i;
+
+    i = -1;
+    while (++i < x)
+    {
+        (*token)->consume_status = CONSUMED;
+        (*token) = (*token)->next;
+    }
+}
+
+int is_token_type_redirection(t_token *token)
+{
+    int x;
+    
+    x = token->type;
+    if (x == HEREDOC || x == REDIR_IN || x == REDIR_APPEND || x == REDIR_OUT)
+        return 1;
+    return 0;
+}
+
+void handle_redirection(t_token **token_list, t_cmd* cmd)
+{
+    if ((*token_list)->type == REDIR_IN)
+        cmd->infile = (*token_list)->next->str;
+    else if ((*token_list)->type == REDIR_OUT)
+        cmd->outfile = (*token_list)->next->str;
+    else if ((*token_list)->type == HEREDOC)
+    {
+        //HEREDOC STUFF
+    }
+    else if ((*token_list)->type == REDIR_APPEND)
+    {
+        //REDIR APPEND STUFF
+    }
+    shift_and_consume_token_list_by_x(token_list, 2);
+}
+
+void handle_word(t_token **token_list, t_cmd* cmd)
+{
+    //handle word
+    shift_and_consume_token_list_by_x(token_list, 1);
+}
+
+/* in this function we will have to fill the following members of the 
+*  struct t_cmd: cmd (char *), args (char **),
+*  infile / outfile (optional - char *)
+*  walkthrough for the example "< file1.txt cat -e" (REDIT_IN WORD WORD WORD)
+*  if the first token is a REDIR_IN, the next token defines the infile.
+*  the token after that is the cmd itself and all other tokens define args.
+*
+*  if there is a REDIR_OUT encountered, the next token defines the outfile
+*/
 t_cmd *create_single_cmd(t_token *token_list, int no_tokens)
 {
     t_cmd *cmd;
+    t_token *token_list_copy;
     
+    token_list_copy = token_list;
     printf("trying to create a cmd with %d tokens\n", no_tokens);
     cmd = ft_calloc(sizeof(t_cmd), 1);
     //if (!cmd)
     //error handling
     init_cmd(cmd);
-    //HERE WE NEED TO ACTUALLY FILL THE CMD WITH STUFF
+    //NOW WE NEED TO ACTUALLY FILL THE CMD WITH STUFF
+    
+    while (token_list && token_list->type != PIPE)
+    {
+        if (is_token_type_redirection(token_list))
+        {
+            handle_redirection (&token_list, cmd);
+            continue;
+        }
+        else
+            handle_word(&token_list, cmd);        
+    }
+
+    /*
+    if (token_list->type == REDIR_IN)
+    {
+        cmd->infile = token_list->next->str;
+        //token_list = token_list->next->next;
+        shift_and_consume_token_list_by_x(&token_list, 2);
+    }
+    if (token_list->type == WORD)
+    {
+        cmd->cmd = token_list->str;
+        //token_list = token_list->next;
+        shift_and_consume_token_list_by_x(&token_list, 1);
+    }
+    //rest ist args aber erst ab [1] [0] ist das gleiche wie cmd
+    */
     return cmd;
 }
 
@@ -139,11 +222,7 @@ t_cmd	*create_command_list(t_token *token_list)
     }
     //now we know that we have pipes_count pipes
     //that means we have pipes_count + 1 cmds
-    //cmd_list = ft_calloc(sizeof(t_cmd), 1);  //only allocate one bc it's a list
     cmd_list = NULL;
-    //if (!cmd_list)
-    //error handling
-    //init_cmd(cmd_list);
     i = -1;
     while (++i < pipes_count + 1)
     {

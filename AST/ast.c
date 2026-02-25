@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/24 18:59:55 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 12:12:52 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,27 @@ t_cmd *create_single_cmd(t_token *token_list, int no_tokens)
     return cmd;
 }
 
-void add_cmd_to_cmd_list(t_cmd *cmd_list, t_cmd *cmd)
+void add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd)
 {
-    while (cmd_list->next)
-        cmd_list = cmd_list->next;
-    cmd_list->next = cmd;
+    if (!(*cmd_list))
+    {
+        *cmd_list = cmd;
+        return;
+    } 
+    while ((*cmd_list)->next)
+        *cmd_list = (*cmd_list)->next;
+    (*cmd_list)->next = cmd;
+}
+
+void print_command_list (t_cmd *start)
+{
+	int i = 0;
+	
+	while (start)
+	{
+		printf("Command %d: %s\n", ++i, start->cmd);
+		start = start->next;
+	}
 }
 
 /*
@@ -123,18 +139,20 @@ t_cmd	*create_command_list(t_token *token_list)
     }
     //now we know that we have pipes_count pipes
     //that means we have pipes_count + 1 cmds
-    cmd_list = ft_calloc(sizeof(t_cmd*), 1);  //only allocate one bc it's a list
+    //cmd_list = ft_calloc(sizeof(t_cmd), 1);  //only allocate one bc it's a list
+    cmd_list = NULL;
     //if (!cmd_list)
     //error handling
-    init_cmd(cmd_list);
+    //init_cmd(cmd_list);
     i = -1;
     while (++i < pipes_count + 1)
     {
         dist_to_next_pipe = return_distance_to_next_pipe(token_list);
         cmd = create_single_cmd(token_list, dist_to_next_pipe);
-        add_cmd_to_cmd_list(cmd_list, cmd);
+        add_cmd_to_cmd_list(&cmd_list, cmd);
         shift_token_list_by_x(&token_list, dist_to_next_pipe + 1);
     }
+    print_command_list(cmd_list);
     /*
 	t_token	*prev_token;
 	t_token	*cur_token;

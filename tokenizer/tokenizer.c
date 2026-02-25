@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/24 18:09:59 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 11:57:51 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,16 @@ int		is_part_of_word(char c);
 void	handle_single_line(char *line)
 {
 	t_token	*token_list;
-	int should_exit;
 
-	should_exit = 0;
 	if (ft_strncmp(line, "exit", 4) == 0)
-		should_exit = 1;
-	// 1. tokenizer
+		my_exit_function();
 	printf("'%s' is going to be tokenized\n", line);
 	token_list = tokenizer(line);
-	//do something with token_list
 	free(line);
 	create_command_list(token_list);
 	cleanup_token_list(token_list);
-	if (should_exit)
-		my_exit_function();
+	//execute entry point with command_list
+	//cleanup_command_list		
 }
 
 void	init_token(t_token *token)

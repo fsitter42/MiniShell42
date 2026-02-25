@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 17:55:09 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 18:50:45 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_token
 	char			*str;
 	int status;         // enum e_token_status
 	int consume_status; // enum e_consume_status
+	int quote_status;	//enum e_quote_status
 	struct s_token	*next;
 }					t_token;
 
@@ -74,6 +75,13 @@ enum				e_token_status
 {
 	STATUS_UNSET = 0,
 	STATUS_SET
+};
+
+enum				e_quote_status
+{
+	DEFAULT = 0,
+	IN_SINGLE_QUOTES,
+	IN_DOUBLE_QUOTES
 };
 
 enum				e_bool

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 17:55:17 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/25 18:57:22 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init_token(t_token *token)
 	token->str = NULL;
 	token->status = STATUS_UNSET;
 	token->consume_status = UNCONSUMED;
+	token->quote_status = DEFAULT;
 	token->next = NULL;
 }
 
@@ -117,6 +118,12 @@ t_token	*tokenizer(char *line)
 	// error handling
 	init_token(list_start);
 	i = -1;
+	
+	//TODO we somehow need to store the information on quotes here.
+	//on each character that is either " or ' we have to save the 
+	//info for all tokens regarding quote. additionally we have
+	//to check if the quotes are closed. otherwise, syntax error
+	//only after that is done we can think about variable expansion
 	while (line[++i])
 	{
 		if (isspace(line[i]))

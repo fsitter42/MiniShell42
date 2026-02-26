@@ -13,8 +13,8 @@
             //"args": ["-d", "cat < file1.txt -e > file2.txt -n"],
             //"args": ["-d", "< input.txt > output.txt"],
             //"args": ["-d", "ls | | wc"],
-            "args": ["-d", "ls -l | grep $VAR | wc -l > out.txt"],
-            
+            //"args": ["-d", "ls -l | grep 'VAR' | wc -l > out.txt"],
+            "args": ["-d", "'VAR' | wc -l > out.txt"],
             //"args": ["-d", "cat << LIMITER >> output.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/26 15:54:01 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/26 18:04:55 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	init_token(t_token *token)
 }
 
 // TODO eventuell ohne malloc, einfach normale variable
-void	tokenlist_add(t_token *list_start, int type, char *str)
+void	tokenlist_add(t_token *list_start, int type, char *str, int quote_status)
 {
 	t_token	*new_token;
 
@@ -43,13 +43,13 @@ void	tokenlist_add(t_token *list_start, int type, char *str)
 		new_token = list_start;
 	new_token->type = type;
 	new_token->str = str;
-	// new_token->quote_status = quote_status;
+	new_token->quote_status = quote_status;
 	new_token->status = STATUS_SET;
 }
 
 /* 2 modes: WORD mode just handles a normal word. VAR mode is executed if a $ is found and starts form i+1
  */
-int	word_and_var_handler(int i, char *line, t_token *list_start, int mode)
+int	word_and_var_handler(int i, char *line, t_token *list_start, int mode, int quote_status)
 {
 	int		word_start;
 	char	*word;
@@ -66,12 +66,12 @@ int	word_and_var_handler(int i, char *line, t_token *list_start, int mode)
 	// error hanlding
 	if (mode == MODE_WORD)
 	{
-		tokenlist_add(list_start, WORD, word);
+		tokenlist_add(list_start, WORD, word, quote_status);
 		printf("WORD ");
 	}
 	else if (mode == MODE_VAR)
 	{
-		tokenlist_add(list_start, VAR, word);
+		tokenlist_add(list_start, VAR, word, quote_status);
 		printf("VAR ");
 	}
 	// free (word);
@@ -88,9 +88,9 @@ void	print_tokens(t_token *start)
 	{
 		printf("Token %d: %d, ", ++i, start->type);
 		if (start->type == WORD || start->type == VAR)
-			printf(" value: %s\n", start->str);
-		else
-			printf("\n");
+			printf(" value: %s", start->str);
+		printf(" | quote status: %d", start->quote_status);
+		printf("\n");
 		start = start->next;
 	}
 }
@@ -141,6 +141,16 @@ int	quote_sytanx_check(char *line)
 */
 int	quote_handler(int quote_status, char c)
 {
+	if (quote_status == 0)
+	{
+		if (c == '\'')
+			return 1;
+		if (c == '\"')
+			return 2;
+	}
+	else if ((quote_status == 1 && c == '\'') || (quote_status == 2 && c == '\"'))
+			return 0;
+	return quote_status;
 }
 
 /* we want to structure the input and save it in a linked list. in order to know what elements
@@ -155,7 +165,9 @@ int	quote_handler(int quote_status, char c)
    additionally we have to save the state of the quotes (default, in single,
 	in double quotes)
    return: NULL on empty line or a pointer to the first element
+   TODO: fix bug where it segfaults when < or > is in the end
 */
+
 t_token	*tokenizer(char *line)
 {
 	t_token	*list_start;
@@ -176,58 +188,61 @@ t_token	*tokenizer(char *line)
 	// error handling
 	init_token(list_start);
 	i = -1;
+	quote_status = 0;
 	//quote_status = DEFAULT;
 	// TODO we somehow need to store the information on quotes here.
 	// on each character that is either " or ' we have to save the
 	// info for all tokens regarding quote. additionally we have
 	// to check if the quotes are closed. otherwise, syntax error
 	// only after that is done we can think about variable expansion
+	//the problem atm is that i dont walk through every character,
+	//some are "skipped" (aka handled inside the while loop)
 	while (line[++i])
 	{
-		// if (is_quote(line[i]))
-		//	quote_status = quote_handler[quote_status, line[i]];
+		if (is_quote(line[i]))
+			quote_status = quote_handler(quote_status, line[i]);
 		if (isspace(line[i]))
 			continue ;
 		if (line[i] == '|')
 		{
 			printf("PIPE ");
-			tokenlist_add(list_start, PIPE, NULL);
+			tokenlist_add(list_start, PIPE, NULL, quote_status);
 			continue ;
 		}
 		if (line[i] == '<' && line[i + 1] == '<')
 		{
 			printf("HEREDOC ");
-			tokenlist_add(list_start, HEREDOC, NULL);
+			tokenlist_add(list_start, HEREDOC, NULL, quote_status);
 			i++;
 			continue ;
 		}
 		if (line[i] == '<')
 		{
 			printf("REDIR_IN ");
-			tokenlist_add(list_start, REDIR_IN, NULL);
+			tokenlist_add(list_start, REDIR_IN, NULL, quote_status);
 			continue ;
 		}
 		if (line[i] == '>' && line[i + 1] == '>')
 		{
 			printf("REDIR_APPEND ");
-			tokenlist_add(list_start, REDIR_APPEND, NULL);
+			tokenlist_add(list_start, REDIR_APPEND, NULL, quote_status);
 			i++;
 			continue ;
 		}
 		if (line[i] == '>')
 		{
 			printf("REDIR_OUT ");
-			tokenlist_add(list_start, REDIR_OUT, NULL);
+			tokenlist_add(list_start, REDIR_OUT, NULL, quote_status);
 			continue ;
 		}
 		if (line[i] == '$')
 		{
 			i++;
-			i = word_and_var_handler(i, line, list_start, MODE_VAR);
+			i = word_and_var_handler(i, line, list_start, MODE_VAR, quote_status);
 			continue ;
 		}
 		// WORD
-		i = word_and_var_handler(i, line, list_start, MODE_WORD);
+		i = word_and_var_handler(i, line, list_start, MODE_WORD, quote_status);
 	}
 	printf("\n");
 	print_tokens(list_start);

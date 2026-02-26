@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/26 11:02:06 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:55:43 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	handle_single_line(char *line)
 	printf("'%s' is going to be tokenized\n", line);
 	token_list = tokenizer(line);
 	free(line);
+	if (!token_list)
+		return ;
 	cmd_list = create_command_list(token_list);
 	cleanup_token_list(token_list);
 	// execute entry point with command_list

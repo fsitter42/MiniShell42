@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/25 18:50:45 by slambert         ###   ########.fr       */
+/*   Updated: 2026/02/26 11:26:05 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ typedef struct s_token
 }					t_token;
 
 // TODO pipes & fds
+/* possible TODOS:
+*  add permission flags for path, infile and outfile
+/*
+*/
 typedef struct s_cmd
 {
 	char *cmd; // filled by bert

@@ -6,14 +6,14 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/26 13:40:34 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 12:25:45 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "./libft/libft.h"
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 typedef struct s_token
@@ -23,6 +23,7 @@ typedef struct s_token
 	int status;         // enum e_token_status
 	int consume_status; // enum e_consume_status
 	int quote_status;   // enum e_quote_status
+	//QUOTE STATUS WILL BE DROPPED
 	struct s_token	*next;
 }					t_token;
 
@@ -83,7 +84,7 @@ enum				e_token_status
 
 enum				e_quote_status
 {
-	DEFAULT = 0,
+	DEFAULT_QUOTE = 0,
 	IN_SINGLE_QUOTES,
 	IN_DOUBLE_QUOTES
 };

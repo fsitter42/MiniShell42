@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/26 18:04:55 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 12:28:33 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_token(t_token *token)
 	token->str = NULL;
 	token->status = STATUS_UNSET;
 	token->consume_status = UNCONSUMED;
-	token->quote_status = DEFAULT;
+	token->quote_status = DEFAULT_QUOTE;
 	token->next = NULL;
 }
 
@@ -47,35 +47,57 @@ void	tokenlist_add(t_token *list_start, int type, char *str, int quote_status)
 	new_token->status = STATUS_SET;
 }
 
-/* 2 modes: WORD mode just handles a normal word. VAR mode is executed if a $ is found and starts form i+1
- */
-int	word_and_var_handler(int i, char *line, t_token *list_start, int mode, int quote_status)
+/* quote handling logic:
+*  step 1: 	quote syntax counter: counts if every opening quote has a
+*			dedicated closing quote of the same type. if not: display error
+			(do i actually need that step or could i include it in step2?)
+*  step 2:	in the tokenizer loop through the line and if " or ' is encountered,
+*			set the tokens the the specific quote_status until the quote is closed.
++
+*			what about "'" '"' $bla '"' "'"
+*
+*/
+int	quote_handler(int quote_status, char c)
+{
+	if (quote_status == 0)
+	{
+		if (c == '\'')
+			return 1;
+		if (c == '\"')
+			return 2;
+	}
+	else if ((quote_status == 1 && c == '\'') || (quote_status == 2 && c == '\"'))
+			return 0;
+	return quote_status;
+}
+
+/*
+2 modes: WORD mode just handles a normal word. VAR mode is executed if a $ is found and starts form i+1
+*/ 
+int	word_and_var_handler(int i, char *line, t_token *list_start, int *quote_status)
 {
 	int		word_start;
+	int		char_to_check;
 	char	*word;
-	char	*temp;
 
 	word_start = i;
-	while (is_part_of_word(line[i]))
-		i++;
-	i--;
-	temp = ft_substr(line, word_start, i - word_start + 1);
-	word = ft_strdup(temp);
-	free(temp);
+	char_to_check = word_start + 1;
+
+	while (TRUE)
+	{
+		*quote_status = quote_handler(*quote_status, line[char_to_check]);
+		if (*quote_status == DEFAULT_QUOTE && !is_part_of_word(line[char_to_check]))
+			break;
+		char_to_check++;
+	}
+	char_to_check--;
+
+	word = ft_substr(line, word_start, char_to_check - word_start + 1);
 	// if (!word)
 	// error hanlding
-	if (mode == MODE_WORD)
-	{
-		tokenlist_add(list_start, WORD, word, quote_status);
-		printf("WORD ");
-	}
-	else if (mode == MODE_VAR)
-	{
-		tokenlist_add(list_start, VAR, word, quote_status);
-		printf("VAR ");
-	}
-	// free (word);
-	return (i);
+	tokenlist_add(list_start, WORD, word, *quote_status);
+	printf("WORD ");
+	return (char_to_check);
 }
 
 // this is for debugging only, will be removed!
@@ -89,7 +111,7 @@ void	print_tokens(t_token *start)
 		printf("Token %d: %d, ", ++i, start->type);
 		if (start->type == WORD || start->type == VAR)
 			printf(" value: %s", start->str);
-		printf(" | quote status: %d", start->quote_status);
+		//printf(" | quote status: %d", start->quote_status);
 		printf("\n");
 		start = start->next;
 	}
@@ -129,30 +151,6 @@ int	quote_sytanx_check(char *line)
 	return cur_status;
 }
 
-/* quote handling logic:
-*  step 1: 	quote syntax counter: counts if every opening quote has a
-*			dedicated closing quote of the same type. if not: display error
-			(do i actually need that step or could i include it in step2?)
-*  step 2:	in the tokenizer loop through the line and if " or ' is encountered,
-*			set the tokens the the specific quote_status until the quote is closed.
-+
-*			what about "'" '"' $bla '"' "'"
-*
-*/
-int	quote_handler(int quote_status, char c)
-{
-	if (quote_status == 0)
-	{
-		if (c == '\'')
-			return 1;
-		if (c == '\"')
-			return 2;
-	}
-	else if ((quote_status == 1 && c == '\'') || (quote_status == 2 && c == '\"'))
-			return 0;
-	return quote_status;
-}
-
 /* we want to structure the input and save it in a linked list. in order to know what elements
    occur, we have to do certain checks to the string. these tokens are possible:
    - PIPE: |
@@ -188,7 +186,7 @@ t_token	*tokenizer(char *line)
 	// error handling
 	init_token(list_start);
 	i = -1;
-	quote_status = 0;
+	quote_status = DEFAULT_QUOTE;
 	//quote_status = DEFAULT;
 	// TODO we somehow need to store the information on quotes here.
 	// on each character that is either " or ' we have to save the
@@ -199,10 +197,11 @@ t_token	*tokenizer(char *line)
 	//some are "skipped" (aka handled inside the while loop)
 	while (line[++i])
 	{
-		if (is_quote(line[i]))
-			quote_status = quote_handler(quote_status, line[i]);
+		//if (is_quote(line[i]))
 		if (isspace(line[i]))
 			continue ;
+		quote_status = quote_handler(quote_status, line[i]);
+
 		if (line[i] == '|')
 		{
 			printf("PIPE ");
@@ -235,14 +234,14 @@ t_token	*tokenizer(char *line)
 			tokenlist_add(list_start, REDIR_OUT, NULL, quote_status);
 			continue ;
 		}
-		if (line[i] == '$')
-		{
-			i++;
-			i = word_and_var_handler(i, line, list_start, MODE_VAR, quote_status);
-			continue ;
-		}
+		// if (line[i] == '$')
+		// {
+		// 	i++;
+		// 	i = word_and_var_handler(i, line, list_start, MODE_VAR, quote_status);
+		// 	continue ;
+		// }
 		// WORD
-		i = word_and_var_handler(i, line, list_start, MODE_WORD, quote_status);
+		i = word_and_var_handler(i, line, list_start, &quote_status);
 	}
 	printf("\n");
 	print_tokens(list_start);

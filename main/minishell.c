@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/26 15:55:43 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 12:54:35 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@
 	pass this list to execute part of program (frido)
 */
 // this function does everything that is needed that ONE LINE is being executed correctly
-void	handle_single_line(char *line)
+void	handle_single_line(char *line, char **envp)
 {
 	t_token	*token_list;
 	t_cmd	*cmd_list;
@@ -69,6 +69,7 @@ void	handle_single_line(char *line)
 	free(line);
 	if (!token_list)
 		return ;
+	expansion (token_list, envp);
 	cmd_list = create_command_list(token_list);
 	cleanup_token_list(token_list);
 	// execute entry point with command_list
@@ -88,7 +89,7 @@ void	normal_mode(int argc, char **argv, char **envp)
 			return ;
 		if (*line)
 			add_history((const char *)line);
-		handle_single_line(line);
+		handle_single_line(line, envp);
 	}
 }
 
@@ -114,7 +115,7 @@ void	debug_mode(char *input, char **envp)
 		my_exit_function();
 	i = -1;
 	while (strs[++i])
-		handle_single_line(strs[i]);
+		handle_single_line(strs[i], envp);
 	free(strs);
 		// this is memory safe because the actual lines are freed in handle_single_line
 }

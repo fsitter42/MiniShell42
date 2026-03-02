@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 12:28:33 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 13:26:44 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	tokenlist_add(t_token *list_start, int type, char *str, int quote_status)
 *			what about "'" '"' $bla '"' "'"
 *
 */
-int	quote_handler(int quote_status, char c)
+/* int	quote_handler(int quote_status, char c)
 {
 	if (quote_status == 0)
 	{
@@ -69,7 +69,7 @@ int	quote_handler(int quote_status, char c)
 	else if ((quote_status == 1 && c == '\'') || (quote_status == 2 && c == '\"'))
 			return 0;
 	return quote_status;
-}
+} */
 
 /*
 2 modes: WORD mode just handles a normal word. VAR mode is executed if a $ is found and starts form i+1
@@ -234,12 +234,6 @@ t_token	*tokenizer(char *line)
 			tokenlist_add(list_start, REDIR_OUT, NULL, quote_status);
 			continue ;
 		}
-		// if (line[i] == '$')
-		// {
-		// 	i++;
-		// 	i = word_and_var_handler(i, line, list_start, MODE_VAR, quote_status);
-		// 	continue ;
-		// }
 		// WORD
 		i = word_and_var_handler(i, line, list_start, &quote_status);
 	}

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 14:54:20 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 20:19:07 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_token(t_token *token)
 	token->str = NULL;
 	token->status = STATUS_UNSET;
 	token->consume_status = UNCONSUMED;
-	token->quote_status = DEFAULT_QUOTE;
+	//token->quote_status = DEFAULT_QUOTE;
 	token->next = NULL;
 }
 
@@ -43,7 +43,7 @@ void	tokenlist_add(t_token *list_start, int type, char *str, int quote_status)
 		new_token = list_start;
 	new_token->type = type;
 	new_token->str = str;
-	new_token->quote_status = quote_status;
+	//new_token->quote_status = quote_status;
 	new_token->status = STATUS_SET;
 }
 
@@ -108,10 +108,9 @@ void	print_tokens(t_token *start)
 	i = 0;
 	while (start)
 	{
-		printf("Token %d: %d, ", ++i, start->type);
+		printf("Token %d: Type %d, ", ++i, start->type);
 		if (start->type == WORD || start->type == VAR)
 			printf(" value: %s", start->str);
-		//printf(" | quote status: %d", start->quote_status);
 		printf("\n");
 		start = start->next;
 	}

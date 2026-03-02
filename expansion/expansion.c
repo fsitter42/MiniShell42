@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 16:57:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 20:12:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char    *extract_home_path_from_envp(char **envp)
     return NULL;
 }
 
-//TODO add "= after var_name"
 char *extract_var_from_envp(char *var_name, char **envp)
 {
     char *value;
@@ -35,7 +34,6 @@ char *extract_var_from_envp(char *var_name, char **envp)
     int len_var_name;
     int len_total;
     
-   // var_name
     i = -1;
     len_var_name = ft_strlen(var_name);
     while (envp[++i])
@@ -49,9 +47,9 @@ char *extract_var_from_envp(char *var_name, char **envp)
     return ft_strdup("");
 }
 
+//replaces a singular character with a string
 char *replace_char_with_expandable(char *original, char char_to_expand, char *expandable)
 {
-    
     char *temp;
     int i_src;
     int i_dst;
@@ -76,8 +74,6 @@ char *replace_char_with_expandable(char *original, char char_to_expand, char *ex
     temp[i_dst] = '\0';
     return temp;
 }
-
-//char *replace_word_with_expandable(char *original, char char_to_expand, char *expandable)
 
 int	quote_handler(int quote_status, char c)
 {
@@ -108,14 +104,11 @@ void expand_home_dir (t_token *list_elem, char **envp)
     //ERROR
     free(home);
     free(list_elem->str);
-    list_elem->str = temp;
-    //printf("temp is %s\n", temp);        
+    list_elem->str = temp;     
 }
 
 /*
-*  helper for the case that the $ is not in the beginning but in the middle of a token
-*  in that case we have to strjoin the first string until the $ (excluding) with the var value
-*
+*  creates the string, contais of 3 parts prefix, expanded variable and suffix
 */
 char *return_helper(char *str, char *temp)
 {
@@ -142,6 +135,7 @@ char *return_helper(char *str, char *temp)
 }
 
 //TODO: var_name ohne klammern am ende (???)
+//TODO: kann var_name_without_istgleich durch temp ersetzt werden?
 /*  replaces the first occurrence of $ with the value
 */
 char *replace_var_with_content(char *str, char **envp)
@@ -163,7 +157,7 @@ char *replace_var_with_content(char *str, char **envp)
             var_len = 0;
             while (str[i + 1 + var_len] && (ft_isalnum(str[i + 1 + var_len]) || str[i + 1 + var_len] == '_'))
                 var_len++;
-            if (var_len == 0)  // $ followed by non-variable char
+            if (var_len == 0)  // $ followed by non-variable char zb $/
                 continue;
             var_name_without_istgleich = ft_substr(str, i + 1, var_len);
             if (!var_name_without_istgleich)
@@ -221,10 +215,10 @@ void expand_variable (t_token *list_elem, char **envp)
 /*
 *  RULES: 
 *  - single quotes contain the original (literal) value
-*  - double quotes allow the expansion of variables
+*  - double quotes (or no quotes) allow the expansion of variables
 *
 *  1. expand variables
-*  2. expand ~ (do we need that?)
+*  2. expand ~
 *  3. expand $?
 */
 void expand_single_word(t_token *list_elem, char **envp)

@@ -21,7 +21,7 @@
             //"args": ["-d", "\"\\$USERNAME\""],  
             //"args": ["-d", "\"\\$USER\""], 
             //"args": ["-d", "\"\\$asdf\""], 
-            "args": ["-d", "\"asdf\\$USER\""], 
+            "args": ["-d", "\"asdf\\$USER\\asdd\""], 
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 16:40:14 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 16:57:53 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,14 +119,26 @@ void expand_home_dir (t_token *list_elem, char **envp)
 */
 char *return_helper(char *str, char *temp)
 {
-    char *dollar_position;
-    int length_to_keep;
+    char *dollar_pos; 
+    int prefix_len;
+    int var_len;
+    char *prefix;
+    char *suffix;
+    char *result;
     
-    dollar_position = ft_strchr(str, '$');
-    length_to_keep = dollar_position - str;
-    
-    //possible todo das nicht in einer zeile
-    return ft_strjoin(ft_substr(str, 0, length_to_keep), temp);
+    dollar_pos = ft_strchr(str, '$');
+    prefix_len = dollar_pos - str;
+    var_len = 0;
+    while (dollar_pos[1 + var_len] && 
+           (ft_isalnum(dollar_pos[1 + var_len]) || dollar_pos[1 + var_len] == '_'))
+        var_len++;
+    prefix = ft_substr(str, 0, prefix_len);
+    //if (!prefix)
+    //error handling
+    suffix = dollar_pos + 1 + var_len; 
+    result = ft_strjoin(ft_strjoin(prefix, temp), suffix);  
+    free(prefix);
+    return result;
 }
 
 //TODO: var_name ohne klammern am ende (???)
@@ -138,6 +150,7 @@ char *replace_var_with_content(char *str, char **envp)
     char *var_name_without_istgleich;
     char *var_name_with_istgleich;
     char *temp;
+    int var_len;
 
     temp = ft_strdup("");
     if (!temp)
@@ -147,7 +160,12 @@ char *replace_var_with_content(char *str, char **envp)
     {
         if (str[i] == '$')
         {
-            var_name_without_istgleich = ft_substr(str, i + 1, ft_strlen(str + 1));
+            var_len = 0;
+            while (str[i + 1 + var_len] && (ft_isalnum(str[i + 1 + var_len]) || str[i + 1 + var_len] == '_'))
+                var_len++;
+            if (var_len == 0)  // $ followed by non-variable char
+                continue;
+            var_name_without_istgleich = ft_substr(str, i + 1, var_len);
             if (!var_name_without_istgleich)
                 return (temp);
             var_name_with_istgleich = ft_strjoin(var_name_without_istgleich, "=");

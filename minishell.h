@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 20:19:10 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 20:47:54 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,15 @@ typedef struct s_token
 {
 	int type; // enum e_word_mode
 	char			*str;
-	int status;         // enum e_token_status
 	int consume_status; // enum e_consume_status
-	//int quote_status;   // enum e_quote_status
-	//QUOTE STATUS WILL BE DROPPED
 	struct s_token	*next;
 }					t_token;
 
 // TODO pipes & fds
 /* possible TODOS:
-*  add permission flags for path, infile and outfile
-*
-*/
+ *  add permission flags for path, infile and outfile
+ *
+ */
 typedef struct s_cmd
 {
 	char *cmd; // filled by bert
@@ -60,13 +57,13 @@ enum				e_token_types
 };
 
 // is used in tokenizer, word_and_var_handler
-enum				e_word_mode
+/*enum				e_word_mode
 {
 	MODE_WORD = 0,
 	MODE_VAR
-};
+};*/
 
-// used in AST, flagging tokens
+// used in commandizer, flagging tokens
 enum				e_consume_status
 {
 	UNCONSUMED = 0,
@@ -97,7 +94,7 @@ enum				e_bool
 
 // main
 
-// AST
+// commandizer
 t_cmd				*create_command_list(t_token *token_list);
 
 // cleanup
@@ -108,9 +105,9 @@ void				cleanup_command_list(t_cmd *cmd_list);
 void				handle_single_line(char *line, char **envp);
 t_token				*tokenizer(char *line);
 
-//expansion
-void expansion (t_token *list, char **envp);
-int	quote_handler(int quote_status, char c);
+// expansion
+void				expansion(t_token *list, char **envp);
+int					quote_handler(int quote_status, char c);
 
-//debug
-void	print_tokens(t_token *start);
+// debug
+void				print_tokens(t_token *start);

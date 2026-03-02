@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 20:12:58 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 21:03:12 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,9 @@ char *replace_var_with_content(char *str, char **envp)
         return return_helper(str, temp);
 }
 
-//replaces all occurences of a variable with the dedicated value
-//this can happen multiple times so we loop
+//replaces one occurence of a variable with the dedicated value
+//TODO: this can happen multiple times so we have to loop
+//e.g. $USER$USER
 void expand_variable (t_token *list_elem, char **envp)
 {
     int i;
@@ -202,14 +203,20 @@ void expand_variable (t_token *list_elem, char **envp)
 
             expanded = replace_var_with_content(temp, envp);
             free(temp);
-            list_elem->str = expanded;
+            //ist_elem->str = expanded;
             //if (!list_elem->status)
             //error
             i = 0;
             continue;
         }
+        list_elem->str = expanded;
         i++;   
     }
+}
+
+void handle_dollar_question(t_token *list_elem, char **envp)
+{
+    printf("I AM A PLACEHOLDER\n");
 }
 
 /*
@@ -233,8 +240,11 @@ void expand_single_word(t_token *list_elem, char **envp)
         quote_status = quote_handler(quote_status, list_elem->str[i]);
         if (list_elem->str[i] == '~' && i == 0 && quote_status == DEFAULT_QUOTE)
             expand_home_dir(list_elem, envp);
-        if (list_elem->str[i] == '$' && quote_status != IN_SINGLE_QUOTES)
+        else if (list_elem->str[i] == '$' && list_elem->str[i + 1] && list_elem->str[i + 1] == '?' && !list_elem->str[i + 2] && quote_status != IN_SINGLE_QUOTES)
+            handle_dollar_question(list_elem, envp);
+        else if (list_elem->str[i] == '$' && list_elem->str[i + 1] && quote_status != IN_SINGLE_QUOTES)
             expand_variable(list_elem, envp);
+            
     }
 }
 

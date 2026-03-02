@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 20:19:07 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 20:46:36 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,63 +18,29 @@ void	init_token(t_token *token)
 {
 	token->type = START;
 	token->str = NULL;
-	token->status = STATUS_UNSET;
 	token->consume_status = UNCONSUMED;
-	//token->quote_status = DEFAULT_QUOTE;
 	token->next = NULL;
 }
 
-// TODO eventuell ohne malloc, einfach normale variable
-void	tokenlist_add(t_token *list_start, int type, char *str, int quote_status)
+t_token	*tokenlist_add(t_token *list_start, int type, char *str)
 {
 	t_token	*new_token;
+	t_token	*current;
 
-	if (list_start->status == STATUS_SET)
-	{
-		new_token = ft_calloc(1, sizeof(t_token));
-		// if (!new_token)
-		// error handling
-		while (list_start->next)
-			list_start = list_start->next;
-		list_start->next = new_token;
-		init_token(new_token);
-	}
-	else
-		new_token = list_start;
+	new_token = ft_calloc(1, sizeof(t_token));
+	// if (!new_token)
+	// error handling
+	current = list_start;
+	while (current->next)
+		current = current->next;
+	current->next = new_token;
+	init_token(new_token);
 	new_token->type = type;
 	new_token->str = str;
-	//new_token->quote_status = quote_status;
-	new_token->status = STATUS_SET;
+	return (new_token);
 }
 
-/* quote handling logic:
-*  step 1: 	quote syntax counter: counts if every opening quote has a
-*			dedicated closing quote of the same type. if not: display error
-			(do i actually need that step or could i include it in step2?)
-*  step 2:	in the tokenizer loop through the line and if " or ' is encountered,
-*			set the tokens the the specific quote_status until the quote is closed.
-+
-*			what about "'" '"' $bla '"' "'"
-*
-*/
-/* int	quote_handler(int quote_status, char c)
-{
-	if (quote_status == 0)
-	{
-		if (c == '\'')
-			return 1;
-		if (c == '\"')
-			return 2;
-	}
-	else if ((quote_status == 1 && c == '\'') || (quote_status == 2 && c == '\"'))
-			return 0;
-	return quote_status;
-} */
-
-/*
-2 modes: WORD mode just handles a normal word. VAR mode is executed if a $ is found and starts form i+1
-*/ 
-int	word_and_var_handler(int i, char *line, t_token *list_start, int *quote_status)
+int	word_and_var_handler(int i, char *line, t_token *list_start)
 {
 	int		word_start;
 	int		char_to_check;
@@ -85,17 +51,15 @@ int	word_and_var_handler(int i, char *line, t_token *list_start, int *quote_stat
 
 	while (TRUE)
 	{
-		*quote_status = quote_handler(*quote_status, line[char_to_check]);
-		if (*quote_status == DEFAULT_QUOTE && !is_part_of_word(line[char_to_check]))
+		if (!is_part_of_word(line[char_to_check]))
 			break;
 		char_to_check++;
 	}
 	char_to_check--;
-
 	word = ft_substr(line, word_start, char_to_check - word_start + 1);
 	// if (!word)
 	// error hanlding
-	tokenlist_add(list_start, WORD, word, *quote_status);
+	tokenlist_add(list_start, WORD, word);
 	printf("WORD ");
 	return (char_to_check);
 }
@@ -106,6 +70,7 @@ void	print_tokens(t_token *start)
 	int	i;
 
 	i = 0;
+	start = start->next;
 	while (start)
 	{
 		printf("Token %d: Type %d, ", ++i, start->type);
@@ -158,19 +123,16 @@ int	quote_sytanx_check(char *line)
    - REDIR_APPEND: >>
    - REDIR_OUT: >
    - WORD
-   - END
    additionally we have to save the state of the quotes (default, in single,
 	in double quotes)
    return: NULL on empty line or a pointer to the first element
    TODO: fix bug where it segfaults when < or > is in the end
 */
-
 t_token	*tokenizer(char *line)
 {
 	t_token	*list_start;
 	int		i;
-	int		quote_status;
-
+	
 	// TODO difference between these 2 cases
 	if (!line || ft_strncmp(line, "", 1) == 0)
 		return (NULL);
@@ -179,62 +141,48 @@ t_token	*tokenizer(char *line)
 		printf("quote syntax check failed\n");
 		return NULL;
 	}
-		
 	list_start = ft_calloc(1, sizeof(t_token));
 	// if (!list_start)
 	// error handling
 	init_token(list_start);
 	i = -1;
-	quote_status = DEFAULT_QUOTE;
-	//quote_status = DEFAULT;
-	// TODO we somehow need to store the information on quotes here.
-	// on each character that is either " or ' we have to save the
-	// info for all tokens regarding quote. additionally we have
-	// to check if the quotes are closed. otherwise, syntax error
-	// only after that is done we can think about variable expansion
-	//the problem atm is that i dont walk through every character,
-	//some are "skipped" (aka handled inside the while loop)
 	while (line[++i])
 	{
-		//if (is_quote(line[i]))
 		if (isspace(line[i]))
 			continue ;
-		quote_status = quote_handler(quote_status, line[i]);
-
 		if (line[i] == '|')
 		{
-			printf("PIPE ");
-			tokenlist_add(list_start, PIPE, NULL, quote_status);
+			//printf("PIPE ");
+			tokenlist_add(list_start, PIPE, NULL);
 			continue ;
 		}
 		if (line[i] == '<' && line[i + 1] == '<')
 		{
-			printf("HEREDOC ");
-			tokenlist_add(list_start, HEREDOC, NULL, quote_status);
+			//printf("HEREDOC ");
+			tokenlist_add(list_start, HEREDOC, NULL);
 			i++;
 			continue ;
 		}
 		if (line[i] == '<')
 		{
-			printf("REDIR_IN ");
-			tokenlist_add(list_start, REDIR_IN, NULL, quote_status);
+			//printf("REDIR_IN ");
+			tokenlist_add(list_start, REDIR_IN, NULL);
 			continue ;
 		}
 		if (line[i] == '>' && line[i + 1] == '>')
 		{
-			printf("REDIR_APPEND ");
-			tokenlist_add(list_start, REDIR_APPEND, NULL, quote_status);
+			//printf("REDIR_APPEND ");
+			tokenlist_add(list_start, REDIR_APPEND, NULL);
 			i++;
 			continue ;
 		}
 		if (line[i] == '>')
 		{
-			printf("REDIR_OUT ");
-			tokenlist_add(list_start, REDIR_OUT, NULL, quote_status);
+			//printf("REDIR_OUT ");
+			tokenlist_add(list_start, REDIR_OUT, NULL);
 			continue ;
 		}
-		// WORD
-		i = word_and_var_handler(i, line, list_start, &quote_status);
+		i = word_and_var_handler(i, line, list_start);
 	}
 	printf("\nBEFORE EXPANSION\n");
 	print_tokens(list_start);

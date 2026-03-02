@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 13:26:58 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 14:54:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,3 +111,6 @@ t_token				*tokenizer(char *line);
 //expansion
 void expansion (t_token *list, char **envp);
 int	quote_handler(int quote_status, char c);
+
+//debug
+void	print_tokens(t_token *start);

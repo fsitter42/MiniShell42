@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 13:26:44 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 14:54:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ t_token	*tokenizer(char *line)
 		// WORD
 		i = word_and_var_handler(i, line, list_start, &quote_status);
 	}
-	printf("\n");
+	printf("\nBEFORE EXPANSION\n");
 	print_tokens(list_start);
 	return (list_start);
 }

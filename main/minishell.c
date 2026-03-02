@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 12:54:35 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/02 14:55:07 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	handle_single_line(char *line, char **envp)
 	if (!token_list)
 		return ;
 	expansion (token_list, envp);
+	printf("\nAFTER EXPANSION\n");
+	print_tokens(token_list);
 	cmd_list = create_command_list(token_list);
 	cleanup_token_list(token_list);
 	// execute entry point with command_list

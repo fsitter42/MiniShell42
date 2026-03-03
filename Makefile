@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
+#    By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/02 20:48:09 by slambert         ###   ########.fr        #
+#    Updated: 2026/03/03 15:23:39 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ OBJS = ${SRC:.c=.o}
 CC = cc
 RM = rm -f
 #CFLAGS = -Wall -Wextra -Werror
-CFLAGS = -lreadline -g
+CFLAGS = -fPIE
 INCLUDE = -I .
 
 LIBFT_PATH = libft
@@ -33,7 +33,7 @@ LIBS = -L $(LIBFT_PATH) -lft
 	${CC} ${CFLAGS} ${INCLUDE} -c $< -o ${<:.c=.o}
 
 $(NAME): 	$(LIBFT) $(OBJS)
-			$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+			$(CC) $(CFLAGS) $(OBJS) $(LIBS) -lreadline -g -o $(NAME)
 
 #TODO stop bonus relinking
 #bonus:		$(LIBFT) $(BONUS_OBJS)

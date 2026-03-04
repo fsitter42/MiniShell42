@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/04 10:47:33 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/04 11:22:53 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,6 @@ void	init_cmd(t_cmd *cmd)
 	cmd->append = FALSE;
 }
 
-/* int	return_distance_to_next_pipe(t_token *token_list)
-{
-	int	i;
-
-	i = 0;
-	while (token_list && token_list->type != PIPE)
-	{
-		i++;
-		token_list = token_list->next;
-	}
-	return (i);
-} */
-
 void	shift_and_consume_token_list_by_x(t_token **token, int x)
 {
 	int	i;
@@ -88,6 +75,17 @@ int	is_token_type_redirection(t_token *token)
 		return (1);
 	return (0);
 }
+
+int	is_valid_redirection_target(t_token *redir_token)
+{
+	if (!redir_token || !redir_token->next)
+		return (0);
+	if (redir_token->next->type != WORD)
+		return (0);
+	if (!redir_token->next->str)
+		return (0);
+	return (1);
+}
 /*
 *	we can't directly free stuff here bc we have the cleanup_cmd_list
 *	(we would free twice if we did that)
@@ -95,6 +93,8 @@ int	is_token_type_redirection(t_token *token)
 */
 int	handle_redirection(t_token **token_list, t_cmd *cmd)
 {
+	if (!is_valid_redirection_target(*token_list))
+		return (1);
 	if ((*token_list)->type == REDIR_IN)
 	{
 		cmd->infile = ft_strdup((*token_list)->next->str);
@@ -118,7 +118,9 @@ int	handle_redirection(t_token **token_list, t_cmd *cmd)
 			return 1;
 		cmd->append = TRUE;
 	}
+	//TODO check if the next element is nothing stupid (e.g. '>')
 	shift_and_consume_token_list_by_x(token_list, 2);
+	return (0);
 }
 
 /*
@@ -155,7 +157,13 @@ int	count_size_for_args_array(t_token *token_list)
 			token_list = token_list->next;
 		else
 			size++;
-		token_list = token_list->next;
+		if (token_list)
+			token_list = token_list->next;
+		else
+		{
+			return 0;
+			//edge case for input ">" or "<"
+		}
 	}
 	printf("size for args array is %d\n", size);
 	return (size);
@@ -193,6 +201,8 @@ t_cmd	*create_single_cmd(t_token *token_list)
 		return NULL;
 	init_cmd(cmd);
 	size = count_size_for_args_array(token_list);
+	if (size == 0)
+		return NULL;
 	if (init_args_array(cmd, size) == 1)
 		return (free(cmd), NULL);
 	while (token_list && token_list->type != PIPE)
@@ -280,8 +290,8 @@ void	shift_token_list_to_next_pipe(t_token **token_list)
 
 /*
  * Step 1: go through the token list and count how many pipes there are.
- * Step 2: for each command (pipes
-	+ 1): call separate function create_single_cmd
+ * Step 2: for each command (pipes + 1): call separate function create_single_cmd
+ * returns NULL on error, frees all cmd stuff itself on error
  */
 t_cmd	*create_command_list(t_token *token_list)
 {

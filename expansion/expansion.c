@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/04 10:20:38 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/04 10:57:05 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char *extract_var_from_envp(char *var_name, char **envp)
 }
 
 //replaces a singular character with a string
+//mem safe on error
 char *replace_char_with_expandable(char *original, char char_to_expand, char *expandable)
 {
     char *temp;
@@ -59,6 +60,8 @@ char *replace_char_with_expandable(char *original, char char_to_expand, char *ex
     i_dst = 0;
     size = ft_strlen(original) - 1 + ft_strlen(expandable) + 1;
     temp = ft_calloc(size, sizeof(char));
+    if (!temp)
+        return NULL;
     while (original[i_src])
     {
         if (original[i_src] == char_to_expand) 
@@ -72,7 +75,7 @@ char *replace_char_with_expandable(char *original, char char_to_expand, char *ex
     }
     while (original[i_src])
         temp[i_dst++] = original[i_src++];
-    temp[i_dst] = '\0';
+    //temp[i_dst] = '\0';
     return temp;
 }
 
@@ -104,15 +107,11 @@ int expand_home_dir (t_token *list_elem, char **envp)
         return 1;
     temp = replace_char_with_expandable(list_elem->str, '~', home);
     if (!temp)
-    {
-        free(home);
-        return 1;
-    }
+        return (free(home), 1);
     free(home);
     free(list_elem->str);
     list_elem->str = temp;     
 }
-
 /*
 *  creates the string, contains of 3 parts prefix, expanded variable and suffix
 */

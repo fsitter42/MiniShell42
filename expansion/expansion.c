@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/04 09:58:37 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/04 10:20:38 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char *extract_var_from_envp(char *var_name, char **envp)
             return ft_substr(envp[i], len_var_name, len_total - len_var_name);
         }
     }
-    return ft_strdup("");
+    return NULL;
 }
 
 //replaces a singular character with a string
@@ -90,6 +90,9 @@ int	quote_handler(int quote_status, char c)
 	return quote_status;
 }
 
+/*
+*  memory safe on error
+*/
 int expand_home_dir (t_token *list_elem, char **envp)
 {
     char *home;
@@ -129,10 +132,11 @@ char *string_creation_helper(char *str, char *temp)
            (ft_isalnum(dollar_pos[1 + var_len]) || dollar_pos[1 + var_len] == '_'))
         var_len++;
     prefix = ft_substr(str, 0, prefix_len);
-    //if (!prefix)
-    //error handling
+    if (!prefix)
+        return NULL;
     suffix = dollar_pos + 1 + var_len; 
-    result = ft_strjoin(ft_strjoin(prefix, temp), suffix);  
+    result = ft_strjoin(ft_strjoin(prefix, temp), suffix);
+    //is this allowed bc if the inner strjoin fails, prefix is not immediately freed (the second strjoin is executed first)  
     free(prefix);
     return result;
 }
@@ -142,6 +146,8 @@ char *string_creation_helper(char *str, char *temp)
 //TODO: ev. ohne return sondern mit pointer und return wieviele chars, 
 //dann muss ich i nicht auf 0 setzen in der aufrufenden funktion?
 /*  replaces the first occurrence of $ with the value
+*   return NULL on error
+*   memory safe on error
 */
 char *replace_var_with_content(char *str, char **envp)
 {
@@ -166,25 +172,20 @@ char *replace_var_with_content(char *str, char **envp)
                 continue;
             var_name_without_istgleich = ft_substr(str, i + 1, var_len);
             if (!var_name_without_istgleich)
-                return (temp);
+                return (free(temp), NULL);
             var_name_with_istgleich = ft_strjoin(var_name_without_istgleich, "=");
             if (!var_name_with_istgleich)
-            {
-                free(var_name_without_istgleich);
-                return (temp);
-            }
+                return (free (temp), free(var_name_without_istgleich), NULL);
             printf("var_name is %s\n", var_name_with_istgleich);
-            //for variables in envp
             free(temp);
             temp = extract_var_from_envp(var_name_with_istgleich, envp);
             free(var_name_without_istgleich);
             free(var_name_with_istgleich);
+            if (!temp)
+                return (NULL);
             break;
         }
     }
-   // if (str[0] == '$')
-    //    return (temp);
-    //else
     return string_creation_helper(str, temp);
 }
 
@@ -208,9 +209,8 @@ int expand_variable (t_token *list_elem, char **envp)
             free(list_elem->str);
             expanded = replace_var_with_content(temp, envp);
             free(temp);
-            //ist_elem->str = expanded;
-            //if (!list_elem->status)
-            //error
+            if (!expanded)
+                return 1;
             list_elem->str = expanded;
             i = 0;
             continue;

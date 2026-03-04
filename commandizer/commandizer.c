@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast.c                                              :+:      :+:    :+:   */
+/*   commandizer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 20:36:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/03 12:53:09 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	init_cmd(t_cmd *cmd)
 	cmd->append = FALSE;
 }
 
-int	return_distance_to_next_pipe(t_token *token_list)
+/* int	return_distance_to_next_pipe(t_token *token_list)
 {
 	int	i;
 
@@ -65,7 +65,7 @@ int	return_distance_to_next_pipe(t_token *token_list)
 		token_list = token_list->next;
 	}
 	return (i);
-}
+} */
 
 void	shift_and_consume_token_list_by_x(t_token **token, int x)
 {

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 20:46:36 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/04 09:44:32 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_token	*tokenlist_add(t_token *list_start, int type, char *str)
 
 	new_token = ft_calloc(1, sizeof(t_token));
 	// if (!new_token)
-	// error handling
+	// error handling, free list and line
 	current = list_start;
 	while (current->next)
 		current = current->next;
@@ -57,8 +57,8 @@ int	word_and_var_handler(int i, char *line, t_token *list_start)
 	}
 	char_to_check--;
 	word = ft_substr(line, word_start, char_to_check - word_start + 1);
-	// if (!word)
-	// error hanlding
+	// if (!new_token)
+	// error handling, free list and line
 	tokenlist_add(list_start, WORD, word);
 	printf("WORD ");
 	return (char_to_check);
@@ -142,8 +142,11 @@ t_token	*tokenizer(char *line)
 		return NULL;
 	}
 	list_start = ft_calloc(1, sizeof(t_token));
-	// if (!list_start)
-	// error handling
+	if (!list_start)
+	{
+		free(line);
+		my_exit_function("malloc fail");
+	}
 	init_token(list_start);
 	i = -1;
 	while (line[++i])

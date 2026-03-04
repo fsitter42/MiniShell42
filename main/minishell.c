@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 20:36:45 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/04 09:27:23 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ void	handle_single_line(char *line, char **envp)
 	t_cmd	*cmd_list;
 
 	if (ft_strncmp(line, "exit", 4) == 0)
-		my_exit_function();
+		my_exit_function("exit was typed");
 	printf("'%s' is going to be tokenized\n", line);
 	token_list = tokenizer(line);
 	free(line);
 	if (!token_list)
-		return ;
+		my_exit_function("tokenizer returned NULL");
 	expansion (token_list, envp);
 	printf("\nAFTER EXPANSION\n");
 	print_tokens(token_list);
@@ -114,7 +114,7 @@ void	debug_mode(char *input, char **envp)
 	strs = NULL;
 	strs = ft_split(input, ';');
 	if (!strs)
-		my_exit_function();
+		my_exit_function("ft_split returned NULL");
 	i = -1;
 	while (strs[++i])
 		handle_single_line(strs[i], envp);

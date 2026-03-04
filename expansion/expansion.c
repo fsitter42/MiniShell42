@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 21:03:12 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/04 09:58:37 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,14 @@ char *replace_char_with_expandable(char *original, char char_to_expand, char *ex
     char *temp;
     int i_src;
     int i_dst;
+    int size;
     
     i_src = 0;
     i_dst = 0;
-    
-    temp = ft_calloc(ft_strlen(original) + ft_strlen(expandable) + 1, sizeof(char));
-    
-    while (original[i_src]) {
+    size = ft_strlen(original) - 1 + ft_strlen(expandable) + 1;
+    temp = ft_calloc(size, sizeof(char));
+    while (original[i_src])
+    {
         if (original[i_src] == char_to_expand) 
         {
             ft_strlcpy(&temp[i_dst], expandable, ft_strlen(expandable) + 1);
@@ -89,28 +90,30 @@ int	quote_handler(int quote_status, char c)
 	return quote_status;
 }
 
-void expand_home_dir (t_token *list_elem, char **envp)
+int expand_home_dir (t_token *list_elem, char **envp)
 {
     char *home;
     char *temp;
     
     home = NULL;
     home = extract_home_path_from_envp(envp);
-    //if (!home)
-    //ERROR
-    //printf("home is %s\n", home);
+    if (!home)
+        return 1;
     temp = replace_char_with_expandable(list_elem->str, '~', home);
-    //if (!temp)
-    //ERROR
+    if (!temp)
+    {
+        free(home);
+        return 1;
+    }
     free(home);
     free(list_elem->str);
     list_elem->str = temp;     
 }
 
 /*
-*  creates the string, contais of 3 parts prefix, expanded variable and suffix
+*  creates the string, contains of 3 parts prefix, expanded variable and suffix
 */
-char *return_helper(char *str, char *temp)
+char *string_creation_helper(char *str, char *temp)
 {
     char *dollar_pos; 
     int prefix_len;
@@ -136,6 +139,8 @@ char *return_helper(char *str, char *temp)
 
 //TODO: var_name ohne klammern am ende (???)
 //TODO: kann var_name_without_istgleich durch temp ersetzt werden?
+//TODO: ev. ohne return sondern mit pointer und return wieviele chars, 
+//dann muss ich i nicht auf 0 setzen in der aufrufenden funktion?
 /*  replaces the first occurrence of $ with the value
 */
 char *replace_var_with_content(char *str, char **envp)
@@ -177,16 +182,16 @@ char *replace_var_with_content(char *str, char **envp)
             break;
         }
     }
-    if (str[0] == '$')
-        return (temp);
-    else
-        return return_helper(str, temp);
+   // if (str[0] == '$')
+    //    return (temp);
+    //else
+    return string_creation_helper(str, temp);
 }
 
-//replaces one occurence of a variable with the dedicated value
+//replaces all occurences of a variable with the dedicated value
 //TODO: this can happen multiple times so we have to loop
 //e.g. $USER$USER
-void expand_variable (t_token *list_elem, char **envp)
+int expand_variable (t_token *list_elem, char **envp)
 {
     int i;
     char *temp;
@@ -198,18 +203,18 @@ void expand_variable (t_token *list_elem, char **envp)
         if (list_elem->str[i] == '$')
         {
             temp = ft_strdup(list_elem->str);
-            //ERROR
+            if (!temp)
+                return 1;
             free(list_elem->str);
-
             expanded = replace_var_with_content(temp, envp);
             free(temp);
             //ist_elem->str = expanded;
             //if (!list_elem->status)
             //error
+            list_elem->str = expanded;
             i = 0;
             continue;
         }
-        list_elem->str = expanded;
         i++;   
     }
 }
@@ -227,8 +232,10 @@ void handle_dollar_question(t_token *list_elem, char **envp)
 *  1. expand variables
 *  2. expand ~
 *  3. expand $?
+*
+*  returns 1 on error
 */
-void expand_single_word(t_token *list_elem, char **envp)
+int expand_single_word(t_token *list_elem, char **envp)
 {
     int i;
     int quote_status;
@@ -239,24 +246,36 @@ void expand_single_word(t_token *list_elem, char **envp)
     {
         quote_status = quote_handler(quote_status, list_elem->str[i]);
         if (list_elem->str[i] == '~' && i == 0 && quote_status == DEFAULT_QUOTE)
-            expand_home_dir(list_elem, envp);
+        {
+            if (expand_home_dir(list_elem, envp) == 1)
+                return 1;
+        }  
         else if (list_elem->str[i] == '$' && list_elem->str[i + 1] && list_elem->str[i + 1] == '?' && !list_elem->str[i + 2] && quote_status != IN_SINGLE_QUOTES)
+        {
             handle_dollar_question(list_elem, envp);
+            //do we malloc in handle_dollar_question? error mgmt
+        }
         else if (list_elem->str[i] == '$' && list_elem->str[i + 1] && quote_status != IN_SINGLE_QUOTES)
-            expand_variable(list_elem, envp);
-            
+        {
+            if (expand_variable(list_elem, envp) == 1)
+                return 1;
+        }
     }
 }
 
 /*
 *  loops though all words and executes the expand_word function
+*  returns 1 on error
 */
-void expansion (t_token *list, char **envp)
+int expansion (t_token *list, char **envp)
 {
     while (list)
     {
         if (list->type == WORD)
-            expand_single_word(list, envp);
+        {
+            if (expand_single_word(list, envp) == 1)
+                return 1;
+        }
         list = list->next;
     } 
 }

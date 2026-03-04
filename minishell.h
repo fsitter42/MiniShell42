@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/02 20:47:54 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/04 09:52:06 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ enum				e_bool
 t_cmd				*create_command_list(t_token *token_list);
 
 // cleanup
-void				my_exit_function(void);
+void 				my_exit_function(char *error_msg);
 void				cleanup_token_list(t_token *token_list);
 void				cleanup_command_list(t_cmd *cmd_list);
 // tokenizer
@@ -106,7 +106,7 @@ void				handle_single_line(char *line, char **envp);
 t_token				*tokenizer(char *line);
 
 // expansion
-void				expansion(t_token *list, char **envp);
+int					expansion(t_token *list, char **envp);
 int					quote_handler(int quote_status, char c);
 
 // debug

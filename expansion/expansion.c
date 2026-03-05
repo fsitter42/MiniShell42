@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/05 16:19:21 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/05 21:12:47 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ char	*replace_char_with_expandable(char *original, char char_to_expand,
 	}
 	while (original[i_src])
 		temp[i_dst++] = original[i_src++];
-	// temp[i_dst] = '\0';
 	return (temp);
 }
 
@@ -227,7 +226,7 @@ static int	append_env_value(char **out, char *word, int *i, char **envp)
 	free(value);
 	if (!*out)
 		return (1);
-	*i += 1 + var_len;
+	*i += 1 + var_len - 1;	//bc change in incrementation logic in expand_word_one_pass
 	return (0);
 }
 
@@ -236,7 +235,7 @@ static int	append_dollar_question(char **out, int *i)
 	*out = append_str(*out, "$?");
 	if (!*out)
 		return (1);
-	*i += 2;
+	*i += 1; //bc change in incrementation logic in expand_word_one_pass
 	return (0);
 }
 
@@ -250,14 +249,11 @@ char	*expand_word_one_pass(char *word, char **envp)
 	out = ft_strdup("");
 	if (!out)
 		return (NULL);
-	i = 0;
-	while (word[i])
+	i = -1;
+	while (word[++i])
 	{
 		if (consume_syntactic_quote(word[i], &quote_status))
-		{
-			i++;
 			continue ;
-		}
 		if (word[i] == '$' && quote_status != IN_SINGLE_QUOTES)
 		{
 			if (word[i + 1] == '?')
@@ -273,13 +269,72 @@ char	*expand_word_one_pass(char *word, char **envp)
 		out = append_char(out, word[i]);
 		if (!out)
 			return (NULL);
-		i++;
+		//i++;
 	}
 	return (out);
 }
 
+void add_to_list(t_token *list, t_token *new)
+{
+	while (list->next)
+		list = list->next;
+	list->next = new;
+}
+
 /*
- *  loops though all words and executes the expand_word function
+*  creates the new needed tokens
+*  TODO free the tokens that have been created
+*/
+int create_and_fill_new_tokens(char **split_result, t_token *list)
+{
+	int i;
+	t_token *new;
+	t_token *orig;
+	
+	orig = list->next;
+	list->next = NULL;
+	i = 1;
+	while (split_result[i])
+	{
+		new = ft_calloc(sizeof(t_token), 1);
+		if (!new)
+			return 1;
+		init_token(new);
+		new->type = WORD;
+		new->str = ft_strdup(split_result[i]);
+		if (!new->str)		//TODO better error mgmt
+			return (free(new), 1);
+		add_to_list(list, new);
+		i++;
+	}
+	new->next = orig;
+	return 0;
+}
+
+/*
+*  executes the word splitting in a singular word. a word is split if it has IFS characters 
+*  AND is not in double quotes
+*/
+int split_single_word(t_token *list)
+{
+	char **split_result;
+
+	if (list->str && ft_strchr(list->str, ' '))
+	{
+		split_result = ft_split(list->str, ' ');
+		if (!split_result)
+			return 1;
+		free(list->str);
+		list->str = split_result[0];
+		//restliche elemente in split_result (also ab 1) werden neue token
+		if (create_and_fill_new_tokens(split_result, list) == 1)
+			return 1;
+	}
+	return 0;
+}
+
+/*
+ *  loops trough all words and executes the expand_word function AND split_single_word
  *  returns 1 on error
  */
 int	expansion(t_token *list, char **envp)
@@ -290,6 +345,8 @@ int	expansion(t_token *list, char **envp)
 		{
 			if (expand_single_word(list, envp) == 1)
 				return (1);
+			if (split_single_word(list) == 1)
+				return 1;
 		}
 		list = list->next;
 	}

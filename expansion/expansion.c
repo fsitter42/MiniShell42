@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/04 10:57:05 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/05 13:36:02 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,31 +113,38 @@ int expand_home_dir (t_token *list_elem, char **envp)
     list_elem->str = temp;     
 }
 /*
-*  creates the string, contains of 3 parts prefix, expanded variable and suffix
+*  Builds a new word where the first expandable variable is replaced.
+*  Result format: [prefix before '$'] + [temp expanded value] + [suffix after var name].
+*  valid ariable name chars are [A-Z | a-z | 0-9 | _].
+*  RETURN: newly allocated string, or NULL on allocation failure.
 */
 char *string_creation_helper(char *str, char *temp)
 {
-    char *dollar_pos; 
-    int prefix_len;
-    int var_len;
-    char *prefix;
-    char *suffix;
-    char *result;
-    
+    char    *dollar_pos;
+    char    *result;
+    int     var_len;
+    int     i;
+    int     j;
+
     dollar_pos = ft_strchr(str, '$');
-    prefix_len = dollar_pos - str;
     var_len = 0;
-    while (dollar_pos[1 + var_len] && 
-           (ft_isalnum(dollar_pos[1 + var_len]) || dollar_pos[1 + var_len] == '_'))
+    while (dollar_pos[1 + var_len]
+        && (ft_isalnum(dollar_pos[1 + var_len]) || dollar_pos[1 + var_len] == '_'))
         var_len++;
-    prefix = ft_substr(str, 0, prefix_len);
-    if (!prefix)
-        return NULL;
-    suffix = dollar_pos + 1 + var_len; 
-    result = ft_strjoin(ft_strjoin(prefix, temp), suffix);
-    //is this allowed bc if the inner strjoin fails, prefix is not immediately freed (the second strjoin is executed first)  
-    free(prefix);
-    return result;
+    result = ft_calloc(ft_strlen(str) - 1 - var_len + ft_strlen(temp) + 1, sizeof(char));
+    if (!result)
+        return (free(temp), NULL);
+    i = 0;
+    j = 0;
+    while (&str[i] < dollar_pos)
+        result[j++] = str[i++];
+    i++;
+    ft_strlcpy(&result[j], temp, ft_strlen(temp) + 1);
+    j += ft_strlen(temp);
+    while (str[i + var_len])
+        result[j++] = str[i++ + var_len];
+    free(temp);
+    return (result);
 }
 
 //TODO: var_name ohne klammern am ende (???)
@@ -197,6 +204,7 @@ int expand_variable (t_token *list_elem, char **envp)
     char *temp;
     char *expanded;
 
+    //expanded = NULL;
     i = 0;
     while(list_elem->str && list_elem->str[i])
     {
@@ -206,6 +214,7 @@ int expand_variable (t_token *list_elem, char **envp)
             if (!temp)
                 return 1;
             free(list_elem->str);
+            //free (expanded);
             expanded = replace_var_with_content(temp, envp);
             free(temp);
             if (!expanded)
@@ -216,6 +225,7 @@ int expand_variable (t_token *list_elem, char **envp)
         }
         i++;   
     }
+    return 0;
 }
 
 void handle_dollar_question(t_token *list_elem, char **envp)

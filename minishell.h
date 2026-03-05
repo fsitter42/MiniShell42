@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/04 09:52:06 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/05 15:01:23 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,19 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 
+/* typedef struct s_expansion_output
+{
+	char *output;
+	char *mask; //stores the information if a quote came from user input or expansion
+	int len;
+}					t_expansion_output; */
+
 typedef struct s_token
 {
 	int type; // enum e_word_mode
 	char			*str;
 	int consume_status; // enum e_consume_status
+	//t_expansion_output *output;
 	struct s_token	*next;
 }					t_token;
 
@@ -107,6 +115,7 @@ t_token				*tokenizer(char *line);
 
 // expansion
 int					expansion(t_token *list, char **envp);
+char		*expand_word_one_pass(char *word, char **envp);
 int					quote_handler(int quote_status, char c);
 
 // debug

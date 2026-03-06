@@ -6,11 +6,17 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/04 09:26:00 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/06 12:36:31 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void free_token (t_token *token)
+{
+	free (token->str);
+	free (token);
+}
 
 void cleanup_token_list(t_token *token_list)
 {

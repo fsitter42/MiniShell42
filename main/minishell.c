@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/05 15:47:07 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/06 12:24:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,13 @@ void	handle_single_line(char *line, char **envp)
 		my_exit_function("expansion failed\n");	
 	}
 	printf("\nAFTER EXPANSION\n");
+	print_tokens(token_list);
+	if (word_split(token_list, envp) == 1)
+	{
+		cleanup_token_list(token_list);
+		my_exit_function("word split failed\n");	
+	}
+	printf("\nAFTER WORD SPLIT\n");
 	print_tokens(token_list);
 	cmd_list = create_command_list(token_list->next);
 	if (!cmd_list)

@@ -6,12 +6,13 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/05 21:12:47 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:06:13 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// getenv would be allowed
 char	*extract_home_path_from_envp(char **envp)
 {
 	char	*home;
@@ -27,6 +28,7 @@ char	*extract_home_path_from_envp(char **envp)
 	return (NULL);
 }
 
+// getenv would be allowed
 char	*extract_var_from_envp(char *var_name, char **envp)
 {
 	char	*value;
@@ -137,7 +139,7 @@ int	expand_single_word(t_token *list_elem, char **envp)
 	expanded = expand_word_one_pass(list_elem->str, envp);
 	if (!expanded)
 		return (1);
-    //HERE WE HAVE TO IMPLEMENT WORD SPLITTING
+	// HERE WE HAVE TO IMPLEMENT WORD SPLITTING
 	free(list_elem->str);
 	list_elem->str = expanded;
 	return (0);
@@ -167,9 +169,9 @@ static int	is_var_char(char c)
 }
 
 /*
-* removes a quote character when that quote changes the quote state 
-* (opens or closes the current mode)
-*/
+ * removes a quote character when that quote changes the quote state
+ * (opens or closes the current mode)
+ */
 static int	consume_syntactic_quote(char c, int *quote_status)
 {
 	int	next_quote_status;
@@ -226,7 +228,8 @@ static int	append_env_value(char **out, char *word, int *i, char **envp)
 	free(value);
 	if (!*out)
 		return (1);
-	*i += 1 + var_len - 1;	//bc change in incrementation logic in expand_word_one_pass
+	*i += 1 + var_len - 1;
+		// bc change in incrementation logic in expand_word_one_pass
 	return (0);
 }
 
@@ -235,7 +238,7 @@ static int	append_dollar_question(char **out, int *i)
 	*out = append_str(*out, "$?");
 	if (!*out)
 		return (1);
-	*i += 1; //bc change in incrementation logic in expand_word_one_pass
+	*i += 1; // bc change in incrementation logic in expand_word_one_pass
 	return (0);
 }
 
@@ -269,12 +272,12 @@ char	*expand_word_one_pass(char *word, char **envp)
 		out = append_char(out, word[i]);
 		if (!out)
 			return (NULL);
-		//i++;
+		// i++;
 	}
 	return (out);
 }
 
-void add_to_list(t_token *list, t_token *new)
+void	add_to_list(t_token *list, t_token *new)
 {
 	while (list->next)
 		list = list->next;
@@ -282,59 +285,143 @@ void add_to_list(t_token *list, t_token *new)
 }
 
 /*
-*  creates the new needed tokens
-*  TODO free the tokens that have been created
-*/
-int create_and_fill_new_tokens(char **split_result, t_token *list)
+ *  creates the new needed tokens
+ *  TODO free the tokens that have been created
+ */
+int	create_and_fill_new_tokens(char **split_result, t_token *list)
 {
-	int i;
-	t_token *new;
-	t_token *orig;
-	
+	int		i;
+	t_token	*new;
+	t_token	*orig;
+	t_token	*tail;
+
 	orig = list->next;
-	list->next = NULL;
+	tail = list;
 	i = 1;
 	while (split_result[i])
 	{
 		new = ft_calloc(sizeof(t_token), 1);
 		if (!new)
-			return 1;
+			return (1);
 		init_token(new);
 		new->type = WORD;
 		new->str = ft_strdup(split_result[i]);
-		if (!new->str)		//TODO better error mgmt
+		if (!new->str) // TODO better error mgmt
 			return (free(new), 1);
-		add_to_list(list, new);
+		tail->next = new;
+		tail = new;
 		i++;
 	}
-	new->next = orig;
-	return 0;
+	tail->next = orig;
+	return (0);
 }
 
-/*
-*  executes the word splitting in a singular word. a word is split if it has IFS characters 
-*  AND is not in double quotes
-*/
-int split_single_word(t_token *list)
+char *ft_strchr_array(char *s, char *arr)
 {
-	char **split_result;
+	int		i;
+	int		j;
+	char	c;
 
-	if (list->str && ft_strchr(list->str, ' '))
+	i = ft_strlen(s);
+	while (i >= 0)
 	{
-		split_result = ft_split(list->str, ' ');
-		if (!split_result)
-			return 1;
-		free(list->str);
-		list->str = split_result[0];
-		//restliche elemente in split_result (also ab 1) werden neue token
-		if (create_and_fill_new_tokens(split_result, list) == 1)
-			return 1;
+		j = -1;
+		while (arr[++j])
+		{
+			c = arr[j];
+			if ((unsigned char)s[i] == (unsigned char)c)
+				return ((char *)&s[i]);
+		}
+		i--;
 	}
-	return 0;
+	return (NULL);
+}
+
+static void	free_str_array(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+static int	is_ifs_char(char c, char *ifs)
+{
+	int	i;
+
+	i = 0;
+	while (ifs[i])
+	{
+		if (ifs[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 /*
- *  loops trough all words and executes the expand_word function AND split_single_word
+*  bc ft_split takes on character as a delimiter we somehow have to
+*  "fake" IFS so that each occurence is only 1 char
+*/ 
+static void	normalize_ifs_chars(char *s, char *ifs)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (is_ifs_char(s[i], ifs))
+			s[i] = ifs[0];
+		i++;
+	}
+}
+
+/*
+ *  executes the word splitting in a singular word. a word is split if it has IFS characters
+ *  AND is not in double quotes
+ */
+int	split_single_word(t_token *list, char *ifs)
+{
+	char	**split_result;
+	char	*normalized;
+	char	*new_first;
+	
+	if (list->str && ft_strchr_array(list->str, ifs))
+	{
+		normalized = ft_strdup(list->str);
+		if (!normalized)
+			return (1);
+		normalize_ifs_chars(normalized, ifs);
+		split_result = ft_split(normalized, ifs[0]);
+		free(normalized);
+		if (!split_result)
+			return (1);
+		if (split_result[0])
+			new_first = ft_strdup(split_result[0]);
+		else
+			new_first = ft_strdup("");
+		if (!new_first)
+			return (free_str_array(split_result), 1);
+		free(list->str);
+		list->str = new_first;
+		// restliche elemente in split_result (also ab 1) werden neue token
+		if (create_and_fill_new_tokens(split_result, list) == 1)
+			return (free_str_array(split_result), 1);
+		free_str_array(split_result);
+	}
+	return (0);
+}
+
+/*
+
+	*  loops trough all words and executes the expand_word function AND split_single_word
  *  returns 1 on error
  */
 int	expansion(t_token *list, char **envp)
@@ -345,9 +432,44 @@ int	expansion(t_token *list, char **envp)
 		{
 			if (expand_single_word(list, envp) == 1)
 				return (1);
-			if (split_single_word(list) == 1)
-				return 1;
 		}
+		list = list->next;
+	}
+	return (0);
+}
+
+int word_split(t_token *list)
+{
+	char	*ifs;
+	int		split;
+	t_token	*prev;
+	t_token	*next;
+
+	split = 1;
+	ifs = getenv("IFS");
+	if (!ifs)
+		ifs = " \n\t";
+	else if (ifs[0] == '\0')
+		split = 0;
+	prev = NULL;
+	while (list)
+	{
+		next = list->next;
+		if (list->type == WORD && list->str && list->str[0] == '\0')
+		{
+			//removes implcit null arguments (arguments that are empty - "")
+			if (prev)
+				prev->next = next;
+			free_token(list);
+			list = next;
+			continue ;
+		}
+		if (list->type == WORD && split)
+		{
+			if (split_single_word(list, ifs) == 1)
+				return (1);
+		}
+		prev = list;
 		list = list->next;
 	}
 	return (0);

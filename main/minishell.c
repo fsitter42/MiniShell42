@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/06 12:24:58 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:20:21 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	handle_single_line(char *line, char **envp)
 	t_token	*token_list;
 	t_cmd	*cmd_list;
 
-	if (ft_strncmp(line, "exit", 4) == 0)
+	if (ft_strncmp(line, "exit", 5) == 0)
 		my_exit_function("exit was typed");
 	printf("%s is going to be tokenized\n", line);
 	token_list = tokenizer(line);
@@ -76,7 +76,7 @@ void	handle_single_line(char *line, char **envp)
 	}
 	printf("\nAFTER EXPANSION\n");
 	print_tokens(token_list);
-	if (word_split(token_list, envp) == 1)
+	if (word_split(token_list) == 1)
 	{
 		cleanup_token_list(token_list);
 		my_exit_function("word split failed\n");	

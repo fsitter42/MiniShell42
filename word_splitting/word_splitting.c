@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 13:22:19 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/06 13:33:06 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:38:28 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,10 @@ int	split_single_word(t_token *list, char *ifs)
 	return (0);
 }
 
+/* 
+*   TODO give the command back to the user on empty input (now it is 
+*   removed so no cmd is created, commandizer fails)
+ */
 int word_split(t_token *list)
 {
 	char	*ifs;

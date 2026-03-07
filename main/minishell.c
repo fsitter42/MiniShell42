@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/06 13:20:21 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/07 12:00:40 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,16 @@
 	free(line);
 	pass this list to execute part of program (frido)
 */
+
+int is_token_list_empty(t_token* token_list)
+{
+	if (!token_list || !token_list->next)
+	{
+		printf("Token list is empty\n");
+			return 1;
+	}
+	return 0;
+}
 // this function does everything that is needed that ONE LINE is being executed correctly
 void	handle_single_line(char *line, char **envp)
 {
@@ -83,15 +93,20 @@ void	handle_single_line(char *line, char **envp)
 	}
 	printf("\nAFTER WORD SPLIT\n");
 	print_tokens(token_list);
-	cmd_list = create_command_list(token_list->next);
-	if (!cmd_list)
+	if (!is_token_list_empty(token_list))
 	{
+		cmd_list = create_command_list(token_list->next);
+		if (!cmd_list)
+		{
+			cleanup_token_list(token_list);
+			my_exit_function("commandizer failed\n");
+		}
 		cleanup_token_list(token_list);
-		my_exit_function("commandizer failed\n");
+		// execute entry point with command_list
+		cleanup_command_list(cmd_list);
 	}
-	cleanup_token_list(token_list);
-	// execute entry point with command_list
-	cleanup_command_list(cmd_list);
+	else
+		cleanup_token_list(token_list);
 }
 
 /* this is the default mode in where the users enters stuff
@@ -103,8 +118,14 @@ void	normal_mode(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("minishell$ ");
+		//printf("read line is %s\n", line);
 		if (!line)
-			return ;
+			break;
+		if (ft_strncmp(line, "", 1) == 0)
+		{
+			free(line);
+			continue;
+		}
 		if (*line)
 			add_history((const char *)line);
 		handle_single_line(line, envp);

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 13:22:19 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/06 13:38:28 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/07 12:10:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 *   TODO implement a "protection mask" during expansion in order to  keep the
 *   information whether a character should actually be considered for word
 *   splitting (that depends on if it is in quotes or not)
+*	TODO When non-whitespace IFS chars, adjacent delimiters can create
+*	empty fields, like ["a", "", "c"] for a::c.
+*	TODO Explicit  null  arguments  ("" or '') are retained and passed to 
+*	commands as empty strings.
+*
 */
 char *ft_strchr_array(char *s, char *arr)
 {

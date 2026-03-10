@@ -17,6 +17,9 @@
             //"args": ["-d", "< file1.txt 'VAR bar ''''' | wc -l > out.txt"],
             //"args": ["-d", "cat << LIMITER >> output.txt"],
             //"args": ["-d", "~def file1.txt '\\$VAR bar'| \\$CMD -l > out.txt"],
+           // "args": ["-d", "export yy=hallo du"],
+           //TODO look at quotes. the below example should have the token "yy=hallo du" and not 2 tokens ()
+             "args": ["-d", "export yy=\\\"hallo du\\\""],
             //"args": ["-d", "~beidl"],
             //"args": ["-d", "asdf\\$USER\\$USER"],
             //"args": ["-d", "asdf\\$USER\\$USER"],
@@ -39,7 +42,7 @@
             //"args": ["-d", "\"'\"'asdf'\"'\""],
             // "args": ["-d", "   \\$CMD"],
             // "args": ["-d", "   \\$CMf"],
-            "args": ["-d", ""],
+            //"args": ["-d", ""],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

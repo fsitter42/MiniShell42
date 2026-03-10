@@ -6,23 +6,24 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/04 09:44:32 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/10 14:40:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		is_part_of_word(char c);
+int	is_part_of_word(char c, int *quote_status);
 
 void	init_token(t_token *token)
 {
 	token->type = START;
 	token->str = NULL;
+	token->quote_status = DEFAULT_QUOTE;
 	token->consume_status = UNCONSUMED;
 	token->next = NULL;
 }
 
-t_token	*tokenlist_add(t_token *list_start, int type, char *str)
+t_token	*tokenlist_add(t_token *list_start, int type, char *str, int quote_status)
 {
 	t_token	*new_token;
 	t_token	*current;
@@ -37,29 +38,33 @@ t_token	*tokenlist_add(t_token *list_start, int type, char *str)
 	init_token(new_token);
 	new_token->type = type;
 	new_token->str = str;
+	new_token->quote_status = quote_status;
 	return (new_token);
 }
 
-int	word_and_var_handler(int i, char *line, t_token *list_start)
+int	word_and_var_handler(int i, char *line, t_token *list_start, int *quote_status)
 {
 	int		word_start;
 	int		char_to_check;
 	char	*word;
-
+	int quote_save;
+	
 	word_start = i;
 	char_to_check = word_start + 1;
 
 	while (TRUE)
 	{
-		if (!is_part_of_word(line[char_to_check]))
+		if (!is_part_of_word(line[char_to_check], quote_status))
 			break;
+		quote_save = *quote_status;
+		*quote_status = quote_handler(*quote_status, line[char_to_check]);
 		char_to_check++;
 	}
 	char_to_check--;
 	word = ft_substr(line, word_start, char_to_check - word_start + 1);
 	// if (!new_token)
 	// error handling, free list and line
-	tokenlist_add(list_start, WORD, word);
+	tokenlist_add(list_start, WORD, word, quote_save);
 	printf("WORD ");
 	return (char_to_check);
 }
@@ -75,7 +80,7 @@ void	print_tokens(t_token *start)
 	{
 		printf("Token %d: Type %d, ", ++i, start->type);
 		if (start->type == WORD || start->type == VAR)
-			printf(" value: %s", start->str);
+			printf(" value: %s, quote_status: %d", start->str, start->quote_status);
 		printf("\n");
 		start = start->next;
 	}
@@ -132,6 +137,7 @@ t_token	*tokenizer(char *line)
 {
 	t_token	*list_start;
 	int		i;
+	int quote_status;
 	
 	// TODO difference between these 2 cases
 	if (!line || ft_strncmp(line, "", 1) == 0)
@@ -148,53 +154,55 @@ t_token	*tokenizer(char *line)
 		my_exit_function("malloc fail");
 	}
 	init_token(list_start);
+	quote_status = DEFAULT_QUOTE;
 	i = -1;
 	while (line[++i])
 	{
+		quote_status = quote_handler(quote_status, line[i]);
 		if (isspace(line[i]))
 			continue ;
 		if (line[i] == '|')
 		{
 			//printf("PIPE ");
-			tokenlist_add(list_start, PIPE, NULL);
+			tokenlist_add(list_start, PIPE, NULL, DEFAULT_QUOTE);
 			continue ;
 		}
 		if (line[i] == '<' && line[i + 1] == '<')
 		{
 			//printf("HEREDOC ");
-			tokenlist_add(list_start, HEREDOC, NULL);
+			tokenlist_add(list_start, HEREDOC, NULL, DEFAULT_QUOTE);
 			i++;
 			continue ;
 		}
 		if (line[i] == '<')
 		{
 			//printf("REDIR_IN ");
-			tokenlist_add(list_start, REDIR_IN, NULL);
+			tokenlist_add(list_start, REDIR_IN, NULL, DEFAULT_QUOTE);
 			continue ;
 		}
 		if (line[i] == '>' && line[i + 1] == '>')
 		{
 			//printf("REDIR_APPEND ");
-			tokenlist_add(list_start, REDIR_APPEND, NULL);
+			tokenlist_add(list_start, REDIR_APPEND, NULL, DEFAULT_QUOTE);
 			i++;
 			continue ;
 		}
 		if (line[i] == '>')
 		{
 			//printf("REDIR_OUT ");
-			tokenlist_add(list_start, REDIR_OUT, NULL);
+			tokenlist_add(list_start, REDIR_OUT, NULL, DEFAULT_QUOTE);
 			continue ;
 		}
-		i = word_and_var_handler(i, line, list_start);
+		i = word_and_var_handler(i, line, list_start, &quote_status);
 	}
 	printf("\nBEFORE EXPANSION\n");
 	print_tokens(list_start);
 	return (list_start);
 }
 
-int	is_part_of_word(char c)
+int	is_part_of_word(char c, int *quote_status)
 {
-	if (c == '|' || c == '<' || c == '>' || isspace(c) || c == '\0')
+	if (*quote_status == DEFAULT_QUOTE && (c == '|' || c == '<' || c == '>' || isspace(c) || c == '\0'))
 		return (0);
 	return (1);
 }

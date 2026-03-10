@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/09 14:25:08 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/10 14:05:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_token
 {
 	int type; // enum e_word_mode
 	char			*str;
+	int quote_status;
 	int consume_status; // enum e_consume_status
 	//t_expansion_output *output;
 	struct s_token	*next;

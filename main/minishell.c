@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/07 12:00:40 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/10 15:48:03 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,13 @@
 /*
 	input parsing - Stefan
 	TODO:
-	- display a prompt
-	- (blinking cursor?)
+	- prompt blinking cursor?
 	- detection of syntax errors
 	- creation of pipes and correct redirection of pipe ends
-	- backslash / semicolons handling
-	- handle single/double quotes
-	- redirection input/output (</>)
-	- delimiter (<</>>):
-	- handle environment variables (how do we store them?)
+	- delimiter (<<):
 	execution - Frido
 	TODO:
+	- handle environment variables (how do we store them?)
 	- find the PATHS for the given commands (absolute/relative paths also have to work)
 	- do the actual execve
 	- echo with option -n
@@ -34,10 +30,8 @@
 	- export with no options
 	- unset with no options
 	- env with no options or arguments
-	- exit with no options
 	-
 	TODO - not defined:
-	- history
 	- handle exit status (stored in $?)
 	- ctrl-C displays a new prompt on a new line
 	- ctrl-D exits the shell

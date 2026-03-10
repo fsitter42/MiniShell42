@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/10 14:40:58 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/10 16:11:17 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_token	*tokenlist_add(t_token *list_start, int type, char *str, int quote_statu
 	return (new_token);
 }
 
+//TODO input ""< | > "6" is currently  incorrctly interpreted as one WORD it should be 2
 int	word_and_var_handler(int i, char *line, t_token *list_start, int *quote_status)
 {
 	int		word_start;
@@ -58,6 +59,9 @@ int	word_and_var_handler(int i, char *line, t_token *list_start, int *quote_stat
 			break;
 		quote_save = *quote_status;
 		*quote_status = quote_handler(*quote_status, line[char_to_check]);
+		
+		// if ((quote_save == IN_SINGLE_QUOTES || quote_save == IN_DOUBLE_QUOTES) && *quote_status != quote_save)
+		// 	break;
 		char_to_check++;
 	}
 	char_to_check--;
@@ -163,33 +167,33 @@ t_token	*tokenizer(char *line)
 			continue ;
 		if (line[i] == '|')
 		{
-			//printf("PIPE ");
+			printf("PIPE ");
 			tokenlist_add(list_start, PIPE, NULL, DEFAULT_QUOTE);
 			continue ;
 		}
 		if (line[i] == '<' && line[i + 1] == '<')
 		{
-			//printf("HEREDOC ");
+			printf("HEREDOC ");
 			tokenlist_add(list_start, HEREDOC, NULL, DEFAULT_QUOTE);
 			i++;
 			continue ;
 		}
 		if (line[i] == '<')
 		{
-			//printf("REDIR_IN ");
+			printf("REDIR_IN ");
 			tokenlist_add(list_start, REDIR_IN, NULL, DEFAULT_QUOTE);
 			continue ;
 		}
 		if (line[i] == '>' && line[i + 1] == '>')
 		{
-			//printf("REDIR_APPEND ");
+			printf("REDIR_APPEND ");
 			tokenlist_add(list_start, REDIR_APPEND, NULL, DEFAULT_QUOTE);
 			i++;
 			continue ;
 		}
 		if (line[i] == '>')
 		{
-			//printf("REDIR_OUT ");
+			printf("REDIR_OUT ");
 			tokenlist_add(list_start, REDIR_OUT, NULL, DEFAULT_QUOTE);
 			continue ;
 		}

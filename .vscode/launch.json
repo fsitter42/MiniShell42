@@ -1,3 +1,10 @@
+/*
+*   json format does some funky things by itself. for that reason we have to change the following symbols:
+*   " gets replaced by \\\"
+*   ' gets replaced by \'
+*   $ gets replaced by \\$
+*
+*/
 {
     "version": "0.2.0",
     "configurations": [
@@ -16,10 +23,11 @@
             //"args": ["-d", "ls -l | grep 'VAR' | wc -l > out.txt"],
             //"args": ["-d", "< file1.txt 'VAR bar ''''' | wc -l > out.txt"],
             //"args": ["-d", "cat << LIMITER >> output.txt"],
-            //"args": ["-d", "~def file1.txt '\\$VAR bar'| \\$CMD -l > out.txt"],
+            "args": ["-d", "~def file1.txt '\\$VAR bar'| \\$CMD -l > out.txt"],
+            //"args": ["-d", "~def file1.txt \\\"\\$VAR bar\\\"| \\$CMD -l > out.txt"],
            // "args": ["-d", "export yy=hallo du"],
            //TODO look at quotes. the below example should have the token "yy=hallo du" and not 2 tokens ()
-             "args": ["-d", "export yy=\\\"hallo du\\\""],
+            // "args": ["-d", "export yy=\\\"hallo du\\\""],
             //"args": ["-d", "~beidl"],
             //"args": ["-d", "asdf\\$USER\\$USER"],
             //"args": ["-d", "asdf\\$USER\\$USER"],
@@ -43,6 +51,7 @@
             // "args": ["-d", "   \\$CMD"],
             // "args": ["-d", "   \\$CMf"],
             //"args": ["-d", ""],
+            //"args": ["-d", "\\\"< | > \\\"6"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

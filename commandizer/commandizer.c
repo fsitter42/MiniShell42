@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/04 11:22:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/10 16:15:13 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,7 @@ void	print_args_array(char **args)
 	i = -1;
 	printf("args: ");
 	while (args[++i])
-		printf("%s ", args[i]);
+		printf("\"%s\" ", args[i]);
 }
 
 void	print_command_list(t_cmd *start)

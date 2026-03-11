@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 16:25:56 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 18:37:31 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int handle_delimiter(t_token *token_list)
 	}
 	return 0;
 }
+
 // this function does everything that is needed that ONE LINE is being executed correctly
 void	handle_single_line(char *line, char **envp)
 {
@@ -92,6 +93,12 @@ void	handle_single_line(char *line, char **envp)
 		my_exit_function("exit was typed");
 	printf("%s is going to be tokenized\n", line);
 	token_list = tokenizer(line);
+	if (!token_list)
+	{
+		//tokenizer failed, e.g. because syntax check failed
+		return ;
+		my_exit_function("tokenizer failed");
+	}
 	if (handle_delimiter(token_list) == 1)
 	{
 		// syntax error, token after delimiter is not a word

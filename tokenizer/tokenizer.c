@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 14:09:40 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 18:28:32 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_token	*tokenlist_add(t_token *list_start, int type, char *str, int quote_statu
 	return (new_token);
 }
 
-//TODO input ""< | > "6" is currently  incorrctly interpreted as one WORD it should be 2
+//TODO input ""< | > ""6" segfaults
 int	word_and_var_handler(int i, char *line, t_token *list_start, int *quote_status)
 {
 	int		word_start;

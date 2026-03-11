@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 17:08:36 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 18:33:42 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void cleanup_command_list(t_cmd *cmd_list)
 		}
 		free(cmd_list->args);
 		free (cmd_list->delimiter);
-		close (cmd_list->in_fd);
+		if (cmd_list->in_fd >= 0)
+			(cmd_list->in_fd);
 		free (cmd_list);
 		cmd_list = temp;
 	}

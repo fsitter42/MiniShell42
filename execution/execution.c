@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 17:13:54 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 18:40:18 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 *   TODO: correct bash-like behaviour if more than 1 heredoc per cmd
 *   TODO: weird errors on readline function, is this the thing that
 *   comes from readline itself?
+*   TODO when input is << d no heredocing is happening
+*   TODO the above case prints the heredoced stuff back to the user,
+*   i have to do that too (find out in what cases exactly)
 */
 void do_heredoc_stuff(t_cmd *cmd)
 {

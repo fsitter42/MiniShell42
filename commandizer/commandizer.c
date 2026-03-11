@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/10 16:15:13 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:01:53 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	init_cmd(t_cmd *cmd)
 	cmd->out_fd = -1;
 	cmd->next = NULL;
 	cmd->append = FALSE;
+	cmd->has_heredoc = FALSE;
+	cmd->delimiter = NULL;
 }
 
 void	shift_and_consume_token_list_by_x(t_token **token, int x)
@@ -76,16 +78,18 @@ int	is_token_type_redirection(t_token *token)
 	return (0);
 }
 
+//returns 0 is the redirection target is not valid
 int	is_valid_redirection_target(t_token *redir_token)
 {
 	if (!redir_token || !redir_token->next)
 		return (0);
-	if (redir_token->next->type != WORD)
+	if (redir_token->next->type != WORD && redir_token->next->type != WORD_AFTER_HEREDOC)
 		return (0);
 	if (!redir_token->next->str)
 		return (0);
 	return (1);
 }
+
 /*
 *	we can't directly free stuff here bc we have the cleanup_cmd_list
 *	(we would free twice if we did that)
@@ -109,7 +113,15 @@ int	handle_redirection(t_token **token_list, t_cmd *cmd)
 	}
 	else if ((*token_list)->type == HEREDOC)
 	{
-		// HEREDOC STUFF
+		cmd->has_heredoc = TRUE;
+		if ((*token_list)->next->type == WORD_AFTER_HEREDOC)
+		{
+			cmd->delimiter = ft_strdup((*token_list)->next->str);
+			// if (!cmd->delimiter)
+			// blablabla
+		}
+		else
+			return 1;
 	}
 	else if ((*token_list)->type == REDIR_APPEND)
 	{

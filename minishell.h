@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 12:30:54 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:26:16 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_cmd
 	int				in_fd;
 	char *outfile; // filled by bert
 	int				out_fd;
+	int has_heredoc;
+	char *delimiter;
 	int append; // filled by bert
 	struct s_cmd	*next;
 }					t_cmd;
@@ -123,6 +125,9 @@ int					expansion(t_token *list, char **envp);
 char				*expand_word_one_pass(char *word, char **envp);
 int					quote_handler(int quote_status, char c);
 int					word_split(t_token *list);
+
+//execution
+void				eggsecute (t_cmd *cmd_list);
 
 // debug
 void				print_tokens(t_token *start);

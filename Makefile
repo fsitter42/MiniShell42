@@ -6,14 +6,15 @@
 #    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/06 13:24:04 by slambert         ###   ########.fr        #
+#    Updated: 2026/03/11 16:26:58 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC =	main/minishell.c commandizer/commandizer.c cleanup/cleanup.c \
-		tokenizer/tokenizer.c expansion/expansion.c word_splitting/word_splitting.c
+		tokenizer/tokenizer.c expansion/expansion.c word_splitting/word_splitting.c \
+		execution/execution.c
 #BONUS_SRC = pipex_bonus.c pipex_utils1_bonus.c pipex_utils2_bonus.c \
 			pipex_utils3_bonus.c
 

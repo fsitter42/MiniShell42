@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 14:17:22 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:25:56 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ void	handle_single_line(char *line, char **envp)
 		}
 		cleanup_token_list(token_list);
 		// execute entry point with command_list
+		eggsecute(cmd_list);
 		cleanup_command_list(cmd_list);
 	}
 	else
@@ -200,3 +201,16 @@ int	main(int argc, char **argv, char **envp)
 		debug_mode(argv[2], envp);
 	}
 }
+
+/* size_t count_cmds(t_token *cmd_list)
+{
+	size_t size;
+
+	size = 0;
+	while (cmd_list)
+	{
+		size++;
+		cmd_list = cmd_list->next;
+	}
+	return size;
+} */

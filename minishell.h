@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/10 14:05:20 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 12:30:54 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ enum				e_token_types
 	REDIR_IN,     //<
 	REDIR_APPEND, //>>
 	REDIR_OUT,    //>
+	WORD_AFTER_HEREDOC	//this is the status for the delimiter, we have do store that
+	//info because we don't expand or split here
 };
 
 // is used in tokenizer, word_and_var_handler

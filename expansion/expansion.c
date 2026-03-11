@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/06 13:26:37 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 12:21:46 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int	expand_home_dir(t_token *list_elem, char **envp)
 	free(home);
 	free(list_elem->str);
 	list_elem->str = temp;
+	return 0;
 }
 
 /*

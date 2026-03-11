@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/10 16:11:17 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 14:09:40 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	print_tokens(t_token *start)
 	while (start)
 	{
 		printf("Token %d: Type %d, ", ++i, start->type);
-		if (start->type == WORD || start->type == VAR)
+		if (start->type == WORD || start->type == VAR || start->type == WORD_AFTER_HEREDOC)
 			printf(" value: %s, quote_status: %d", start->str, start->quote_status);
 		printf("\n");
 		start = start->next;
@@ -199,8 +199,8 @@ t_token	*tokenizer(char *line)
 		}
 		i = word_and_var_handler(i, line, list_start, &quote_status);
 	}
-	printf("\nBEFORE EXPANSION\n");
-	print_tokens(list_start);
+	// printf("\nBEFORE EXPANSION\n");
+	// print_tokens(list_start);
 	return (list_start);
 }
 

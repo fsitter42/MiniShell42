@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/10 15:48:03 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/11 14:17:22 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,28 @@ int is_token_list_empty(t_token* token_list)
 	}
 	return 0;
 }
+
+//changes the type of the WORD token after the HEREDOC to WORD_AFTER_HEREDOC
+//returns 1 on error and 0 on success
+int handle_delimiter(t_token *token_list)
+{
+	while (1)
+	{
+		while (token_list && token_list->type != HEREDOC)
+			token_list = token_list->next;
+		if (!token_list)
+			return 0;
+		//heredoc found
+		if (token_list->next && token_list->next->type == WORD)
+		{
+			token_list->next->type = WORD_AFTER_HEREDOC;
+			token_list = token_list->next;
+		}
+		else
+			token_list = token_list->next;
+	}
+	return 0;
+}
 // this function does everything that is needed that ONE LINE is being executed correctly
 void	handle_single_line(char *line, char **envp)
 {
@@ -70,6 +92,13 @@ void	handle_single_line(char *line, char **envp)
 		my_exit_function("exit was typed");
 	printf("%s is going to be tokenized\n", line);
 	token_list = tokenizer(line);
+	if (handle_delimiter(token_list) == 1)
+	{
+		// syntax error, token after delimiter is not a word
+		my_exit_function("token after << is not a WORD");
+	}
+	printf("\nBEFORE EXPANSION\n");
+	print_tokens(token_list);
 	free(line);
 	if (!token_list)
 		my_exit_function("tokenizer returned NULL");

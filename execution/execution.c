@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 18:40:18 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:46:30 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,13 @@ void do_heredoc_stuff(t_cmd *cmd)
         line = readline(">");
         //if (!line)
         //jkwerbvhjklwebvhjk
-        if (ft_strncmp(line, cmd->delimiter, ft_strlen(line)) == 0)
+        if (line[0] == '\0')
+        {
+            free (line);
+            write (fd, "\n", 1);
+            continue;
+        }
+        if (ft_strlen(line) == ft_strlen(cmd->delimiter) && ft_strncmp(line, cmd->delimiter, ft_strlen(cmd->delimiter)) == 0)
             break ;
         //write line to file
         write (fd, (const void *) line, ft_strlen(line));

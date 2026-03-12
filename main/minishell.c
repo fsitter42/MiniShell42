@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/12 11:22:58 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:34:07 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 	- prompt blinking cursor?
 	- detection of syntax errors
 	- creation of pipes and correct redirection of pipe ends
-	- delimiter (<<):
 	execution - Frido
 	TODO:
 	- handle environment variables (how do we store them?)
@@ -78,7 +77,8 @@ int handle_delimiter(t_token *token_list)
 			token_list = token_list->next;
 		}
 		else
-			token_list = token_list->next;
+			return 1;
+			//token_list = token_list->next;
 	}
 	return 0;
 }
@@ -96,15 +96,14 @@ void	handle_single_line(char *line, char **envp)
 	if (!token_list)
 	{
 		free (line);
-		cleanup_token_list(token_list);
 		my_exit_function("tokenizer failed");
 	}
 	if (handle_delimiter(token_list) == 1)
 	{
-		// syntax error, token after delimiter is not a word
-		my_exit_function("token after << is not a WORD");
+		cleanup_token_list(token_list);
+		my_exit_function("\ntoken after << is not a WORD");
 	}
-	printf("\nBEFORE EXPANSION\n");
+ 	printf("\nBEFORE EXPANSION\n");
 	print_tokens(token_list);
 	free(line);
 	if (!token_list)

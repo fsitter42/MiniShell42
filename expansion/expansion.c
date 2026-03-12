@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 12:21:46 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/12 15:44:38 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,35 +114,6 @@ int	expand_home_dir(t_token *list_elem, char **envp)
 	free(home);
 	free(list_elem->str);
 	list_elem->str = temp;
-	return 0;
-}
-
-/*
- *  RULES:
- *  - single quotes contain the original (literal) value
- *  - double quotes (or no quotes) allow the expansion of variables
- *
- *  1. expand variables
- *  2. expand ~
- *  3. expand $?
- *
- *  returns 1 on error
- */
-int	expand_single_word(t_token *list_elem, char **envp)
-{
-	char	*expanded;
-
-	if (list_elem->str && list_elem->str[0] == '~')
-	{
-		if (expand_home_dir(list_elem, envp) == 1)
-			return (1);
-	}
-	expanded = expand_word_one_pass(list_elem->str, envp);
-	if (!expanded)
-		return (1);
-	// HERE WE HAVE TO IMPLEMENT WORD SPLITTING
-	free(list_elem->str);
-	list_elem->str = expanded;
 	return (0);
 }
 
@@ -169,6 +140,80 @@ static int	is_var_char(char c)
 	return (ft_isalnum(c) || c == '_');
 }
 
+static int	get_var_len(char *word, int i)
+{
+	int	var_len;
+
+	var_len = 0;
+	while (word[i + 1 + var_len] && is_var_char(word[i + 1 + var_len]))
+		var_len++;
+	return (var_len);
+}
+
+static int	resolve_env_var_value(char *var_name, char **value, char **envp)
+{
+	char	*var_with_equal;
+
+	var_with_equal = ft_strjoin(var_name, "=");
+	free(var_name);
+	if (!var_with_equal)
+		return (1);
+	*value = extract_var_from_envp(var_with_equal, envp);
+	free(var_with_equal);
+	if (!*value)
+		*value = ft_strdup("");
+	if (!*value)
+		return (1);
+	return (0);
+}
+
+static int	append_env_var(char **out, char *word, int *i, char **envp)
+{
+	int		var_len;
+	char	*var_name;
+	char	*value;
+
+	var_len = get_var_len(word, *i);
+	if (var_len == 0)
+	{
+		*out = append_char(*out, '$');
+		if (!*out)
+			return (1);
+		(*i)++;
+		return (0);
+	}
+	var_name = ft_substr(word, *i + 1, var_len);
+	if (!var_name)
+		return (1);
+	if (resolve_env_var_value(var_name, &value, envp) == 1)
+		return (1);
+	*out = append_str(*out, value);
+	free(value);
+	if (!*out)
+		return (1);
+	*i += 1 + var_len - 1;
+	return (0);
+}
+
+/*
+ *	TODO
+ */
+static int	append_dollar_question(char **out, int *i)
+{
+	*out = append_str(*out, "$?");
+	if (!*out)
+		return (1);
+	*i += 1; // bc change in incrementation logic in expand_word_one_pass
+	return (0);
+}
+
+void	add_to_list(t_token *list, t_token *new)
+{
+	while (list->next)
+		list = list->next;
+	list->next = new;
+}
+
 /*
  * removes a quote character when that quote changes the quote state
  * (opens or closes the current mode)
@@ -186,17 +231,92 @@ static int	consume_syntactic_quote(char c, int *quote_status)
 	return (0);
 }
 
-static int	get_var_len(char *word, int i)
+/*
+ *	loops through the word, consumes syntactic quotes and expands
+ *	vars (either env vars or $?)
+ */
+char	*expand_word_one_pass(char *word, char **envp)
 {
-	int	var_len;
+	int		i;
+	int		quote_status;
+	char	*out;
 
-	var_len = 0;
-	while (word[i + 1 + var_len] && is_var_char(word[i + 1 + var_len]))
-		var_len++;
-	return (var_len);
+	quote_status = DEFAULT_QUOTE;
+	out = ft_strdup("");
+	if (!out)
+		return (NULL);
+	i = -1;
+	while (word[++i])
+	{
+		if (consume_syntactic_quote(word[i], &quote_status))
+			continue ;
+		if (word[i] == '$' && quote_status != IN_SINGLE_QUOTES)
+		{
+			if (word[i + 1] == '?')
+			{
+				if (append_dollar_question(&out, &i) == 1)
+					return (free(out), NULL);
+				continue ;
+			}
+			if (append_env_var(&out, word, &i, envp) == 1)
+				return (free(out), NULL);
+			continue ;
+		}
+		out = append_char(out, word[i]);
+		if (!out)
+			return (NULL);
+	}
+	return (out);
 }
 
-static int	append_env_value(char **out, char *word, int *i, char **envp)
+/*
+ *  RULES:
+ *  - single quotes contain the original (literal) value (no expansion)
+ *  - double quotes (or no quotes) allow the expansion of variables
+ *
+ * 	we have to epxand 3 things:
+ *  1. variables
+ *  2. ~
+ *  3. $? TODO
+ *
+ *  returns 1 on error
+ */
+int	expand_single_word(t_token *list_elem, char **envp)
+{
+	char	*expanded;
+
+	if (list_elem->str && list_elem->str[0] == '~')
+	{
+		if (expand_home_dir(list_elem, envp) == 1)
+			return (1);
+	}
+	expanded = expand_word_one_pass(list_elem->str, envp);
+	if (!expanded)
+		return (1);
+	free(list_elem->str);
+	list_elem->str = expanded;
+	return (0);
+}
+
+/*
+ *  loops trough all words and executes the expand_word function
+ *  returns 1 on error
+ */
+int	expansion(t_token *list, char **envp)
+{
+	while (list)
+	{
+		if (list->type == WORD)
+		{
+			if (expand_single_word(list, envp) == 1)
+				return (1);
+		}
+		list = list->next;
+	}
+	return (0);
+}
+
+/* static int	append_env_var(char **out, char *word, int *i, char **envp)
 {
 	int		var_len;
 	char	*var_name;
@@ -232,73 +352,4 @@ static int	append_env_value(char **out, char *word, int *i, char **envp)
 	*i += 1 + var_len - 1;
 		// bc change in incrementation logic in expand_word_one_pass
 	return (0);
-}
-
-static int	append_dollar_question(char **out, int *i)
-{
-	*out = append_str(*out, "$?");
-	if (!*out)
-		return (1);
-	*i += 1; // bc change in incrementation logic in expand_word_one_pass
-	return (0);
-}
-
-char	*expand_word_one_pass(char *word, char **envp)
-{
-	int		i;
-	int		quote_status;
-	char	*out;
-
-	quote_status = DEFAULT_QUOTE;
-	out = ft_strdup("");
-	if (!out)
-		return (NULL);
-	i = -1;
-	while (word[++i])
-	{
-		if (consume_syntactic_quote(word[i], &quote_status))
-			continue ;
-		if (word[i] == '$' && quote_status != IN_SINGLE_QUOTES)
-		{
-			if (word[i + 1] == '?')
-			{
-				if (append_dollar_question(&out, &i) == 1)
-					return (free(out), NULL);
-				continue ;
-			}
-			if (append_env_value(&out, word, &i, envp) == 1)
-				return (free(out), NULL);
-			continue ;
-		}
-		out = append_char(out, word[i]);
-		if (!out)
-			return (NULL);
-	}
-	return (out);
-}
-
-void	add_to_list(t_token *list, t_token *new)
-{
-	while (list->next)
-		list = list->next;
-	list->next = new;
-}
-
-/*
-
-	*  loops trough all words and executes the expand_word function AND split_single_word
- *  returns 1 on error
- */
-int	expansion(t_token *list, char **envp)
-{
-	while (list)
-	{
-		if (list->type == WORD)
-		{
-			if (expand_single_word(list, envp) == 1)
-				return (1);
-		}
-		list = list->next;
-	}
-	return (0);
-}
+} */

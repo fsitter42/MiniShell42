@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/12 12:34:07 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/12 14:50:08 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,7 @@ void	handle_single_line(char *line, char **envp)
  	printf("\nBEFORE EXPANSION\n");
 	print_tokens(token_list);
 	free(line);
-	if (!token_list)
-		my_exit_function("tokenizer returned NULL");
+	//refactoring bookmark
 	if (expansion (token_list, envp) == 1)
 	{
 		cleanup_token_list(token_list);

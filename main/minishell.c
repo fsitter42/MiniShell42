@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 18:37:31 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/12 11:22:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void	handle_single_line(char *line, char **envp)
 	token_list = tokenizer(line);
 	if (!token_list)
 	{
-		//tokenizer failed, e.g. because syntax check failed
-		return ;
+		free (line);
+		cleanup_token_list(token_list);
 		my_exit_function("tokenizer failed");
 	}
 	if (handle_delimiter(token_list) == 1)

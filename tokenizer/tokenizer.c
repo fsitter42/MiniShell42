@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/12 12:07:19 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:25:28 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,8 @@ int	quote_sytanx_check(char *line)
 	return (cur_status);
 }
 
-//for debugging
-void print_token_type(int type)
+// for debugging
+void	print_token_type(int type)
 {
 	if (type == PIPE)
 		printf("PIPE ");
@@ -142,47 +142,6 @@ void print_token_type(int type)
 	else if (type == REDIR_OUT)
 		printf("REDIR_OUT ");
 }
-
-/* int	everything_except_word_handler(t_token *list_start, char *line, int *i)
-{
-	if (line[*i] == '|')
-	{
-		printf("PIPE ");
-		if (!tokenlist_add(list_start, PIPE, NULL, DEFAULT_QUOTE))
-			return (1);
-		return 0;
-	}
-	if (line[*i] == '<' && line[*i + 1] == '<')
-	{
-		printf("HEREDOC ");
-		if (!tokenlist_add(list_start, HEREDOC, NULL, DEFAULT_QUOTE))
-			return (1);
-		(*i) += 1;
-		return 0;
-	}
-	if (line[*i] == '<')
-	{
-		printf("REDIR_IN ");
-		if (!tokenlist_add(list_start, REDIR_IN, NULL, DEFAULT_QUOTE))
-			return (1);
-		return 0;
-	}
-	if (line[*i] == '>' && line[*i + 1] == '>')
-	{
-		printf("REDIR_APPEND ");
-		if (!tokenlist_add(list_start, REDIR_APPEND, NULL, DEFAULT_QUOTE))
-			return (1);
-		(*i) += 1;
-		return 0;
-	}
-	if (line[*i] == '>')
-	{
-		printf("REDIR_OUT ");
-		if (!tokenlist_add(list_start, REDIR_OUT, NULL, DEFAULT_QUOTE))
-			return (1);
-	}
-	return 0;
-} */
 
 int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 {
@@ -207,23 +166,49 @@ int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 	print_token_type(type);
 	if (!tokenlist_add(list_start, type, NULL, DEFAULT_QUOTE))
 		return (1);
-	return 0;
+	return (0);
 }
 
-//returns 1 if not a word
-int not_a_word(char c1, char c2)
+// returns 1 if not a word
+int	not_a_word(char c1, char c2)
 {
 	if (c1 == '|')
-		return 1;
+		return (1);
 	if (c1 == '<' && c2 == '<')
-		return 1;
+		return (1);
 	if (c1 == '<')
-		return 1;
+		return (1);
 	if (c1 == '>' && c2 == '>')
-		return 1;
+		return (1);
 	if (c1 == '>')
-		return 1;
-	return 0;
+		return (1);
+	return (0);
+}
+
+// returns 1 on error
+int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
+{
+	int	i;
+
+	i = -1;
+	while (line[++i])
+	{
+		*quote_status = quote_handler(*quote_status, line[i]);
+		if (isspace(line[i]))
+			continue ;
+		if (not_a_word(line[i], line[i + 1]))
+		{
+			if (everything_except_word_handler(list_start, line, &i) == 1)
+				return (1);
+		}
+		else
+		{
+			i = word_and_var_handler(i, line, list_start, quote_status);
+			if (i == -1)
+				return (1);
+		}
+	}
+	return (0);
 }
 
 /* we want to structure the input and save it in a linked list. in order to know what elements
@@ -245,10 +230,9 @@ int not_a_word(char c1, char c2)
 t_token	*tokenizer(char *line)
 {
 	t_token	*list_start;
-	int		i;
 	int		quote_status;
 
-	// TODO difference between these 2 cases
+	// TODO difference between these 2 cases (!line is error, "" is a valid input)
 	if (!line || ft_strncmp(line, "", 1) == 0)
 		return (NULL);
 	if (quote_sytanx_check(line))
@@ -264,26 +248,12 @@ t_token	*tokenizer(char *line)
 	}
 	init_token(list_start);
 	quote_status = DEFAULT_QUOTE;
-	i = -1;
-	while (line[++i])
+	if (tokenizer_loop(line, list_start, &quote_status) == 1)
 	{
-		quote_status = quote_handler(quote_status, line[i]);
-		if (isspace(line[i]))
-			continue ;
-		if (not_a_word(line[i], line[i + 1]))
-		{
-			if (everything_except_word_handler(list_start, line, &i) == 1)
-				return (NULL);
-		}
-		else
-		{
-			i = word_and_var_handler(i, line, list_start, &quote_status);
-			if (i == -1)
-				return (NULL);
-		}
+		free(line);
+		cleanup_token_list(list_start);
+		my_exit_function("tokenizer loop fail");
 	}
-	// printf("\nBEFORE EXPANSION\n");
-	// print_tokens(list_start);
 	return (list_start);
 }
 
@@ -294,3 +264,46 @@ int	is_part_of_word(char c, int *quote_status)
 		return (0);
 	return (1);
 }
+
+/* int	everything_except_word_handler(t_token *list_start, char *line, int *i)
+{
+	int	type;
+
+	if (line[*i] == '|')
+	{
+		printf("PIPE ");
+		if (!tokenlist_add(list_start, PIPE, NULL, DEFAULT_QUOTE))
+			return (1);
+		return (0);
+	}
+	if (line[*i] == '<' && line[*i + 1] == '<')
+	{
+		printf("HEREDOC ");
+		if (!tokenlist_add(list_start, HEREDOC, NULL, DEFAULT_QUOTE))
+			return (1);
+		(*i) += 1;
+		return (0);
+	}
+	if (line[*i] == '<')
+	{
+		printf("REDIR_IN ");
+		if (!tokenlist_add(list_start, REDIR_IN, NULL, DEFAULT_QUOTE))
+			return (1);
+		return (0);
+	}
+	if (line[*i] == '>' && line[*i + 1] == '>')
+	{
+		printf("REDIR_APPEND ");
+		if (!tokenlist_add(list_start, REDIR_APPEND, NULL, DEFAULT_QUOTE))
+			return (1);
+		(*i) += 1;
+		return (0);
+	}
+	if (line[*i] == '>')
+	{
+		printf("REDIR_OUT ");
+		if (!tokenlist_add(list_start, REDIR_OUT, NULL, DEFAULT_QUOTE))
+			return (1);
+	}
+	return (0);
+} */

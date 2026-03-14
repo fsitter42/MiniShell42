@@ -225,7 +225,7 @@ t_cmd	*create_single_cmd(t_token *token_list)
 	init_cmd(cmd);
 	size = count_size_for_args_array(token_list);
 	if (size == 0)
-		return (NULL);
+		return (free(cmd), NULL);
 	if (init_args_array(cmd, size) == 1)
 		return (free(cmd), NULL);
 	while (token_list && token_list->type != PIPE)
@@ -233,11 +233,11 @@ t_cmd	*create_single_cmd(t_token *token_list)
 		if (is_token_type_redirection(token_list))
 		{
 			if (handle_redirection(&token_list, cmd) == 1)
-				return NULL;
+				return (cleanup_command_list(cmd), NULL);
 			continue ;
 		}
 		else if (handle_word(&token_list, cmd) == 1)
-			return NULL;
+			return (cleanup_command_list(cmd), NULL);
 	}
 	return (cmd);
 }

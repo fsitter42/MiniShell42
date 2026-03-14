@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/14 13:31:54 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 13:53:17 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int handle_delimiter(t_token *token_list)
 }
 
 // this function does everything that is needed that ONE LINE is being executed correctly
-void	handle_single_line(char *line, char **envp)
+int	handle_single_line(char *line, char **envp)
 {
 	t_token	*token_list;
 	t_cmd	*cmd_list;
@@ -94,30 +94,17 @@ void	handle_single_line(char *line, char **envp)
 	printf("%s is going to be tokenized\n", line);
 	token_list = tokenizer(line);
 	if (!token_list)
-	{
-		free (line);
-		my_exit_function("tokenizer failed");
-	}
+		return (1);
 	if (handle_delimiter(token_list) == 1)
-	{
-		cleanup_token_list(token_list);
-		my_exit_function("\ntoken after << is not a WORD");
-	}
+		return (cleanup_token_list(token_list), 1);
  	printf("\nBEFORE EXPANSION\n");
 	print_tokens(token_list);
-	free(line);
 	if (expansion (token_list, envp) == 1)
-	{
-		cleanup_token_list(token_list);
-		my_exit_function("expansion failed\n");	
-	}
+		return (cleanup_token_list(token_list), 1);
 	printf("\nAFTER EXPANSION\n");
 	print_tokens(token_list);
 	if (word_split(token_list) == 1)
-	{
-		cleanup_token_list(token_list);
-		my_exit_function("word split failed\n");	
-	}
+		return (cleanup_token_list(token_list), 1);
 	printf("\nAFTER WORD SPLIT\n");
 	print_tokens(token_list);
 	//refactoring bookmark
@@ -125,10 +112,7 @@ void	handle_single_line(char *line, char **envp)
 	{
 		cmd_list = create_command_list(token_list->next);
 		if (!cmd_list)
-		{
-			cleanup_token_list(token_list);
-			my_exit_function("commandizer failed\n");
-		}
+			return (cleanup_token_list(token_list), 1);
 		cleanup_token_list(token_list);
 		// execute entry point with command_list
 		eggsecute(cmd_list);
@@ -136,6 +120,7 @@ void	handle_single_line(char *line, char **envp)
 	}
 	else
 		cleanup_token_list(token_list);
+	return (0);
 }
 
 /* this is the default mode in where the users enters stuff
@@ -157,8 +142,20 @@ void	normal_mode(int argc, char **argv, char **envp)
 		}
 		if (*line)
 			add_history((const char *)line);
-		handle_single_line(line, envp);
+		if (handle_single_line(line, envp) == 1)
+			printf("handle_single_line failed\n");
+		free(line);
 	}
+}
+
+static void	cleanup_split_result(char **strs, int start)
+{
+	while (strs[start])
+	{
+		free(strs[start]);
+		start++;
+	}
+	free(strs);
 }
 
 /* the difference here is that we have one string that is given to
@@ -174,18 +171,21 @@ void	debug_mode(char *input, char **envp)
 	char	**strs;
 	int		i;
 
-	/*	strategy to free this on error: we have to get that pointer somehow in the
-		cleanup function, so i assume we have to store it somewhere in the linked list
-		BUT: this function is only for testing, so actually we don't have to care	*/
 	strs = NULL;
 	strs = ft_split(input, ';');
 	if (!strs)
 		my_exit_function("ft_split returned NULL");
 	i = -1;
 	while (strs[++i])
-		handle_single_line(strs[i], envp);
+	{
+		if (handle_single_line(strs[i], envp) == 1)
+		{
+			cleanup_split_result(strs, i);
+			my_exit_function("handle_single_line failed\n");
+		}
+		free(strs[i]);
+	}
 	free(strs);
-		// this is memory safe because the actual lines are freed in handle_single_line
 }
 
 /* we can start minishell in normal (user input) mode (argc = 1) or in

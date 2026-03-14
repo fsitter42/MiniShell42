@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/12 12:25:28 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 14:01:52 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,8 @@ void	print_token_type(int type)
 
 int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 {
-	int type;
-	
+	int	type;
+
 	if (line[*i] == '|')
 		type = PIPE;
 	else if (line[*i] == '<' && line[*i + 1] == '<')
@@ -232,7 +232,8 @@ t_token	*tokenizer(char *line)
 	t_token	*list_start;
 	int		quote_status;
 
-	// TODO difference between these 2 cases (!line is error, "" is a valid input)
+	// TODO difference between these 2 cases (!line is error,
+	//"" is a valid input)
 	if (!line || ft_strncmp(line, "", 1) == 0)
 		return (NULL);
 	if (quote_sytanx_check(line))
@@ -242,17 +243,13 @@ t_token	*tokenizer(char *line)
 	}
 	list_start = ft_calloc(1, sizeof(t_token));
 	if (!list_start)
-	{
-		free(line);
-		my_exit_function("malloc fail");
-	}
+		return (NULL);
 	init_token(list_start);
 	quote_status = DEFAULT_QUOTE;
 	if (tokenizer_loop(line, list_start, &quote_status) == 1)
 	{
-		free(line);
 		cleanup_token_list(list_start);
-		my_exit_function("tokenizer loop fail");
+		return (NULL);
 	}
 	return (list_start);
 }

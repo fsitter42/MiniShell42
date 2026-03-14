@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/14 09:57:01 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 10:46:00 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ void	handle_single_line(char *line, char **envp)
  	printf("\nBEFORE EXPANSION\n");
 	print_tokens(token_list);
 	free(line);
-	//refactoring bookmark
 	if (expansion (token_list, envp) == 1)
 	{
 		cleanup_token_list(token_list);
@@ -114,6 +113,7 @@ void	handle_single_line(char *line, char **envp)
 	}
 	printf("\nAFTER EXPANSION\n");
 	print_tokens(token_list);
+	//refactoring bookmark
 	if (word_split(token_list) == 1)
 	{
 		cleanup_token_list(token_list);

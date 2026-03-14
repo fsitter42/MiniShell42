@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/14 10:44:12 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 11:10:42 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,12 @@ char	*extract_home_path_from_envp(char **envp)
  */
 char	*extract_var_from_envp(char *var_name)
 {
-	return (ft_strdup(getenv(var_name)));
+	char *ret;
+
+	ret = getenv(var_name);
+	if (!ret)
+		return (ft_strdup(""));
+	return (ft_strdup(ret));
 }
 
 // replaces a singular character with a string

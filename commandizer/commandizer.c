@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 16:01:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 12:15:21 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,13 @@ int	is_token_type_redirection(t_token *token)
 	return (0);
 }
 
-//returns 0 is the redirection target is not valid
+// returns 0 is the redirection target is not valid
 int	is_valid_redirection_target(t_token *redir_token)
 {
 	if (!redir_token || !redir_token->next)
 		return (0);
-	if (redir_token->next->type != WORD && redir_token->next->type != WORD_AFTER_HEREDOC)
+	if (redir_token->next->type != WORD
+		&& redir_token->next->type != WORD_AFTER_HEREDOC)
 		return (0);
 	if (!redir_token->next->str)
 		return (0);
@@ -91,10 +92,27 @@ int	is_valid_redirection_target(t_token *redir_token)
 }
 
 /*
-*	we can't directly free stuff here bc we have the cleanup_cmd_list
-*	(we would free twice if we did that)
-*	should be mem safe on error
-*/
+ *	TODO differentiate between the 2 cases where 1 is returned
+ */
+int	heredoc_handler(t_cmd *cmd, t_token *token_list)
+{
+	cmd->has_heredoc = TRUE;
+	if (token_list->next->type == WORD_AFTER_HEREDOC)
+	{
+		cmd->delimiter = ft_strdup(token_list->next->str);
+		if (!cmd->delimiter)
+			return (1);
+	}
+	else
+		return (1);
+	return (0);
+}
+
+/*
+ *	we can't directly free stuff here bc we have the cleanup_cmd_list
+ *	(we would free twice if we did that)
+ *	should be mem safe on error
+ */
 int	handle_redirection(t_token **token_list, t_cmd *cmd)
 {
 	if (!is_valid_redirection_target(*token_list))
@@ -103,51 +121,41 @@ int	handle_redirection(t_token **token_list, t_cmd *cmd)
 	{
 		cmd->infile = ft_strdup((*token_list)->next->str);
 		if (!cmd->infile)
-			return 1;
+			return (1);
 	}
 	else if ((*token_list)->type == REDIR_OUT)
 	{
 		cmd->outfile = ft_strdup((*token_list)->next->str);
 		if (!cmd->outfile)
-			return 1;
+			return (1);
 	}
 	else if ((*token_list)->type == HEREDOC)
-	{
-		cmd->has_heredoc = TRUE;
-		if ((*token_list)->next->type == WORD_AFTER_HEREDOC)
+		if (heredoc_handler(cmd, *token_list) == 1)
+			return (1);
+		else if ((*token_list)->type == REDIR_APPEND)
 		{
-			cmd->delimiter = ft_strdup((*token_list)->next->str);
-			// if (!cmd->delimiter)
-			// blablabla
+			cmd->outfile = ft_strdup((*token_list)->next->str);
+			if (!cmd->outfile)
+				return (1);
+			cmd->append = TRUE;
 		}
-		else
-			return 1;
-	}
-	else if ((*token_list)->type == REDIR_APPEND)
-	{
-		cmd->outfile = ft_strdup((*token_list)->next->str);
-		if (!cmd->outfile)
-			return 1;
-		cmd->append = TRUE;
-	}
-	//TODO check if the next element is nothing stupid (e.g. '>')
-	shift_and_consume_token_list_by_x(token_list, 2);
-	return (0);
+	// TODO check if the next element is nothing stupid (e.g. '>')
+	return (shift_and_consume_token_list_by_x(token_list, 2), 0);
 }
 
 /*
-*	returns 1 on error
-*/
+ *	returns 1 on error
+ */
 int	handle_word(t_token **token_list, t_cmd *cmd)
 {
-	int	i;
-
+	int i;
+	
 	i = 0;
 	if (cmd->cmd == NULL)
 	{
 		cmd->cmd = ft_strdup((*token_list)->str);
 		if (!cmd->cmd)
-			return 1;
+			return (1);
 	}
 	while (cmd->args[i])
 		i++;
@@ -173,8 +181,8 @@ int	count_size_for_args_array(t_token *token_list)
 			token_list = token_list->next;
 		else
 		{
-			return 0;
-			//edge case for input ">" or "<"
+			return (0);
+			// edge case for input ">" or "<"
 		}
 	}
 	printf("size for args array is %d\n", size);
@@ -210,11 +218,11 @@ t_cmd	*create_single_cmd(t_token *token_list)
 	printf("trying to create a cmd\n");
 	cmd = ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
-		return NULL;
+		return (NULL);
 	init_cmd(cmd);
 	size = count_size_for_args_array(token_list);
 	if (size == 0)
-		return NULL;
+		return (NULL);
 	if (init_args_array(cmd, size) == 1)
 		return (free(cmd), NULL);
 	while (token_list && token_list->type != PIPE)
@@ -222,7 +230,7 @@ t_cmd	*create_single_cmd(t_token *token_list)
 		if (is_token_type_redirection(token_list))
 		{
 			if (handle_redirection(&token_list, cmd) == 1)
-				return NULL;;
+				return NULL;
 			continue ;
 		}
 		else if (handle_word(&token_list, cmd) == 1)
@@ -302,14 +310,14 @@ void	shift_token_list_to_next_pipe(t_token **token_list)
 
 /*
  * Step 1: go through the token list and count how many pipes there are.
- * Step 2: for each command (pipes + 1): call separate function create_single_cmd
+ * Step 2: for each command (pipes
+	+ 1): call separate function create_single_cmd
  * returns NULL on error, frees all cmd stuff itself on error
  */
 t_cmd	*create_command_list(t_token *token_list)
 {
 	int		pipes_count;
 	int		i;
-	int		dist_to_next_pipe;
 	t_cmd	*cmd_list;
 	t_cmd	*cmd;
 
@@ -327,3 +335,45 @@ t_cmd	*create_command_list(t_token *token_list)
 	print_command_list(cmd_list);
 	return (cmd_list);
 }
+
+/* int	handle_redirection(t_token **token_list, t_cmd *cmd)
+{
+	int	i;
+
+	if (!is_valid_redirection_target(*token_list))
+		return (1);
+	if ((*token_list)->type == REDIR_IN)
+	{
+		cmd->infile = ft_strdup((*token_list)->next->str);
+		if (!cmd->infile)
+			return (1);
+	}
+	else if ((*token_list)->type == REDIR_OUT)
+	{
+		cmd->outfile = ft_strdup((*token_list)->next->str);
+		if (!cmd->outfile)
+			return (1);
+	}
+	else if ((*token_list)->type == HEREDOC)
+	{
+		cmd->has_heredoc = TRUE;
+		if ((*token_list)->next->type == WORD_AFTER_HEREDOC)
+		{
+			cmd->delimiter = ft_strdup((*token_list)->next->str);
+			if (!cmd->delimiter)
+				return (1);
+		}
+		else
+			return (1);
+	}
+	else if ((*token_list)->type == REDIR_APPEND)
+	{
+		cmd->outfile = ft_strdup((*token_list)->next->str);
+		if (!cmd->outfile)
+			return (1);
+		cmd->append = TRUE;
+	}
+	//TODO check if the next element is nothing stupid (e.g. '>')
+	shift_and_consume_token_list_by_x(token_list, 2);
+	return (0);
+} */

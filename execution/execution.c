@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/12 12:52:22 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 13:05:52 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,15 @@ void do_heredoc_stuff(t_cmd *cmd)
     {
         //hvkgehjkvggblwr
     }
+}
+
+/*
+ *  TODO 
+ *  can only be called AFTER execution
+ */ 
+void remove_heredoc_file()
+{
+
 }
 
 void eggsecute (t_cmd *cmd_list)

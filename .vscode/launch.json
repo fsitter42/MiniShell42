@@ -49,7 +49,7 @@
             //"args": ["-d", "\"'asdf'\""],
             //"args": ["-d", "'\"'asdf'\"'"],
             //"args": ["-d", "\"'\"'asdf'\"'\""],
-             "args": ["-d", "   \\$CMD1"],
+            //"args": ["-d", "   \\$CMD1"],
             // "args": ["-d", "   \\$CMf"],
             //"args": ["-d", ""],
             //"args": ["-d", "\\\"< | > \\\"6"],
@@ -57,6 +57,8 @@
             //"args": ["-d", "ls"],
             //"args": ["-d", "\\\"\\\"< | > \\\"\\\"6\\\""],
             //"args": ["-d", "<< <"],
+            "args": ["-d", "< infile.txt cat -e '\\$USER' \\\"\\$USER\\\" \\$CMD1 | grep -E 'aa|bb' | wc -l > text.txt >> asdf/out.txt"],
+            //< infile.txt cat -e '$USER' "$USER" $CMD1 | grep -E 'aa|bb' | wc -l > text.txt >> asdf/out.txt
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

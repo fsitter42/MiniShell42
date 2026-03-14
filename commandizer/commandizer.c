@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/14 12:15:21 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 13:39:31 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int	heredoc_handler(t_cmd *cmd, t_token *token_list)
  *	we can't directly free stuff here bc we have the cleanup_cmd_list
  *	(we would free twice if we did that)
  *	should be mem safe on error
+ *	TODO if there are multiple redirections in a cmd (eg. cat > out >> out2)
+ *	the last one is the actual interpreted correct one
  */
 int	handle_redirection(t_token **token_list, t_cmd *cmd)
 {
@@ -209,6 +211,7 @@ int	init_args_array(t_cmd *cmd, int size)
  *  the token after that is the cmd itself and all other tokens define args.
  *  if there is a REDIR_OUT encountered, the next token defines the outfile
  *  returns NULL on error
+ *	TODO not yet memory safe on error (free partially built cmd)
  */
 t_cmd	*create_single_cmd(t_token *token_list)
 {

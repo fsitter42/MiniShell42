@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/14 11:10:42 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 13:35:02 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,9 +173,10 @@ static int	append_env_var(char **out, char *word, int *i)
 	if (!var_name)
 		return (1);
 	if (resolve_env_var_value(var_name, &value) == 1)
-		return (1);
+		return (free(var_name), 1);
 	*out = append_str(*out, value);
 	free(value);
+	free(var_name);
 	if (!*out)
 		return (1);
 	*i += 1 + var_name_len - 1;

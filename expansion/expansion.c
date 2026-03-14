@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/12 15:44:38 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 10:44:12 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,14 @@ char	*extract_home_path_from_envp(char **envp)
 	return (NULL);
 }
 
-// getenv would be allowed
-char	*extract_var_from_envp(char *var_name, char **envp)
+/*
+ *	possible TODO: don't return malloced string then we don't have to free
+ *	in resolve_env_var
+ *
+ */
+char	*extract_var_from_envp(char *var_name)
 {
-	char	*value;
-	int		i;
-	int		len_var_name;
-	int		len_total;
-
-	i = -1;
-	len_var_name = ft_strlen(var_name);
-	while (envp[++i])
-	{
-		if (ft_strncmp(envp[i], var_name, len_var_name) == 0)
-		{
-			len_total = ft_strlen(envp[i]);
-			return (ft_substr(envp[i], len_var_name, len_total - len_var_name));
-		}
-	}
-	return (NULL);
+	return (ft_strdup(getenv(var_name)));
 }
 
 // replaces a singular character with a string
@@ -98,6 +87,7 @@ int	quote_handler(int quote_status, char c)
 
 /*
  *  memory safe on error
+ *	TODO change to getenv
  */
 int	expand_home_dir(t_token *list_elem, char **envp)
 {
@@ -140,41 +130,33 @@ static int	is_var_char(char c)
 	return (ft_isalnum(c) || c == '_');
 }
 
-static int	get_var_len(char *word, int i)
+static int	get_var_name_len(char *word, int i)
 {
-	int	var_len;
+	int	var_name_len;
 
-	var_len = 0;
-	while (word[i + 1 + var_len] && is_var_char(word[i + 1 + var_len]))
-		var_len++;
-	return (var_len);
+	var_name_len = 0;
+	while (word[i + 1 + var_name_len] && is_var_char(word[i + 1
+			+ var_name_len]))
+		var_name_len++;
+	return (var_name_len);
 }
 
-static int	resolve_env_var_value(char *var_name, char **value, char **envp)
+static int	resolve_env_var_value(char *var_name, char **value)
 {
-	char	*var_with_equal;
-
-	var_with_equal = ft_strjoin(var_name, "=");
-	free(var_name);
-	if (!var_with_equal)
-		return (1);
-	*value = extract_var_from_envp(var_with_equal, envp);
-	free(var_with_equal);
-	if (!*value)
-		*value = ft_strdup("");
+	*value = extract_var_from_envp(var_name);
 	if (!*value)
 		return (1);
 	return (0);
 }
 
-static int	append_env_var(char **out, char *word, int *i, char **envp)
+static int	append_env_var(char **out, char *word, int *i)
 {
-	int		var_len;
+	int		var_name_len;
 	char	*var_name;
 	char	*value;
 
-	var_len = get_var_len(word, *i);
-	if (var_len == 0)
+	var_name_len = get_var_name_len(word, *i);
+	if (var_name_len == 0)
 	{
 		*out = append_char(*out, '$');
 		if (!*out)
@@ -182,16 +164,16 @@ static int	append_env_var(char **out, char *word, int *i, char **envp)
 		(*i)++;
 		return (0);
 	}
-	var_name = ft_substr(word, *i + 1, var_len);
+	var_name = ft_substr(word, *i + 1, var_name_len);
 	if (!var_name)
 		return (1);
-	if (resolve_env_var_value(var_name, &value, envp) == 1)
+	if (resolve_env_var_value(var_name, &value) == 1)
 		return (1);
 	*out = append_str(*out, value);
 	free(value);
 	if (!*out)
 		return (1);
-	*i += 1 + var_len - 1;
+	*i += 1 + var_name_len - 1;
 	return (0);
 }
 
@@ -217,6 +199,7 @@ void	add_to_list(t_token *list, t_token *new)
 /*
  * removes a quote character when that quote changes the quote state
  * (opens or closes the current mode)
+ * returns 1 if a quote has been consumed
  */
 static int	consume_syntactic_quote(char c, int *quote_status)
 {
@@ -231,11 +214,28 @@ static int	consume_syntactic_quote(char c, int *quote_status)
 	return (0);
 }
 
+static int	append_expanded_char(char **out, char *word, int *i,
+		int *quote_status)
+{
+	if (consume_syntactic_quote(word[*i], quote_status) == 1)
+		return (0);
+	if (word[*i] == '$' && *quote_status != IN_SINGLE_QUOTES)
+	{
+		if (word[*i + 1] == '?')
+			return (append_dollar_question(out, i));
+		return (append_env_var(out, word, i));
+	}
+	*out = append_char(*out, word[*i]);
+	if (!*out)
+		return (1);
+	return (0);
+}
+
 /*
  *	loops through the word, consumes syntactic quotes and expands
  *	vars (either env vars or $?)
  */
-char	*expand_word_one_pass(char *word, char **envp)
+char	*expand_word_one_pass(char *word)
 {
 	int		i;
 	int		quote_status;
@@ -248,23 +248,8 @@ char	*expand_word_one_pass(char *word, char **envp)
 	i = -1;
 	while (word[++i])
 	{
-		if (consume_syntactic_quote(word[i], &quote_status))
-			continue ;
-		if (word[i] == '$' && quote_status != IN_SINGLE_QUOTES)
-		{
-			if (word[i + 1] == '?')
-			{
-				if (append_dollar_question(&out, &i) == 1)
-					return (free(out), NULL);
-				continue ;
-			}
-			if (append_env_var(&out, word, &i, envp) == 1)
-				return (free(out), NULL);
-			continue ;
-		}
-		out = append_char(out, word[i]);
-		if (!out)
-			return (NULL);
+		if (append_expanded_char(&out, word, &i, &quote_status) == 1)
+			return (free(out), NULL);
 	}
 	return (out);
 }
@@ -274,7 +259,7 @@ char	*expand_word_one_pass(char *word, char **envp)
  *  - single quotes contain the original (literal) value (no expansion)
  *  - double quotes (or no quotes) allow the expansion of variables
  *
- * 	we have to epxand 3 things:
+ * 	we have to expand 3 things:
  *  1. variables
  *  2. ~
  *  3. $? TODO
@@ -290,7 +275,7 @@ int	expand_single_word(t_token *list_elem, char **envp)
 		if (expand_home_dir(list_elem, envp) == 1)
 			return (1);
 	}
-	expanded = expand_word_one_pass(list_elem->str, envp);
+	expanded = expand_word_one_pass(list_elem->str);
 	if (!expanded)
 		return (1);
 	free(list_elem->str);
@@ -351,5 +336,49 @@ int	expansion(t_token *list, char **envp)
 		return (1);
 	*i += 1 + var_len - 1;
 		// bc change in incrementation logic in expand_word_one_pass
+	return (0);
+} */
+
+// FRIDO brauchst du das für set
+
+/* char	*extract_var_from_envp(char *var_name)
+{
+	char	*value;
+	int		i;
+	int		len_var_name;
+	int		len_total;
+
+	i = -1;
+	len_var_name = ft_strlen(var_name);
+	while (envp[++i])
+	{
+		if (ft_strncmp(envp[i], var_name, len_var_name) == 0)
+		{
+			len_total = ft_strlen(envp[i]);
+			return (ft_substr(envp[i], len_var_name, len_total - len_var_name));
+		}
+	}
+	return (NULL);
+} */
+
+/*
+ *	TODO differenzieren zwischen leerer variable und malloc fail
+ *	getenv!
+ */
+/* static int	resolve_env_var_value(char *var_name, char **value, char **envp)
+{
+	char	*var_with_equal;
+
+	var_with_equal = ft_strjoin(var_name, "=");
+	free(var_name);
+	if (!var_with_equal)
+		return (1);
+	*value = extract_var_from_envp(var_with_equal, envp);
+	printf("val is %s\n", *value);
+	free(var_with_equal);
+	if (!*value)
+		*value = ft_strdup("");
+	if (!*value)
+		return (1);
 	return (0);
 } */

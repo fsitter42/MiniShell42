@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/12 14:50:08 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 09:57:01 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,8 +193,6 @@ void	debug_mode(char *input, char **envp)
  */
 int	main(int argc, char **argv, char **envp)
 {
-	// if the program was compiled with the -d flag and argc is 2
-	// we run minishell in debug mode, otherwise normal mode
 	if (argc != 1 && argc != 3)
 		return (printf("wrong syntax - argc not 1 or 3\n"), 1);
 	if (argc == 1)

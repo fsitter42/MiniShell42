@@ -24,7 +24,7 @@
            // "args": ["-d", "<< h file1.txt 'VAR bar ''''' | wc -l > out.txt"],
             //"args": ["-d", "cat << LIMITER >> output.txt"],
             //"args": ["-d", "~def file1.txt '\\$VAR bar'| \\$CMD -l > out.txt"],
-            "args": ["-d", "<< ff cat"],
+            //"args": ["-d", "<< ff cat"],
             //"args": ["-d", "~def file1.txt \\\"\\$VAR bar\\\"| \\$CMD -l > out.txt"],
            // "args": ["-d", "export yy=hallo du"],
            //TODO look at quotes. the below example should have the token "yy=hallo du" and not 2 tokens ()
@@ -36,7 +36,7 @@
             //"args": ["-d", "asdf\\$USER"],
             //"args": ["-d", "'\"$USERNAME\"'"],
             //"args": ["-d", "\"\\$USERNAME\""],  
-            //"args": ["-d", "\"\\$USER\""], 
+            "args": ["-d", "\"\\$USER\""], 
             //"args": ["-d", "\"\\$asdf\""], 
             //"args": ["-d", "\"asdf\\$USER asdd\""],
             // "args": ["-d", "\\$USER\\$USER"],

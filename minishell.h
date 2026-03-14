@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/11 16:26:16 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 10:42:36 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,15 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 
-/* typedef struct s_expansion_output
-{
-	char *output;
-	char *mask; //stores the information if a quote came from user input or expansion
-	int len;
-}					t_expansion_output; */
-
 typedef struct s_token
 {
 	int type; // enum e_word_mode
 	char			*str;
 	int quote_status;
 	int consume_status; // enum e_consume_status
-	//t_expansion_output *output;
 	struct s_token	*next;
 }					t_token;
 
-// TODO pipes & fds
 /* possible TODOS:
  *  add permission flags for path, infile and outfile
  *
@@ -65,27 +56,15 @@ enum				e_token_types
 	REDIR_IN,     //<
 	REDIR_APPEND, //>>
 	REDIR_OUT,    //>
-	WORD_AFTER_HEREDOC	//this is the status for the delimiter, we have do store that
-	//info because we don't expand or split here
+	WORD_AFTER_HEREDOC
 };
 
-// is used in tokenizer, word_and_var_handler
-/*enum				e_word_mode
-{
-	MODE_WORD = 0,
-	MODE_VAR
-};*/
-
-// used in commandizer, flagging tokens
 enum				e_consume_status
 {
 	UNCONSUMED = 0,
 	CONSUMED
 };
 
-// TODO this is currently used to use a different strategy to add a token to the
-// list if it is the first element. should be changed to the logic like in the
-// command list later on
 enum				e_token_status
 {
 	STATUS_UNSET = 0,
@@ -122,7 +101,7 @@ t_token				*tokenizer(char *line);
 
 // expansion
 int					expansion(t_token *list, char **envp);
-char				*expand_word_one_pass(char *word, char **envp);
+char				*expand_word_one_pass(char *word);
 int					quote_handler(int quote_status, char c);
 int					word_split(t_token *list);
 

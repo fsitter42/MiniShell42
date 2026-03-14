@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/14 14:01:52 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 17:00:48 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_token(t_token *token)
 	token->quote_status = DEFAULT_QUOTE;
 	token->consume_status = UNCONSUMED;
 	token->next = NULL;
+	g_last_exit_code = 0;
 }
 
 t_token	*tokenlist_add(t_token *list_start, int type, char *str,
@@ -84,8 +85,7 @@ void	print_tokens(t_token *start)
 	while (start)
 	{
 		printf("Token %d: Type %d, ", ++i, start->type);
-		if (start->type == WORD || start->type == VAR
-			|| start->type == WORD_AFTER_HEREDOC)
+		if (start->type == WORD || start->type == WORD_AFTER_HEREDOC)
 			printf(" value: %s, quote_status: %d", start->str,
 				start->quote_status);
 		printf("\n");

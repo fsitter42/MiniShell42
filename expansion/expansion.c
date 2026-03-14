@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/14 13:35:02 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 16:59:35 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,14 +184,20 @@ static int	append_env_var(char **out, char *word, int *i)
 }
 
 /*
- *	TODO
+ *	expands $? to the exit code number
  */
-static int	append_dollar_question(char **out, int *i)
+static int	expand_dollar_question(char **out, int *i)
 {
-	*out = append_str(*out, "$?");
+	char	*temp;
+
+	temp = ft_itoa(g_last_exit_code);
+	if (!temp)
+		return (1);
+	*out = append_str(*out, temp);
+	free(temp);
 	if (!*out)
 		return (1);
-	*i += 1; // bc change in incrementation logic in expand_word_one_pass
+	*i += 1;
 	return (0);
 }
 
@@ -228,7 +234,7 @@ static int	append_expanded_char(char **out, char *word, int *i,
 	if (word[*i] == '$' && *quote_status != IN_SINGLE_QUOTES)
 	{
 		if (word[*i + 1] == '?')
-			return (append_dollar_question(out, i));
+			return (expand_dollar_question(out, i));
 		return (append_env_var(out, word, i));
 	}
 	*out = append_char(*out, word[*i]);

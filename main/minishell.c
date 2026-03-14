@@ -12,6 +12,8 @@
 
 #include "../minishell.h"
 
+int	g_last_exit_code;
+
 /*
 	input parsing - Stefan
 	TODO:

@@ -6,28 +6,33 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/14 13:49:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/14 17:02:14 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "./libft/libft.h"
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <stdlib.h>
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+# include <stdio.h>
+# include "./libft/libft.h"
+# include <errno.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdlib.h>
+
+extern int			g_last_exit_code;
 
 typedef struct s_token
 {
 	int type; // enum e_word_mode
 	char			*str;
-	int quote_status;
+	int				quote_status;
 	int consume_status; // enum e_consume_status
 	struct s_token	*next;
 }					t_token;
 
 /* possible TODOS:
  *  add permission flags for path, infile and outfile
- *
  */
 typedef struct s_cmd
 {
@@ -39,8 +44,8 @@ typedef struct s_cmd
 	int				in_fd;
 	char *outfile; // filled by bert
 	int				out_fd;
-	int has_heredoc;
-	char *delimiter;
+	int				has_heredoc;
+	char			*delimiter;
 	int append; // filled by bert
 	struct s_cmd	*next;
 }					t_cmd;
@@ -50,7 +55,7 @@ enum				e_token_types
 {
 	START = 0,
 	WORD,
-	VAR,
+	// VAR,
 	PIPE,
 	HEREDOC,      //<<
 	REDIR_IN,     //<
@@ -90,8 +95,8 @@ enum				e_bool
 t_cmd				*create_command_list(t_token *token_list);
 
 // cleanup
-void 				my_exit_function(char *error_msg);
-void				free_token (t_token *token);
+void				my_exit_function(char *error_msg);
+void				free_token(t_token *token);
 void				cleanup_token_list(t_token *token_list);
 void				cleanup_command_list(t_cmd *cmd_list);
 // tokenizer
@@ -105,8 +110,10 @@ char				*expand_word_one_pass(char *word);
 int					quote_handler(int quote_status, char c);
 int					word_split(t_token *list);
 
-//execution
-void				eggsecute (t_cmd *cmd_list);
+// execution
+void				eggsecute(t_cmd *cmd_list);
 
 // debug
 void				print_tokens(t_token *start);
+
+#endif

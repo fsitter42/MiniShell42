@@ -6,45 +6,40 @@
 #    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/16 14:17:05 by fsitter          ###   ########.fr        #
+#    Updated: 2026/03/16 14:12:43 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME        = minishell
+NAME = minishell
 
-# -- Dateien --
-SRC         = main/minishell.c \
-              commandizer/commandizer.c \
-              cleanup/cleanup.c \
-              tokenizer/tokenizer.c \
-              expansion/expansion.c \
-              word_splitting/word_splitting.c \
-              s_execution/execution.c
+SRC =	main/minishell.c commandizer/commandizer.c cleanup/cleanup.c \
+		tokenizer/tokenizer.c expansion/expansion.c word_splitting/word_splitting.c \
+		s_execution/execution.c
+#BONUS_SRC = pipex_bonus.c pipex_utils1_bonus.c pipex_utils2_bonus.c \
+			pipex_utils3_bonus.c
 
-OBJS        = $(SRC:.c=.o)
+OBJS = ${SRC:.c=.o}
+#BONUS_OBJS = $(BONUS_SRC:.c=.o)
 
-# -- Compiler & Flags --
-CC          = cc
-#CFLAGS      = -Wall -Wextra -Werror -g
-INCLUDE     = -I .
+CC = cc
+RM = rm -f
+#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g
+INCLUDE = -I .
 
-# -- Bibliotheken --
-LIBFT_PATH  = libft
-LIBFT       = $(LIBFT_PATH)/libft.a
+LIBFT_PATH = libft
+LIBFT = $(LIBFT_PATH)/libft.a
+LIBS = -L $(LIBFT_PATH) -lft
 
-# WICHTIG: -lreadline muss HINTER den Objekten stehen
-LIBS        = -L$(LIBFT_PATH) -lft -lreadline
+.o:.c 
+	${CC} ${CFLAGS} ${INCLUDE} -c $< -o ${<:.c=.o}
 
-# -- Regeln --
+$(NAME): 	$(LIBFT) $(OBJS)
+			$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
 
-all: $(NAME)
-
-$(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
-
-# Kompilierung der einzelnen .o Dateien
-%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+#TODO stop bonus relinking
+#bonus:		$(LIBFT) $(BONUS_OBJS)
+#			$(CC) $(CFLAGS) $(BONUS_OBJS) $(LIBS) -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_PATH)
@@ -63,3 +58,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+#.PHONY: all clean fclean re bonus

@@ -6,22 +6,22 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 14:05:10 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/16 14:09:09 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "f_includes/Libfs/libft.h"
-# include "./s_libft/libft.h"
+# include "./libft/libft.h"
+# include "f_includes/Libfs/libft.h"
 # include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
 
-//f
+// f
 
 # include <string.h>
 # include <sys/stat.h>
@@ -75,7 +75,28 @@ typedef struct s_cmd
 	char *delimiter; //überlegen
 	int					has_heredoc;
 
+
+
+	int append; // kommt weg
+	char *infile; // kommt weg
+ 	char *outfile; // kommt weg
 }						t_cmd;
+
+// typedef struct s_cmd
+// {
+// 	char *cmd; // filled by bert
+// 	int				is_builtin;
+// 	char **args; // filled by bert
+// 	char			*path;
+// 	char *infile; // filled by bert
+// 	int				in_fd;
+// 	char *outfile; // filled by bert
+// 	int				out_fd;
+// 	int				has_heredoc;
+// 	char			*delimiter;
+// 	int append; // filled by bert
+// 	struct s_cmd	*next;
+// }					t_cmd;
 
 typedef struct s_data
 {

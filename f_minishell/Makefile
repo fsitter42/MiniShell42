@@ -1,0 +1,1 @@
+cc minishell.c ./envp/f_envp_to_lst.c envp/f_lst_to_new_envp.c  envp/f_envp_init_destroy.c builtin/env/f_env.c builtin/export/f_export_no_key.c builtin/export/f_export_key.c builtin/unset/f_unset.c ../includes/Libfs/libft.a

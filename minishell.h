@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 14:47:34 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/16 15:40:43 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,9 @@ typedef struct s_cmd
 	char *delimiter; //überlegen
 	int					has_heredoc;
 
-
-
-	int append; // kommt weg
-	char *infile; // kommt weg
- 	char *outfile; // kommt weg
+	int append;    // kommt weg
+	char *infile;  // kommt weg
+	char *outfile; // kommt weg
 }						t_cmd;
 
 // typedef struct s_cmd
@@ -175,7 +173,7 @@ int						quote_handler(int quote_status, char c);
 int						word_split(t_token *list);
 
 // execution
-void					eggsecute(t_cmd *cmd_list);
+void					eggsecute(t_data *data, t_cmd *cmd_list);
 
 // debug
 void					print_tokens(t_token *start);

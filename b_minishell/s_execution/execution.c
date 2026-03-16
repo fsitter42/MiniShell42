@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 14:48:32 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/16 15:40:28 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,16 @@
 *   TODO when input is << d no heredocing is happening
 *   TODO the above case prints the heredoced stuff back to the user,
 *   i have to do that too (find out in what cases exactly)
+*   TODO while loop that does this for each occurence of heredoc
 */
 void do_heredoc_stuff(t_cmd *cmd)
 {
     int     fd;
     char    *line;
+    //TODO add cmd 
+    int i = 0;
+
+    char end = ft_itoa(i);
     fd = open("./.heredoc_dump", O_CREAT | O_TRUNC | O_WRONLY, 0600);
     //if (!fd)
     //afbhrgbkerjvberb
@@ -52,11 +57,15 @@ void do_heredoc_stuff(t_cmd *cmd)
     }
     free (line);
     close (fd);
-    cmd->in_fd = open ("./.heredoc_dump", O_RDONLY);
-    if (cmd->in_fd == -1)
-    {
+
+    //add_redir_node function (new node) new node function gibt es von frido
+    //cmd->redirs added ein list element
+    
+    //cmd->in_fd = open ("./.heredoc_dump", O_RDONLY);
+   // if (cmd->in_fd == -1)
+   // {
         //hvkgehjkvggblwr
-    }
+   // }
 }
 
 /*
@@ -68,14 +77,22 @@ void remove_heredoc_file()
 
 }
 
-void eggsecute (t_cmd *cmd_list)
+void eggsecute (t_data *data, t_cmd *cmd_list)
 {
     while (cmd_list)
     {
         if (cmd_list->has_heredoc)
             do_heredoc_stuff(cmd_list);
         //FRIDO ENTRY POINT
+        //HEREFAKHGEGVVEGhkgevKHVKHEFGD
+        //JNJHVDGVGJVLeuoVEv neBHV
+        //Frido gets t_data*
+        f_exec_pipeline(data, cmd_list);
+        //delete .heredoc_dump
+        
         cmd_list = cmd_list->next;
     }
+    //TODO cleanup all cmds
+    //TODO here we have to delete the temp heredoc files
    
 }

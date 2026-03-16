@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 15:12:07 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/16 15:41:16 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,14 @@ int	handle_single_line(char *line, char **envp)
 {
 	t_token	*token_list;
 	t_cmd	*cmd_list;
+	t_data	*data;
 
 	if (ft_strncmp(line, "exit", 5) == 0)
 		my_exit_function("exit was typed");
+
+	//TODO init *t_data stuff; ft_calloc
+	//TODO t_data->cmd is my command list
+		
 	printf("%s is going to be tokenized\n", line);
 	token_list = tokenizer(line);
 	if (!token_list)
@@ -117,7 +122,7 @@ int	handle_single_line(char *line, char **envp)
 			return (cleanup_token_list(token_list), 1);
 		cleanup_token_list(token_list);
 		// execute entry point with command_list
-		eggsecute(cmd_list);
+		eggsecute(data, cmd_list);
 		cleanup_command_list(cmd_list);
 	}
 	else

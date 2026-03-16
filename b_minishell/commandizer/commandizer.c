@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 14:48:18 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/16 15:36:10 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@
  *  cmd 2: wc, args: -l, fd_in: pipe1 out, fd_out: fd file2.txt
  *
 */
+
+//TODO call do_heredoc_stuff(cmd_list) here not in eggsecute
 
 void	init_cmd(t_cmd *cmd)
 {

@@ -6,14 +6,14 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 14:09:09 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/16 14:47:34 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "./libft/libft.h"
+# include "./b_minishell/libft/libft.h"
 # include "f_includes/Libfs/libft.h"
 # include <errno.h>
 # include <readline/history.h>

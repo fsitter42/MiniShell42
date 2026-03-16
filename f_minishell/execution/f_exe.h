@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 12:00:30 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/15 15:46:39 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/16 15:00:58 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		f_is_builtin(char *cmd);
 void	f_exec_builtin(t_cmd *cmd, t_data *data);
 
 // f_exe.c
-void	f_exec_pipeline(t_data *data, t_cmd *cmds);
+int		f_exec_pipeline(t_data *data, t_cmd *cmds);
 
 // f_exe2.c
 int		f_open_redirections(t_cmd *cmd);

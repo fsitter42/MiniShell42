@@ -6,15 +6,17 @@
 #    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/16 14:58:15 by fsitter          ###   ########.fr        #
+#    Updated: 2026/03/16 15:11:53 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        = minishell
 
 # -- Dateien --
-SRC_MAIN    = b_minishell/main/minishell.c \
-              b_minishell/commandizer/commandizer.c \
+
+SRC_MAIN    = minishell.c
+
+SRC_PARS    = b_minishell/commandizer/commandizer.c \
               b_minishell/cleanup/cleanup.c \
               b_minishell/tokenizer/tokenizer.c \
               b_minishell/expansion/expansion.c \
@@ -42,7 +44,7 @@ SRC_EXE     = f_minishell/execution/f_exe.c \
               f_minishell/execution/pathfinder/f_pathhandler.c \
               f_minishell/execution/singlecmd/f_singlecmd.c
 
-SRC         = $(SRC_MAIN) $(SRC_BUILTIN) $(SRC_ENVP) $(SRC_EXE)
+SRC         = $(SRC_MAIN) $(SRC_PARS) $(SRC_BUILTIN) $(SRC_ENVP) $(SRC_EXE)
 
 OBJS        = $(SRC:.c=.o)
 

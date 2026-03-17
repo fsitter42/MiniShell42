@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/18 00:18:04 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/18 00:21:47 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,5 @@ int	eggsecute(t_data *data)
 	}
 	// TODO cleanup all cmds
 	// TODO here we have to delete the temp heredoc files
+    return (data->last_exit_code);
 }

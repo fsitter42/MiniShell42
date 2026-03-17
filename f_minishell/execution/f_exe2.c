@@ -6,16 +6,16 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/16 14:05:43 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/17 23:51:45 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int	f_open_infile(t_cmd *cmd, char *file);
-static int	f_open_outfile(t_cmd *cmd, char *file, int append);
+static int	f_open_infile(t_data *data, t_cmd *cmd, char *file);
+static int	f_open_outfile(t_data *data, t_cmd *cmd, char *file, int append);
 
-int	f_open_redirections(t_cmd *cmd)
+int	f_open_redirections(t_data *data, t_cmd *cmd)
 {
 	t_redir	*redir;
 
@@ -26,13 +26,13 @@ int	f_open_redirections(t_cmd *cmd)
 	{
 		if (redir->type == REDIR_IN || redir->type == HEREDOC)
 		{
-			if (f_open_infile(cmd, redir->file) == -1)
+			if (f_open_infile(data, cmd, redir->file) == -1)
 				return (-1);
 		}
 		else if (redir->type == REDIR_OUT || redir->type == REDIR_APPEND)
 		{
-			if (f_open_outfile(cmd, redir->file, redir->type == REDIR_APPEND) ==
-				-1)
+			if (f_open_outfile(data, cmd, redir->file,
+					redir->type == REDIR_APPEND) == -1)
 				return (-1);
 		}
 		redir = redir->next;
@@ -40,7 +40,7 @@ int	f_open_redirections(t_cmd *cmd)
 	return (0);
 }
 
-static int	f_open_infile(t_cmd *cmd, char *file)
+static int	f_open_infile(t_data *data, t_cmd *cmd, char *file)
 {
 	if (cmd->in_fd != -1)
 		close(cmd->in_fd);
@@ -53,13 +53,13 @@ static int	f_open_infile(t_cmd *cmd, char *file)
 			f_print_error(file, "Permission denied");
 		else
 			f_print_error(file, strerror(errno));
-		g_last_exit_code = 1;
+		data->last_exit_code = 1;
 		return (-1);
 	}
 	return (0);
 }
 
-static int	f_open_outfile(t_cmd *cmd, char *file, int append)
+static int	f_open_outfile(t_data *data, t_cmd *cmd, char *file, int append)
 {
 	if (cmd->out_fd != -1)
 		close(cmd->out_fd);
@@ -73,7 +73,7 @@ static int	f_open_outfile(t_cmd *cmd, char *file, int append)
 			f_print_error(file, "Permission denied");
 		else
 			f_print_error(file, strerror(errno));
-		g_last_exit_code = 1;
+		data->last_exit_code = 1;
 		return (-1);
 	}
 	return (0);

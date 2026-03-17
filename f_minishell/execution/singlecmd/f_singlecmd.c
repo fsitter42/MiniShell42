@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/17 14:25:37 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 23:56:41 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-void	f_exec_cmd(t_cmd *cmd, char **envp)
+void	f_exec_cmd(t_data *data, t_cmd *cmd, char **envp)
 {
-	cmd->path = f_path_handler(cmd->cmd, envp);  //here frido wo gehört das hin
+	cmd->path = f_path_handler(data, cmd->cmd, envp);  //here frido wo gehört das hin
 	if (!cmd->path)
-		exit(g_last_exit_code);
+		exit(data->last_exit_code);
 	execve(cmd->path, cmd->args, envp);
 	f_print_error(cmd->cmd, "execve failed");
 	exit(1);
@@ -50,7 +50,7 @@ void	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "pwd", 4) == 0)
 		printf("pwd\n"); // f_pwd();
 	else if (ft_strncmp(cmd->cmd, "export", 7) == 0)
-		g_last_exit_code = f_export(data, data->cmds->args); // f_export();
+		data->last_exit_code = f_export(data, data->cmds->args); // f_export();
 	else if (ft_strncmp(cmd->cmd, "unset", 6) == 0)
 		printf("unset\n"); // f_unset();
 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)

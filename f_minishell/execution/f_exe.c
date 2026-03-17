@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/17 15:00:40 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 23:57:57 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmds)
 	int		prev_fd;
 	pid_t	pid;
 
-	//if (!cmds->next && cmds->is_builtin)
-	//	cmd->redir_failed = 1;
+	if (!cmds->next && cmds->is_builtin)
+		return (f_exec_builtin(cmds, data), 0);
 	cmd = cmds;
 	prev_fd = -1;
 	while (cmd)
 	{
-		if (f_open_redirections(cmd) == -1)
+		if (f_open_redirections(data, cmd) == -1)
 			return (f_wait_all(data), 1);
 		if (cmd->next)
-			pipe(pipe_fd);
-		pid = fork();
+			pipe(pipe_fd); //if -1 here
+		pid = fork(); //if -1
 		if (pid == 0)
 			f_child_process(data, cmd, prev_fd, pipe_fd);
 		f_parent_cleanup(cmd, &prev_fd, pipe_fd);
@@ -66,13 +66,13 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 	if (cmd->is_builtin != -1)
 		f_exec_builtin_child(cmd, data);
 	else
-		f_exec_cmd(cmd, data->env->envp_updated);
+		f_exec_cmd(data, cmd, data->env->envp_updated);
 }
 
 static void	f_exec_builtin_child(t_cmd *cmd, t_data *data)
 {
 	f_exec_builtin(cmd, data);
-	exit(g_last_exit_code);
+	exit(data->last_exit_code);
 }
 
 static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd)

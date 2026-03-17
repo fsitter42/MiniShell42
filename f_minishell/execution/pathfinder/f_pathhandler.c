@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_pathhandler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 13:01:08 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/17 14:45:37 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 23:54:52 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	*f_handle_direct_path(char *cmd, int *err);
 
-char	*f_path_handler(char *cmd, char **envp)
+char	*f_path_handler(t_data *data, char *cmd, char **envp)
 {
 	char	*path;
 	int		err;
@@ -36,7 +36,7 @@ char	*f_path_handler(char *cmd, char **envp)
 		else if (err == 1)
 			ft_putendl_fd(": memory allocation error", 2);
 	}
-	g_last_exit_code = err;
+	data->last_exit_code = err;
 	return (path);
 }
 

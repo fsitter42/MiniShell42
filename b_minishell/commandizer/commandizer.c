@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 16:11:55 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 17:11:40 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,12 @@ int	add_redirection_to_cmd(t_cmd *cmd, int type, char *str, char *delimiter)
 		if (!new_redir->delimiter)
 			return (free(new_redir), 1);
 	}
-	new_redir->file = ft_strdup(str);
-	if (!new_redir->file)
+	if (str)
+	{
+		new_redir->file = ft_strdup(str);
+		if (!new_redir->file)
 		return (free(new_redir->delimiter), free(new_redir), 1);
+	}
 	new_redir->type = type;
 	add_redir_to_redir_list(new_redir, cmd);
 	return (0);
@@ -152,36 +155,24 @@ int	handle_redirection(t_token **token_list, t_cmd *cmd)
 		return (1);
 	if ((*token_list)->type == REDIR_IN)
 	{
-		// cmd->infile = ft_strdup((*token_list)->next->str);
-		// if (!cmd->infile)
-		// 	return (1);
 		if (add_redirection_to_cmd(cmd, REDIR_IN, (*token_list)->next->str,
 				NULL) == 1)
 			return (1);
 	}
 	else if ((*token_list)->type == REDIR_OUT)
 	{
-		// cmd->outfile = ft_strdup((*token_list)->next->str);
-		// if (!cmd->outfile)
-		// 	return (1);
 		if (add_redirection_to_cmd(cmd, REDIR_OUT, (*token_list)->next->str,
 				NULL) == 1)
 			return (1);
 	}
 	else if ((*token_list)->type == HEREDOC)
 	{
-		// if (heredoc_handler(cmd, *token_list) == 1)
-		// 	return (1);
-		if (add_redirection_to_cmd(cmd, HEREDOC, NULL,
-				(*token_list)->next->str) == 1)
+		if (add_redirection_to_cmd(cmd, HEREDOC, NULL, (*token_list)->next->str) == 1)
 			return (1);
+		cmd->has_heredoc = 1;	
 	}
 	else if ((*token_list)->type == REDIR_APPEND)
 	{
-		// cmd->outfile = ft_strdup((*token_list)->next->str);
-		// if (!cmd->outfile)
-		// 	return (1);
-		// cmd->append = TRUE;
 		if (add_redirection_to_cmd(cmd, REDIR_APPEND, (*token_list)->next->str,
 				NULL) == 1)
 			return (1);

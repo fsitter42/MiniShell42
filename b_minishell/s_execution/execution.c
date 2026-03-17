@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 14:50:46 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 17:15:16 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 *   TODO the above case prints the heredoced stuff back to the user,
 *   i have to do that too (find out in what cases exactly)
 *   TODO while loop that does this for each occurence of heredoc
+*   TODO cmd->heredoc kommt weg & da is nix mehr drin, die info is
+*   jetzt in den entsprechenden t_redirs
 */
 void do_heredoc_stuff(t_cmd *cmd)
 {
@@ -86,10 +88,6 @@ void eggsecute (t_data *data)
         if (data->cmds->has_heredoc)
             do_heredoc_stuff(data->cmds);
         f_exec_pipeline(data, data->cmds);
-            //FRIDO ENTRY POINT
-        //HEREFAKHGEGVVEGhkgevKHVKHEFGD
-        //JNJHVDGVGJVLeuoVEv neBHV
-        //Frido gets t_data*
         //f_exec_pipeline(data, cmd_list);
         //delete .heredoc_dump
         

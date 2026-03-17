@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 14:07:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:04:16 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,22 +93,22 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 
 	if (ft_strncmp(line, "exit", 5) == 0)
 		my_exit_function("exit was typed");
-	printf("%s is going to be tokenized\n", line);
+	//printf("%s is going to be tokenized\n", line);
 	token_list = tokenizer(line);
 	if (!token_list)
 		return (1);
 	if (handle_delimiter(token_list) == 1)
 		return (cleanup_token_list(token_list), 1);
-	printf("\nBEFORE EXPANSION\n");
-	print_tokens(token_list);
+	//printf("\nBEFORE EXPANSION\n");
+	//print_tokens(token_list);
 	if (expansion(token_list, envp) == 1)
 		return (cleanup_token_list(token_list), 1);
-	printf("\nAFTER EXPANSION\n");
-	print_tokens(token_list);
+	//printf("\nAFTER EXPANSION\n");
+	//print_tokens(token_list);
 	if (word_split(token_list) == 1)
 		return (cleanup_token_list(token_list), 1);
-	printf("\nAFTER WORD SPLIT\n");
-	print_tokens(token_list);
+	//printf("\nAFTER WORD SPLIT\n");
+	//print_tokens(token_list);
 	if (!is_token_list_empty(token_list))
 	{
 		cmd_list = create_command_list(token_list->next);
@@ -117,7 +117,6 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 		cleanup_token_list(token_list);
 		data->cmds = cmd_list;
 		eggsecute(data);
-		//cleanup_t_data_list(data);
 	}
 	else
 		cleanup_token_list(token_list);

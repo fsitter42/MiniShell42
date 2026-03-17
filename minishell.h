@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 14:52:34 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:47:10 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_redir
 {
 	char				*file;
 	int					type;
+	char				*delimiter;
 	t_redir				*next;
 }						t_redir;
 

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 12:04:31 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 16:11:55 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
  *
 */
 
-//TODO call do_heredoc_stuff(cmd_list) here not in eggsecute
+// TODO call do_heredoc_stuff(cmd_list) here not in eggsecute
 
 void	init_cmd(t_cmd *cmd)
 {
@@ -110,40 +110,83 @@ int	heredoc_handler(t_cmd *cmd, t_token *token_list)
 		return (1);
 	return (0);
 }
+void	add_redir_to_redir_list(t_redir *new_redir, t_cmd *cmd)
+{
+	t_redir *cur;
+	
+	if (!cmd->redirs)
+		cmd->redirs = new_redir;
+	else
+	{
+		cur = cmd->redirs;
+		while (cur->next)
+			cur = cur->next;
+		cur->next = new_redir;
+	}
+}
 
-/*
- *	we can't directly free stuff here bc we have the cleanup_cmd_list
- *	(we would free twice if we did that)
- *	should be mem safe on error
- *	TODO if there are multiple redirections in a cmd (eg. cat > out >> out2)
- *	the last one is the actual interpreted correct one
- */
+int	add_redirection_to_cmd(t_cmd *cmd, int type, char *str, char *delimiter)
+{
+	t_redir	*new_redir;
+
+	new_redir = ft_calloc(sizeof(t_redir), 1);
+	if (!new_redir)
+		return (1);
+	if (delimiter)
+	{
+		new_redir->delimiter = ft_strdup(delimiter);
+		if (!new_redir->delimiter)
+			return (free(new_redir), 1);
+	}
+	new_redir->file = ft_strdup(str);
+	if (!new_redir->file)
+		return (free(new_redir->delimiter), free(new_redir), 1);
+	new_redir->type = type;
+	add_redir_to_redir_list(new_redir, cmd);
+	return (0);
+}
+
 int	handle_redirection(t_token **token_list, t_cmd *cmd)
 {
 	if (!is_valid_redirection_target(*token_list))
 		return (1);
 	if ((*token_list)->type == REDIR_IN)
 	{
-		cmd->infile = ft_strdup((*token_list)->next->str);
-		if (!cmd->infile)
+		// cmd->infile = ft_strdup((*token_list)->next->str);
+		// if (!cmd->infile)
+		// 	return (1);
+		if (add_redirection_to_cmd(cmd, REDIR_IN, (*token_list)->next->str,
+				NULL) == 1)
 			return (1);
 	}
 	else if ((*token_list)->type == REDIR_OUT)
 	{
-		cmd->outfile = ft_strdup((*token_list)->next->str);
-		if (!cmd->outfile)
+		// cmd->outfile = ft_strdup((*token_list)->next->str);
+		// if (!cmd->outfile)
+		// 	return (1);
+		if (add_redirection_to_cmd(cmd, REDIR_OUT, (*token_list)->next->str,
+				NULL) == 1)
 			return (1);
 	}
 	else if ((*token_list)->type == HEREDOC)
-		if (heredoc_handler(cmd, *token_list) == 1)
+	{
+		// if (heredoc_handler(cmd, *token_list) == 1)
+		// 	return (1);
+		if (add_redirection_to_cmd(cmd, HEREDOC, NULL,
+				(*token_list)->next->str) == 1)
 			return (1);
-		else if ((*token_list)->type == REDIR_APPEND)
-		{
-			cmd->outfile = ft_strdup((*token_list)->next->str);
-			if (!cmd->outfile)
-				return (1);
-			cmd->append = TRUE;
-		}
+	}
+	else if ((*token_list)->type == REDIR_APPEND)
+	{
+		// cmd->outfile = ft_strdup((*token_list)->next->str);
+		// if (!cmd->outfile)
+		// 	return (1);
+		// cmd->append = TRUE;
+		if (add_redirection_to_cmd(cmd, REDIR_APPEND, (*token_list)->next->str,
+				NULL) == 1)
+			return (1);
+		cmd->append = TRUE;
+	}
 	// TODO check if the next element is nothing stupid (e.g. '>')
 	return (shift_and_consume_token_list_by_x(token_list, 2), 0);
 }
@@ -153,8 +196,8 @@ int	handle_redirection(t_token **token_list, t_cmd *cmd)
  */
 int	handle_word(t_token **token_list, t_cmd *cmd)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	if (cmd->cmd == NULL)
 	{
@@ -190,7 +233,7 @@ int	count_size_for_args_array(t_token *token_list)
 			// edge case for input ">" or "<"
 		}
 	}
-	printf("size for args array is %d\n", size);
+	// printf("size for args array is %d\n", size);
 	return (size);
 }
 
@@ -221,7 +264,7 @@ t_cmd	*create_single_cmd(t_token *token_list)
 	t_cmd	*cmd;
 	int		size;
 
-	printf("trying to create a cmd\n");
+	// printf("trying to create a cmd\n");
 	cmd = ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (NULL);
@@ -338,7 +381,7 @@ t_cmd	*create_command_list(t_token *token_list)
 		add_cmd_to_cmd_list(&cmd_list, cmd);
 		shift_token_list_to_next_pipe(&token_list);
 	}
-	print_command_list(cmd_list);
+	// print_command_list(cmd_list);
 	return (cmd_list);
 }
 

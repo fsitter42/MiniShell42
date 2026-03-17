@@ -43,7 +43,7 @@
             //"args": ["-d", "\"'\"'asdf'\"'\""],
             //"args": ["-d", "   \\$CMD1"],
             //"args": ["-d", "   \\$CMf"],
-            "args": ["-d", "ls"],
+            "args": ["-d", "ls > outfile > outfile2"],
             //"args": ["-d", "\\\"< | > \\\"6"],
             //"args": ["-d", "<< EOF cat | ls"],
             //"args": ["-d", "ls"],

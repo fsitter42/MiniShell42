@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 14:48:36 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/17 15:05:03 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	word_and_var_handler(int i, char *line, t_token *list_start,
 		return (-1);
 	if (!tokenlist_add(list_start, WORD, word, quote_save))
 		return (-1);
-	printf("WORD ");
+	// printf("WORD ");
 	return (char_to_check);
 }
 
@@ -163,7 +163,7 @@ int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 	}
 	else if (line[*i] == '>')
 		type = REDIR_OUT;
-	print_token_type(type);
+	//print_token_type(type);
 	if (!tokenlist_add(list_start, type, NULL, DEFAULT_QUOTE))
 		return (1);
 	return (0);

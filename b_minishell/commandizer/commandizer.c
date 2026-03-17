@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commandizer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 15:36:10 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/17 12:04:31 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	init_cmd(t_cmd *cmd)
 	cmd->append = FALSE;
 	cmd->has_heredoc = FALSE;
 	cmd->delimiter = NULL;
+	cmd->redirs = NULL;
 }
 
 void	shift_and_consume_token_list_by_x(t_token **token, int x)

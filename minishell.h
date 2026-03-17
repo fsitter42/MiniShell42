@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 15:40:43 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/17 12:01:42 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_cmd
 	int					out_fd;
 	t_cmd				*next;
 	int					redir_failed;
-	char *delimiter; //überlegen
+	char *delimiter; //überlegen, wird wsl. erst im heredoc handling gesetzt
 	int					has_heredoc;
 
 	int append;    // kommt weg
@@ -100,6 +100,7 @@ typedef struct s_data
 {
 	t_cmd				*cmds;
 	t_envp				*env;
+	// i changed that to a double pointer
 	size_t				cc;
 }						t_data;
 
@@ -161,6 +162,7 @@ void					my_exit_function(char *error_msg);
 void					free_token(t_token *token);
 void					cleanup_token_list(t_token *token_list);
 void					cleanup_command_list(t_cmd *cmd_list);
+void					cleanup_t_data_list(t_data *data);
 // tokenizer
 void					init_token(t_token *token);
 int						handle_single_line(char *line, char **envp);
@@ -173,7 +175,7 @@ int						quote_handler(int quote_status, char c);
 int						word_split(t_token *list);
 
 // execution
-void					eggsecute(t_data *data, t_cmd *cmd_list);
+void					eggsecute(t_data *data);
 
 // debug
 void					print_tokens(t_token *start);

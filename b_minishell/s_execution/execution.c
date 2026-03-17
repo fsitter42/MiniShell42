@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 15:40:28 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/17 11:49:32 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,20 @@ void remove_heredoc_file()
 
 }
 
-void eggsecute (t_data *data, t_cmd *cmd_list)
+void eggsecute (t_data *data)
 {
-    while (cmd_list)
+    while (data->cmds)
     {
-        if (cmd_list->has_heredoc)
-            do_heredoc_stuff(cmd_list);
+        if (data->cmds->has_heredoc)
+            do_heredoc_stuff(data->cmds);
         //FRIDO ENTRY POINT
         //HEREFAKHGEGVVEGhkgevKHVKHEFGD
         //JNJHVDGVGJVLeuoVEv neBHV
         //Frido gets t_data*
-        f_exec_pipeline(data, cmd_list);
+        //f_exec_pipeline(data, cmd_list);
         //delete .heredoc_dump
         
-        cmd_list = cmd_list->next;
+        data->cmds = data->cmds->next;
     }
     //TODO cleanup all cmds
     //TODO here we have to delete the temp heredoc files

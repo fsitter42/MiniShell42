@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/16 14:48:12 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/17 11:52:15 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ void cleanup_command_list(t_cmd *cmd_list)
 		free (cmd_list);
 		cmd_list = temp;
 	}
+}
+void cleanup_t_data_list(t_data *data)
+{
+	cleanup_command_list(data->cmds);
+	free(data);
 }
 
 void my_exit_function(char *error_msg)

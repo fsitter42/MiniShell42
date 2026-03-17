@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 12:01:42 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:02:19 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void					cleanup_command_list(t_cmd *cmd_list);
 void					cleanup_t_data_list(t_data *data);
 // tokenizer
 void					init_token(t_token *token);
-int						handle_single_line(char *line, char **envp);
+int						handle_single_line(char *line, char **envp, t_data *data);
 t_token					*tokenizer(char *line);
 
 // expansion

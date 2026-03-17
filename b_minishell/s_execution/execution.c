@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 11:49:32 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:00:08 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void eggsecute (t_data *data)
     {
         if (data->cmds->has_heredoc)
             do_heredoc_stuff(data->cmds);
-        //FRIDO ENTRY POINT
+        f_exec_pipeline(data, data->cmds);
+            //FRIDO ENTRY POINT
         //HEREFAKHGEGVVEGhkgevKHVKHEFGD
         //JNJHVDGVGJVLeuoVEv neBHV
         //Frido gets t_data*

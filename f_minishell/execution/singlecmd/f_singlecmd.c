@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/16 15:20:47 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/17 14:25:37 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	f_exec_cmd(t_cmd *cmd, char **envp)
 {
+	cmd->path = f_path_handler(cmd->cmd, envp);  //here frido wo gehört das hin
 	if (!cmd->path)
 		exit(g_last_exit_code);
 	execve(cmd->path, cmd->args, envp);
@@ -53,12 +54,13 @@ void	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "unset", 6) == 0)
 		printf("unset\n"); // f_unset();
 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
-		printf("env\n"); //f_env(data, cmd->args) ; // f_env();
+		printf("env\n"); // f_env(data, cmd->args) ; // f_env();
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
-		printf("exit\n"); ; // f_exit();
+		printf("exit\n");
+	; // f_exit();
 }
 
-//f_exec_builtin(cmd);
+// f_exec_builtin(cmd);
 
 /*
 	ich bin hier::::: diese drei funktionen in einen neuen ordner singlecomands geben

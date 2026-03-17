@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/16 14:05:38 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/17 14:12:12 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmds)
 	int		prev_fd;
 	pid_t	pid;
 
-	if (!cmds->next && cmds->is_builtin)
-		cmd->redir_failed = 1;
+	//if (!cmds->next && cmds->is_builtin)
+	//	cmd->redir_failed = 1;
 	cmd = cmds;
 	prev_fd = -1;
 	while (cmd)
@@ -63,7 +63,7 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 	}
 	if (cmd->redir_failed) //here löschen
 		exit(1);
-	if (cmd->is_builtin)
+	if (cmd->is_builtin != -1)
 		f_exec_builtin_child(cmd, data);
 	else
 		f_exec_cmd(cmd, data->env->envp_updated);

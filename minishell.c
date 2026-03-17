@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 13:57:59 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:07:53 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,10 @@ int	handle_delimiter(t_token *token_list)
 }
 
 // this function does everything that is needed that ONE LINE is being executed correctly
-int	handle_single_line(char *line, char **envp)
+int	handle_single_line(char *line, char **envp, t_data *data)
 {
 	t_token	*token_list;
 	t_cmd	*cmd_list;
-	t_data	*data;
 
 	if (ft_strncmp(line, "exit", 5) == 0)
 		my_exit_function("exit was typed");
@@ -116,14 +115,9 @@ int	handle_single_line(char *line, char **envp)
 		if (!cmd_list)
 			return (cleanup_token_list(token_list), 1);
 		cleanup_token_list(token_list);
-		data = ft_calloc(sizeof(t_data), 1);
-		if (!data)
-			my_exit_function("t_data malloc failed");
 		data->cmds = cmd_list;
-		//data->env = envp; // des bast ned, env init
-		// execute entry point with command_list
 		eggsecute(data);
-		cleanup_t_data_list(data);
+		//cleanup_t_data_list(data);
 	}
 	else
 		cleanup_token_list(token_list);
@@ -132,7 +126,7 @@ int	handle_single_line(char *line, char **envp)
 
 /* this is the default mode in where the users enters stuff
  */
-void	normal_mode(int argc, char **argv, char **envp)
+void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 {
 	char	*line;
 
@@ -149,7 +143,7 @@ void	normal_mode(int argc, char **argv, char **envp)
 		}
 		if (*line)
 			add_history((const char *)line);
-		if (handle_single_line(line, envp) == 1)
+		if (handle_single_line(line, envp, data) == 1)
 			printf("handle_single_line failed\n");
 		free(line);
 	}
@@ -173,7 +167,7 @@ static void	cleanup_split_result(char **strs, int start)
 
 	*  otherwise the shell tries to expand the variable before it is given to minishell as an input
  */
-void	debug_mode(char *input, char **envp)
+void	debug_mode(char *input, char **envp, t_data *data)
 {
 	char	**strs;
 	int		i;
@@ -185,7 +179,7 @@ void	debug_mode(char *input, char **envp)
 	i = -1;
 	while (strs[++i])
 	{
-		if (handle_single_line(strs[i], envp) == 1)
+		if (handle_single_line(strs[i], envp, data) == 1)
 		{
 			cleanup_split_result(strs, i);
 			my_exit_function("handle_single_line failed\n");
@@ -240,7 +234,7 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		
 
-		normal_mode(argc, argv, envp);
+		normal_mode(argc, argv, envp, data);
 		//TODO normal und debug modeumbauen, dass data übergeben wird
 	}
 	else
@@ -251,7 +245,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!data)
 			return (1);
 		//f_print_env(data->env->envp_lst);
-		debug_mode(argv[2], envp);
+		debug_mode(argv[2], envp, data);
 	}
 	sfbf_free_all(data);
 }

@@ -1,10 +1,3 @@
-/*
-*   json format does some funky things by itself. for that reason we have to change the following symbols:
-*   " gets replaced by \\\"
-*   ' gets replaced by \'
-*   $ gets replaced by \\$
-*
-*/
 {
     "version": "0.2.0",
     "configurations": [
@@ -21,49 +14,65 @@
             //"args": ["-d", "< input.txt > output.txt"],
             //"args": ["-d", "ls | | wc"],
             //"args": ["-d", "< EOF ls -l | grep 'VAR' | wc -l > out.txt"],
-           // "args": ["-d", "<< h file1.txt 'VAR bar ''''' | wc -l > out.txt"],
+            //"args": ["-d", "<< h file1.txt 'VAR bar ''''' | wc -l > out.txt"],
             //"args": ["-d", "cat << LIMITER >> output.txt"],
             //"args": ["-d", "~def file1.txt '\\$VAR bar'| \\$CMD -l > out.txt"],
             //"args": ["-d", "<< ff cat"],
             //"args": ["-d", "~def file1.txt \\\"\\$VAR bar\\\"| \\$CMD -l > out.txt"],
-           // "args": ["-d", "export yy=hallo du"],
-           //TODO look at quotes. the below example should have the token "yy=hallo du" and not 2 tokens ()
-            // "args": ["-d", "export yy=\\\"hallo du\\\""],
+            //"args": ["-d", "export yy=hallo du"],
+            //"args": ["-d", "export yy=\\\"hallo du\\\""],
             //"args": ["-d", "~beidl"],
             //"args": ["-d", "asdf\\$USER\\$USER"],
             //"args": ["-d", "asdf\\$USER\\$USER"],
             //"args": ["-d", "\\$USER\\$USER"],
             //"args": ["-d", "asdf\\$USER"],
             //"args": ["-d", "'\"$USERNAME\"'"],
-            //"args": ["-d", "\"\\$USERNAME\""],  
-            //"args": ["-d", "\"\\$USER\""], 
-            //"args": ["-d", "\"\\$asdf\""], 
+            //"args": ["-d", "\"\\$USERNAME\""],
+            //"args": ["-d", "\"\\$USER\""],
+            //"args": ["-d", "\"\\$asdf\""],
             //"args": ["-d", "\"asdf\\$USER asdd\""],
-            // "args": ["-d", "\\$USER\\$USER"],
+            //"args": ["-d", "\\$USER\\$USER"],
             //"args": ["-d", "dsa < y > <"],
             //"args": ["-d", "\\>"],
             //"args": ["-d", "\\$VAR1"],
             //"args": ["-d", ""],
-            // "args": ["-d", "\"'asdf'\""],
+            //"args": ["-d", "\"'asdf'\""],
             //"args": ["-d", "asdf"],
             //"args": ["-d", "\"'asdf'\""],
             //"args": ["-d", "'\"'asdf'\"'"],
             //"args": ["-d", "\"'\"'asdf'\"'\""],
             //"args": ["-d", "   \\$CMD1"],
-            // "args": ["-d", "   \\$CMf"],
-            //"args": ["-d", ""],
+            //"args": ["-d", "   \\$CMf"],
+            "args": ["-d", "ls"],
             //"args": ["-d", "\\\"< | > \\\"6"],
             //"args": ["-d", "<< EOF cat | ls"],
             //"args": ["-d", "ls"],
             //"args": ["-d", "\\\"\\\"< | > \\\"\\\"6\\\""],
             //"args": ["-d", "<< <"],
-            "args": ["-d", "< infile.txt cat -e '\\$USER' \\\"\\$USER\\\" \\$CMD1 | grep -E 'aa|bb' | wc -l > text.txt >> asdf/out.txt"],
-            //< infile.txt cat -e '$USER' "$USER" $CMD1 | grep -E 'aa|bb' | wc -l > text.txt >> asdf/out.txt
+            //"args": ["-d", "< infile.txt cat -e '\\$USER' \\\"\\$USER\\\" \\$CMD1 | grep -E 'aa|bb' | wc -l > text.txt >> asdf/out.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Follow child after fork",
+                    "text": "set follow-fork-mode child",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "Keep both parent and child under debugger control",
+                    "text": "set detach-on-fork off",
+                    "ignoreFailures": false
+                }
+            ],
             "preLaunchTask": "make"
         }
     ]

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/17 23:57:57 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/18 00:19:47 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmds)
 	int		prev_fd;
 	pid_t	pid;
 
-	if (!cmds->next && cmds->is_builtin)
-		return (f_exec_builtin(cmds, data), 0);
+	// if (!cmds->next && cmds->is_builtin != -1)
+	// 	return (f_exec_builtin(cmds, data), 0);
 	cmd = cmds;
 	prev_fd = -1;
 	while (cmd)
@@ -63,7 +63,7 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 	}
 	if (cmd->redir_failed) //here löschen
 		exit(1);
-	if (cmd->is_builtin != -1)
+	if (cmd->is_builtin)
 		f_exec_builtin_child(cmd, data);
 	else
 		f_exec_cmd(data, cmd, data->env->envp_updated);

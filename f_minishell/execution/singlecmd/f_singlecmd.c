@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/17 23:56:41 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/18 00:15:34 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ int	f_is_builtin(char *cmd)
 	return (0);
 }
 
-void	f_exec_builtin(t_cmd *cmd, t_data *data)
+int	f_exec_builtin(t_cmd *cmd, t_data *data)
 {
+	//ich brauche hier auch redirections!!!!!!!
 	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
 		printf("echo\n"); // f_echo();
 	else if (ft_strncmp(cmd->cmd, "cd", 3) == 0)
@@ -58,6 +59,7 @@ void	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
 		printf("exit\n");
 	; // f_exit();
+	return (data->last_exit_code);
 }
 
 // f_exec_builtin(cmd);

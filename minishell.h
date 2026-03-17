@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 15:47:10 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/18 00:13:46 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,8 @@ void					cleanup_command_list(t_cmd *cmd_list);
 void					cleanup_t_data_list(t_data *data);
 // tokenizer
 void					init_token(t_token *token);
-int						handle_single_line(char *line, char **envp, t_data *data);
+int						handle_single_line(char *line, char **envp,
+							t_data *data);
 t_token					*tokenizer(char *line);
 
 // expansion
@@ -176,7 +177,7 @@ int						quote_handler(int quote_status, char c);
 int						word_split(t_token *list);
 
 // execution
-void					eggsecute(t_data *data);
+int						eggsecute(t_data *data);
 
 // debug
 void					print_tokens(t_token *start);

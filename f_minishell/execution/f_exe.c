@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/17 14:12:12 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:00:40 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd,
 				int *pipe_fd);
 static void	f_exec_builtin_child(t_cmd *cmd, t_data *data);
-static void	f_wait_all(void);
+static void	f_wait_all(t_data *data);
 static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd);
 
 int	f_exec_pipeline(t_data *data, t_cmd *cmds)
@@ -32,7 +32,7 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmds)
 	while (cmd)
 	{
 		if (f_open_redirections(cmd) == -1)
-			return (f_wait_all(), 1);
+			return (f_wait_all(data), 1);
 		if (cmd->next)
 			pipe(pipe_fd);
 		pid = fork();
@@ -41,7 +41,7 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmds)
 		f_parent_cleanup(cmd, &prev_fd, pipe_fd);
 		cmd = cmd->next;
 	}
-	return (f_wait_all(), 0);
+	return (f_wait_all(data), 0);
 }
 
 static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
@@ -86,15 +86,15 @@ static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd)
 	}
 }
 
-static void	f_wait_all(void)
+static void	f_wait_all(t_data *data)
 {
 	int	status;
 
 	while (waitpid(-1, &status, 0) > 0)
 	{
 		if (WIFEXITED(status))
-			g_last_exit_code = WEXITSTATUS(status);
+			data->last_exit_code = WEXITSTATUS(status);
 	}
 }
 
-/*n*/
+/*no global last exit code how to handel ??? frido */

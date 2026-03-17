@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 14:02:19 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:52:34 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ typedef struct s_data
 {
 	t_cmd				*cmds;
 	t_envp				*env;
-	// i changed that to a double pointer
 	size_t				cc;
+	int					last_exit_code;
 }						t_data;
 
 // s

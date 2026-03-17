@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 14:00:08 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:50:46 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void remove_heredoc_file()
 
 }
 
+//TODO return return von f_exec_pipeline
+//TODO nur einmal ausführen, keine loop
 void eggsecute (t_data *data)
 {
     while (data->cmds)

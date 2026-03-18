@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/18 00:15:34 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/18 12:46:09 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	f_is_builtin(char *cmd)
 	size_t	i;
 	size_t	len;
 
+	if (!cmd)
+		return 0;
 	len = ft_strlen(cmd);
 	i = 0;
 	bi = (char *[]){"echo", "cd", "pwd", "export", "unset", "env", "exit",

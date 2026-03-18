@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/18 11:52:35 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/18 12:42:37 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	init_cmd(t_cmd *cmd)
 {
 	cmd->cmd = NULL;
 	cmd->is_builtin = -1;
+	cmd->is_redir_only_cmd = 0;
 	cmd->args = NULL;
 	cmd->path = NULL;
 	cmd->infile = NULL;
@@ -268,8 +269,10 @@ t_cmd	*create_single_cmd(t_token *token_list)
         return (NULL);
     init_cmd(cmd);
     size = count_size_for_args_array(token_list);
-    if (size < 0)
+	if (size < 0)
         return (free(cmd), NULL);
+	if (size == 0)
+		cmd->is_redir_only_cmd = 1;
     if (init_args_array(cmd, size) == 1)
         return (free(cmd), NULL);
     while (token_list && token_list->type != PIPE)

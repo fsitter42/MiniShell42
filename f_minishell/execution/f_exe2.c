@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/18 11:37:52 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/18 13:08:15 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	f_open_infile(t_data *data, t_cmd *cmd, char *file)
 	return (0);
 }
 
-static char	*b_create_heredoc_filename(int id)
+static char	*b_create_heredoc_path(int id)
 {
 	char	*filename;
 	char	*id_as_string;
@@ -118,7 +118,7 @@ static int	b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir)
 	char	*filename;
 
 	(void)data;
-	filename = b_create_heredoc_filename(redir->id);
+	filename = b_create_heredoc_path(redir->id);
 	if (!filename)
 		return (-1);
 	fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0600);
@@ -131,9 +131,13 @@ static int	b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir)
 	if (cmd->in_fd != -1)
 		close(cmd->in_fd);
 	cmd->in_fd = open(filename, O_RDONLY);
-	free(filename);
+	// redir->file = ft_strdup(filename);
+	// free(filename);
+	// if (!redir->file)
+	// 	return -1;
 	if (cmd->in_fd == -1)
 		return (-1);
+	redir->file = filename;
 	return (0);
 }
 

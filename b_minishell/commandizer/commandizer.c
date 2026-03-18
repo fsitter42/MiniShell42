@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/18 11:04:04 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/18 11:52:35 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,25 +218,22 @@ int	handle_word(t_token **token_list, t_cmd *cmd)
 
 int	count_size_for_args_array(t_token *token_list)
 {
-	int	size;
+    int	size;
 
-	size = 0;
-	while (token_list && token_list->type != PIPE)
-	{
-		if (is_token_type_redirection(token_list))
-			token_list = token_list->next;
-		else
-			size++;
-		if (token_list)
-			token_list = token_list->next;
-		else
-		{
-			return (0);
-			// edge case for input ">" or "<"
-		}
-	}
-	// printf("size for args array is %d\n", size);
-	return (size);
+    size = 0;
+    while (token_list && token_list->type != PIPE)
+    {
+        if (is_token_type_redirection(token_list))
+        {
+            if (!token_list->next)
+                return (-1);
+            token_list = token_list->next;
+        }
+        else
+            size++;
+        token_list = token_list->next;
+    }
+    return (size);
 }
 
 // does the mallocing stuff, returns 0 on success and 1 on error
@@ -263,31 +260,30 @@ int	init_args_array(t_cmd *cmd, int size)
  */
 t_cmd	*create_single_cmd(t_token *token_list)
 {
-	t_cmd	*cmd;
-	int		size;
+    t_cmd	*cmd;
+    int		size;
 
-	// printf("trying to create a cmd\n");
-	cmd = ft_calloc(sizeof(t_cmd), 1);
-	if (!cmd)
-		return (NULL);
-	init_cmd(cmd);
-	size = count_size_for_args_array(token_list);
-	if (size == 0)
-		return (free(cmd), NULL);
-	if (init_args_array(cmd, size) == 1)
-		return (free(cmd), NULL);
-	while (token_list && token_list->type != PIPE)
-	{
-		if (is_token_type_redirection(token_list))
-		{
-			if (handle_redirection(&token_list, cmd) == 1)
-				return (cleanup_command_list(cmd), NULL);
-			continue ;
-		}
-		else if (handle_word(&token_list, cmd) == 1)
-			return (cleanup_command_list(cmd), NULL);
-	}
-	return (cmd);
+    cmd = ft_calloc(sizeof(t_cmd), 1);
+    if (!cmd)
+        return (NULL);
+    init_cmd(cmd);
+    size = count_size_for_args_array(token_list);
+    if (size < 0)
+        return (free(cmd), NULL);
+    if (init_args_array(cmd, size) == 1)
+        return (free(cmd), NULL);
+    while (token_list && token_list->type != PIPE)
+    {
+        if (is_token_type_redirection(token_list))
+        {
+            if (handle_redirection(&token_list, cmd) == 1)
+                return (cleanup_command_list(cmd), NULL);
+            continue ;
+        }
+        else if (handle_word(&token_list, cmd) == 1)
+            return (cleanup_command_list(cmd), NULL);
+    }
+    return (cmd);
 }
 
 void	add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd)

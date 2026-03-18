@@ -46,7 +46,7 @@
             //"args": ["-d", "ls > outfile > outfile2 < infile < infile2 << EOF"],
             //"args": ["-d", "ls"],
             //"args": ["-d", "\\\"< | > \\\"6"],
-            "args": ["-d", "<< EOF cat"],
+            "args": ["-d", "<< EOF"],
             //"args": ["-d", "ls"],
             //"args": ["-d", "\\\"\\\"< | > \\\"\\\"6\\\""],
             //"args": ["-d", "<< <"],

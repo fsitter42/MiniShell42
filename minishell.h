@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/18 00:13:46 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/18 11:12:27 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_redir
 {
 	char				*file;
 	int					type;
+	int					id;
 	char				*delimiter;
 	t_redir				*next;
 }						t_redir;
@@ -178,6 +179,7 @@ int						word_split(t_token *list);
 
 // execution
 int						eggsecute(t_data *data);
+static int b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir);
 
 // debug
 void					print_tokens(t_token *start);

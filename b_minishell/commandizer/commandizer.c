@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 17:11:40 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/18 11:04:04 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,16 @@ void	add_redir_to_redir_list(t_redir *new_redir, t_cmd *cmd)
 	}
 }
 
+static int	next_redir_id(void)
+{
+    static int	id;
+
+    id++;
+    if (id <= 0)
+        id = 1;
+    return (id);
+}
+
 int	add_redirection_to_cmd(t_cmd *cmd, int type, char *str, char *delimiter)
 {
 	t_redir	*new_redir;
@@ -145,6 +155,7 @@ int	add_redirection_to_cmd(t_cmd *cmd, int type, char *str, char *delimiter)
 		return (free(new_redir->delimiter), free(new_redir), 1);
 	}
 	new_redir->type = type;
+	new_redir->id = next_redir_id();
 	add_redir_to_redir_list(new_redir, cmd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/16 13:59:55 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/19 14:59:33 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@ int	f_cd(t_data *data, char **args)
 	ret = EXIT_SUCCESS;
 	if (!data || !args || !args[0])
 		return (EXIT_FAILURE);
-	//ret = f_print_env(data->env->envp_lst);
+	ret = printf("hallo hallo hallo\n");
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/19 12:39:29 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/19 14:26:19 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmds)
 	int		pipe_fd[2];
 	int		prev_fd;
 	pid_t	pid;
-	
+
 	cmd = cmds;
 	prev_fd = -1;
 	while (cmd)
 	{
-		if (f_open_redirections(data, cmd) == -1)
+		if (f_redir_wrapper(data) == -1)
 			return (f_wait_all(data), 1);
 		if (cmd->next)
-			pipe(pipe_fd); //if -1 here
-		pid = fork(); //if -1
+			pipe(pipe_fd); // if -1 here
+		pid = fork();      // if -1
 		if (pid == 0)
 			f_child_process(data, cmd, prev_fd, pipe_fd);
 		f_parent_cleanup(cmd, &prev_fd, pipe_fd);
@@ -59,7 +59,7 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
 	}
-	if (cmd->redir_failed) //here löschen
+	if (cmd->redir_failed) // here löschen
 		exit(1);
 	if (cmd->is_builtin)
 		f_exec_builtin_child(cmd, data);

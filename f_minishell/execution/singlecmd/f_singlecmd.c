@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/19 14:58:59 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/19 15:04:44 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	f_redir_setup(t_cmd *cmd, int saved_fds[2])
 		close(cmd->out_fd);
 	}
 	return (0);
+	//add errors data->lastexitcode
 }
 
 void	f_redir_restore(int saved_fds[2])
@@ -93,6 +94,7 @@ void	f_redir_restore(int saved_fds[2])
 	dup2(saved_fds[1], STDOUT_FILENO);
 	close(saved_fds[0]);
 	close(saved_fds[1]);
+	//add errors data->lastexitcode
 }
 
 int	f_exec_builtin(t_cmd *cmd, t_data *data)

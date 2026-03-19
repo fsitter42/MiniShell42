@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/18 12:46:09 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/19 14:05:43 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	f_exec_cmd(t_data *data, t_cmd *cmd, char **envp)
 {
-	cmd->path = f_path_handler(data, cmd->cmd, envp);  //here frido wo gehört das hin
+	cmd->path = f_path_handler(data, cmd->cmd, envp);
+		// here frido wo gehört das hin
 	if (!cmd->path)
 		exit(data->last_exit_code);
 	execve(cmd->path, cmd->args, envp);
@@ -29,11 +30,12 @@ int	f_is_builtin(char *cmd)
 	size_t	len;
 
 	if (!cmd)
-		return 0;
+		return (0);
 	len = ft_strlen(cmd);
 	i = 0;
-	bi = (char *[]){"echo", "cd", "pwd", "export", "unset", "env", "exit",
-		NULL};
+	// bi = (char *[]){"echo", "cd", "pwd", "export", "unset", "env", "exit",
+	// 	NULL};
+	bi = (char *[]){"cd", "pwd", "export", "unset", "env", "exit", NULL};
 	while (bi[i])
 	{
 		if (ft_strncmp(cmd, bi[i], len) == 0)
@@ -45,7 +47,7 @@ int	f_is_builtin(char *cmd)
 
 int	f_exec_builtin(t_cmd *cmd, t_data *data)
 {
-	//ich brauche hier auch redirections!!!!!!!
+	// ich brauche hier auch redirections!!!!!!!
 	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
 		printf("echo\n"); // f_echo();
 	else if (ft_strncmp(cmd->cmd, "cd", 3) == 0)

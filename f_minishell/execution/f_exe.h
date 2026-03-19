@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 12:00:30 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/18 00:12:13 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/19 14:20:21 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,9 @@ int		f_exec_pipeline(t_data *data, t_cmd *cmds);
 
 // f_exe2.c
 int		f_open_redirections(t_data *data, t_cmd *cmd);
+
+// b_heredoc.c
+int		b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir);
+
 
 #endif

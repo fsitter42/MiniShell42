@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/18 12:40:30 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/19 14:20:36 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ int						word_split(t_token *list);
 
 // execution
 int						eggsecute(t_data *data);
-static int b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir);
+
 
 // debug
 void					print_tokens(t_token *start);

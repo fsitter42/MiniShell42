@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commandizer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/18 12:42:37 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/19 12:55:55 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,6 +381,7 @@ t_cmd	*create_command_list(t_token *token_list)
 			return (cleanup_command_list(cmd_list), NULL);
 		add_cmd_to_cmd_list(&cmd_list, cmd);
 		shift_token_list_to_next_pipe(&token_list);
+		cmd->is_builtin = f_is_builtin(cmd->cmd); //hat frido hinzugefügt (stört? nein)
 	}
 	// print_command_list(cmd_list);
 	return (cmd_list);

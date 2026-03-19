@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/18 13:49:40 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/19 12:39:29 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmds)
 	int		pipe_fd[2];
 	int		prev_fd;
 	pid_t	pid;
-
-	// if (!cmds->next && cmds->is_builtin != -1)
-	// 	return (f_exec_builtin(cmds, data), 0);
+	
 	cmd = cmds;
 	prev_fd = -1;
 	while (cmd)

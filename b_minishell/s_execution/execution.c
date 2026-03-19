@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/18 13:22:56 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/19 12:53:10 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,48 @@ void	remove_heredoc_files(t_cmd *cmds)
 	}
 }
 
+// alt
 // TODO return return von f_exec_pipeline
 // TODO nur einmal ausführen, keine loop
+// int	eggsecute(t_data *data)
+// {
+// 	t_cmd	*cmd_copy;
+
+// 	cmd_copy = data->cmds;
+// 	while (data->cmds)
+// 	{
+// 		// if (data->cmds->has_heredoc)
+// 		//	do_heredoc_stuff(data->cmds);
+// 		// eventuell hier checken ob is builtin
+// 		data->cmds->is_builtin = f_is_builtin(data->cmds->cmd);
+// 		if (!data->cmds->next && data->cmds->is_builtin)
+// 			return (f_exec_builtin(data->cmds, data));
+// 		f_exec_pipeline(data, data->cmds);
+// 		// f_exec_pipeline(data, cmd_list);
+// 		// delete .heredoc_dump
+// 		data->cmds = data->cmds->next;
+// 	}
+// 	// TODO cleanup all cmds
+// 	// TODO here we have to delete the temp heredoc files
+// 	remove_heredoc_files(cmd_copy);
+// 	return (data->last_exit_code);
+// }
+
 int	eggsecute(t_data *data)
 {
-	t_cmd	*cmd_copy;
+	t_cmd *cmd_copy;
 
 	cmd_copy = data->cmds;
-	while (data->cmds)
-	{
-		// if (data->cmds->has_heredoc)
-		//	do_heredoc_stuff(data->cmds);
-		// eventuell hier checken ob is builtin
-		data->cmds->is_builtin = f_is_builtin(data->cmds->cmd);
-		if (!data->cmds->next && data->cmds->is_builtin)
-			return (f_exec_builtin(data->cmds, data));
-		f_exec_pipeline(data, data->cmds);
-		// f_exec_pipeline(data, cmd_list);
-		// delete .heredoc_dump
-		data->cmds = data->cmds->next;
-	}
+
+	// if (data->cmds->has_heredoc)
+	//	do_heredoc_stuff(data->cmds);
+	// eventuell hier checken ob is builtin
+	if (!data->cmds->next && data->cmds->is_builtin)
+		return (f_exec_builtin(data->cmds, data));
+	f_exec_pipeline(data, data->cmds);
+	// f_exec_pipeline(data, cmd_list);
+	// delete .heredoc_dump
+
 	// TODO cleanup all cmds
 	// TODO here we have to delete the temp heredoc files
 	remove_heredoc_files(cmd_copy);

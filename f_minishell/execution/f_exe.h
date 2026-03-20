@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 12:00:30 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/19 14:25:59 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/20 14:03:15 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,16 @@ int		f_is_builtin(char *cmd);
 int		f_exec_builtin(t_cmd *cmd, t_data *data);
 
 // f_exe.c
-int		f_exec_pipeline(t_data *data, t_cmd *cmds);
+int		f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2], int prev_fd);
+// int		f_exec_pipeline(t_data *data, t_cmd *cmds);
 
 // f_exe2.c
 int		f_redir_wrapper(t_data *data);
 
 // b_heredoc.c
 int		b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir);
+
+// f_exec_wrapper.c
+int		f_pipeline_wrapper(t_data *data);
 
 #endif

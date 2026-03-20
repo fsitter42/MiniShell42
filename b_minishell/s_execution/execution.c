@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/19 12:53:10 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/20 14:05:06 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	eggsecute(t_data *data)
 	// eventuell hier checken ob is builtin
 	if (!data->cmds->next && data->cmds->is_builtin)
 		return (f_exec_builtin(data->cmds, data));
-	f_exec_pipeline(data, data->cmds);
+	f_pipeline_wrapper(data);
 	// f_exec_pipeline(data, cmd_list);
 	// delete .heredoc_dump
 

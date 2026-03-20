@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/19 14:01:31 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/20 16:17:06 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	t_cmd	*cmd_list;
 
 	if (ft_strncmp(line, "exit", 5) == 0)
-		my_exit_function("exit was typed");
+		my_exit_function(NULL);
 	//printf("%s is going to be tokenized\n", line);
 	token_list = tokenizer(line);
 	if (!token_list)

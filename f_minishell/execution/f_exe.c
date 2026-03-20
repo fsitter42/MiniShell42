@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/20 14:23:34 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/20 14:29:11 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 {
 	pid_t	pid;
 	int		prev_fd;
-	
+
 	prev_fd = -1;
 	while (cmd)
 	{
@@ -43,30 +43,6 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 	}
 	return (f_wait_all(data), 0);
 }
-
-// int	f_exec_pipeline(t_data *data, t_cmd *cmds)
-// {
-// 	t_cmd	*cmd;
-// 	int		pipe_fd[2];
-// 	int		prev_fd;
-// 	pid_t	pid;
-
-// 	cmd = cmds;
-// 	prev_fd = -1;
-// 	while (cmd)
-// 	{
-// 		if (f_redir_wrapper(data) == -1)
-// 			return (f_wait_all(data), 1);
-// 		if (cmd->next)
-// 			pipe(pipe_fd); // if -1 here
-// 		pid = fork();      // if -1
-// 		if (pid == 0)
-// 			f_child_process(data, cmd, prev_fd, pipe_fd);
-// 		f_parent_cleanup(cmd, &prev_fd, pipe_fd);
-// 		cmd = cmd->next;
-// 	}
-// 	return (f_wait_all(data), 0);
-// }
 
 static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 {
@@ -122,3 +98,27 @@ static void	f_wait_all(t_data *data)
 }
 
 /*no global last exit code how to handel ??? frido */
+
+// int	f_exec_pipeline(t_data *data, t_cmd *cmds)
+// {
+// 	t_cmd	*cmd;
+// 	int		pipe_fd[2];
+// 	int		prev_fd;
+// 	pid_t	pid;
+
+// 	cmd = cmds;
+// 	prev_fd = -1;
+// 	while (cmd)
+// 	{
+// 		if (f_redir_wrapper(data) == -1)
+// 			return (f_wait_all(data), 1);
+// 		if (cmd->next)
+// 			pipe(pipe_fd); // if -1 here
+// 		pid = fork();      // if -1
+// 		if (pid == 0)
+// 			f_child_process(data, cmd, prev_fd, pipe_fd);
+// 		f_parent_cleanup(cmd, &prev_fd, pipe_fd);
+// 		cmd = cmd->next;
+// 	}
+// 	return (f_wait_all(data), 0);
+// }

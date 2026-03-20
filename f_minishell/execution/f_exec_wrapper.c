@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 14:02:15 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/20 14:08:50 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/20 14:23:41 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,18 @@ int	f_pipeline_wrapper(t_data *data)
 	int		prev_fd;
 
 	cmd = data->cmds;
-	prev_fd = -1;
-	ret = f_exec_pipeline(data, cmd, pipe_fd, prev_fd);
+	
+	ret = f_exec_pipeline(data, cmd, pipe_fd);
     return (ret);
+}
+
+void f_close_pipe(t_cmd *cmd, int pipe_fd[2], int *prev_fd)
+{
+	if (cmd->next)
+	{
+		if (*prev_fd != -1)
+			close(*prev_fd);
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+	}
 }

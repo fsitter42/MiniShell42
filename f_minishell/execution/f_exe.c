@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/20 14:06:18 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/20 14:23:34 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ static void	f_exec_builtin_child(t_cmd *cmd, t_data *data);
 static void	f_wait_all(t_data *data);
 static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd);
 
-int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2], int prev_fd)
+int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 {
 	pid_t	pid;
-
+	int		prev_fd;
+	
+	prev_fd = -1;
 	while (cmd)
 	{
 		if (f_redir_wrapper(data) == -1)
@@ -33,10 +35,7 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2], int prev_fd)
 		}
 		pid = fork();
 		if (pid == -1)
-		{
-			if (cmd->next)
-				printf("here we need a close function\n"); //f_close_pipe(pipe_fd);
-		}
+			f_close_pipe(cmd, pipe_fd, &prev_fd);
 		if (pid == 0)
 			f_child_process(data, cmd, prev_fd, pipe_fd);
 		f_parent_cleanup(cmd, &prev_fd, pipe_fd);

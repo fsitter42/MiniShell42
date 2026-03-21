@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/20 16:17:06 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/21 12:03:47 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ void	sfbf_free_all(t_data *data)
 t_data	*sfbf_init_all(char **envp)
 {
 	t_data	*data;
+	char *args[] = {"export", "OLDPWD", NULL};
 
 	data = ft_calloc(sizeof(t_data), 1);
 	if (!data)
@@ -213,6 +214,7 @@ t_data	*sfbf_init_all(char **envp)
 	data->env = f_init_envp(envp);
 	if (!data->env)
 		return (free(data), NULL);
+	f_export(data, args);
 	return (data);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/20 14:29:11 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/21 11:10:28 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 	prev_fd = -1;
 	while (cmd)
 	{
-		if (f_redir_wrapper(data) == -1)
+		if (f_redir_wrapper(data, cmd) == -1)
 			return (f_wait_all(data), 1);
 		if (cmd->next)
 		{

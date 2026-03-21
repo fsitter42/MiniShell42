@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/19 14:27:14 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/21 11:10:07 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ static int	f_open_redirections(t_data *data, t_cmd *cmd);
 static int	f_open_infile(t_data *data, t_cmd *cmd, char *file);
 static int	f_open_outfile(t_data *data, t_cmd *cmd, char *file, int append);
 
-int	f_redir_wrapper(t_data *data)
+int	f_redir_wrapper(t_data *data, t_cmd *cmd)
 {
 	int	ret;
 
 	data->cmds->in_fd = -1;
 	data->cmds->out_fd = -1;
-	ret = f_open_redirections(data, data->cmds);
+	ret = f_open_redirections(data, cmd);
 	return (ret);
 }
 

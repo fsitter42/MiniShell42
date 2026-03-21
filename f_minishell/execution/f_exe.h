@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 12:00:30 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/20 14:24:04 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/21 11:10:47 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2]);
 // int		f_exec_pipeline(t_data *data, t_cmd *cmds);
 
 // f_exe2.c
-int		f_redir_wrapper(t_data *data);
+int	f_redir_wrapper(t_data *data, t_cmd *cmd);
 
 // b_heredoc.c
 int		b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir);

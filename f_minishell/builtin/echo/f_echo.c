@@ -3,22 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   f_echo.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/16 14:02:44 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/21 12:54:16 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
+static int	f_nflag(char **args, size_t *i);
+
 int	f_echo(t_data *data, char **args)
 {
-	int	ret;
+	int		ret;
+	size_t	i;
+	int		n_flag;
 
 	ret = EXIT_SUCCESS;
+	i = 1;
 	if (!data || !args || !args[0])
 		return (EXIT_FAILURE);
-	// ret = f_print_env(data->env->envp_lst);
+	n_flag = f_nflag(args, &i);
+	while (args[i])
+	{
+		ft_putstr_fd(args[i], 1);
+		if (args[i + 1])
+			ft_putchar_fd(' ', 1);
+		i++;
+	}
+	if (!n_flag)
+		ft_putchar_fd('\n', 1);
 	return (ret);
+}
+
+static int	f_nflag(char **args, size_t *i)
+{
+	size_t	j;
+
+	while (args[*i] && args[*i][0] == '-')
+	{
+		j = 1;
+		while (args[*i][j] == 'n')
+			j++;
+		if (args[*i][j] != '\0')
+			break ;
+		(*i)++;
+	}
+	return (*i > 1);
 }

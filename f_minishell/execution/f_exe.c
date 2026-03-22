@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 16:15:24 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 16:50:51 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,10 @@ static void	f_exec_builtin_child(t_cmd *cmd, t_data *data)
 
 static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd)
 {
+	if (cmd->in_fd > 2)
+		close(cmd->in_fd);
+	if (cmd->out_fd > 2)
+		close(cmd->out_fd);
 	if (*prev_fd != -1)
 		close(*prev_fd);
 	if (cmd->next)

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 17:23:42 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 17:24:27 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int			g_last_exit_code;
 
 
-int is_syntax_valid(t_data *data);
+int f_is_syntax_valid(t_data *data);
 /*
 	input parsing - Stefan
 	TODO:
@@ -122,7 +122,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
     	    return (cleanup_token_list(token_list), 1);	
     	cleanup_token_list(token_list);
     	data->cmds = cmd_list; 	
-    	if (is_syntax_valid(data) == 0)
+    	if (f_is_syntax_valid(data) == 0)
     	{
         	cleanup_command_list(cmd_list);
         	data->cmds = NULL;
@@ -269,7 +269,7 @@ int	main(int argc, char **argv, char **envp)
 	sfbf_free_all(data);
 }
 
-int is_syntax_valid(t_data *data)
+int f_is_syntax_valid(t_data *data)
 {
     t_cmd *tmp;
 

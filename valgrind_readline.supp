@@ -1,0 +1,26 @@
+{
+   readline_still_reachable_all
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:readline
+   ...
+}
+{
+   readline_initialize_brute_force
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:rl_initialize
+   ...
+}
+{
+   readline_generic_lib_ignore
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*/libreadline.so.*
+   ...
+}

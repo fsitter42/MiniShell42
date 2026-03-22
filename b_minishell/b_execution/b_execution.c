@@ -6,12 +6,12 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 17:07:59 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 17:09:34 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
- 
+
 // TODO free(redir->file) eventuell wo anders hin JA DOUBLEFREE
 void	remove_heredoc_files(t_cmd *cmds)
 {
@@ -22,11 +22,8 @@ void	remove_heredoc_files(t_cmd *cmds)
 		redir = cmds->redirs;
 		while (redir)
 		{
-			if (redir->type == HEREDOC)
-			{
+			if (redir->type == HEREDOC && redir->file)
 				unlink(redir->file);
-				free(redir->file);
-			}
 			redir = redir->next;
 		}
 		cmds = cmds->next;
@@ -35,14 +32,17 @@ void	remove_heredoc_files(t_cmd *cmds)
 
 int	eggsecute(t_data *data)
 {
-	t_cmd	*cmd_copy;
+	int	status;
 
-	cmd_copy = data->cmds;
 	if (!data->cmds->next && data->cmds->is_builtin)
-		return (f_exec_builtin(data->cmds, data));
-	f_pipeline_wrapper(data);
-	remove_heredoc_files(cmd_copy);
-	return (data->last_exit_code);
+		status = f_exec_builtin(data->cmds, data);
+	else
+	{
+		f_pipeline_wrapper(data);
+		status = data->last_exit_code;
+	}
+	remove_heredoc_files(data->cmds);
+	return (status);
 }
 
 /* alt

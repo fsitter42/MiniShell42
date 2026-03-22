@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 12:11:25 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/22 17:21:07 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int			g_last_exit_code;
 
+
+int is_syntax_valid(t_data *data);
 /*
 	input parsing - Stefan
 	TODO:
@@ -115,12 +117,18 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	//print_tokens(token_list);
 	if (!is_token_list_empty(token_list))
 	{
-		cmd_list = create_command_list(token_list->next);
-		if (!cmd_list)
-			return (cleanup_token_list(token_list), 1);
-		cleanup_token_list(token_list);
-		data->cmds = cmd_list;
-		eggsecute(data);
+    	cmd_list = create_command_list(token_list->next);
+    	if (!cmd_list)
+    	    return (cleanup_token_list(token_list), 1);	
+    	cleanup_token_list(token_list);
+    	data->cmds = cmd_list; 	
+    	if (is_syntax_valid(data) == 0)
+    	{
+        	cleanup_command_list(cmd_list);
+        	data->cmds = NULL;
+        	return (1); 
+    	}
+    	eggsecute(data);
 	}
 	else
 		cleanup_token_list(token_list);
@@ -259,6 +267,24 @@ int	main(int argc, char **argv, char **envp)
 		debug_mode(argv[2], envp, data);
 	}
 	sfbf_free_all(data);
+}
+
+int is_syntax_valid(t_data *data)
+{
+    t_cmd *tmp;
+
+    tmp = data->cmds;
+    while (tmp)
+    {
+        if (!tmp->cmd && !tmp->redirs)
+        {
+            ft_putstr_fd("minishell: syntax error near unexpected token '|'\n", 2);
+            data->last_exit_code = 258;
+            return (0);
+        }
+        tmp = tmp->next;
+    }
+    return (1);
 }
 
 /* size_t count_cmds(t_token *cmd_list)

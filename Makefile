@@ -6,7 +6,7 @@
 #    By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/22 15:54:51 by fsitter          ###   ########.fr        #
+#    Updated: 2026/03/22 16:17:45 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,7 +101,7 @@ fclean: clean
 
 re: fclean all
 
-valgrind: all
+valgrind:
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=f_valgrind_readline.supp --trace-children=yes ./minishell
 
 .PHONY: all clean fclean re valgrind

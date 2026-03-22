@@ -3,38 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   f_export.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:26:09 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/16 14:03:05 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 16:29:57 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
+static int	f_check_arg(char *arg)
+{
+	if (!arg || !*arg || (!ft_isalpha(*arg) && *arg != '_'))
+		return (f_print_error(arg, "not a valid identifier"), 1);
+	if (ft_strlen(arg) > MAX_ENV_LEN)
+		return (f_print_error(arg, "argument too long"), 1);
+	return (0);
+}
+
 int	f_export(t_data *data, char **args)
 {
-	int	ret;
 	int	i;
+	int	ret;
 
-	ret = EXIT_SUCCESS;
-	if (!data || !args || !args[0])
+	if (!data || !args)
 		return (EXIT_FAILURE);
 	if (!args[1])
 		return (f_print_export(data->env->envp_lst));
-	i = 1;
-	while (args[i])
+	ret = EXIT_SUCCESS;
+	i = 0;
+	while (args[++i])
 	{
-		if (ft_strlen(args[i]) > MAX_ENV_LEN)
-		{
-			f_print_error(args[i], "argument too long");
+		if (f_check_arg(args[i]))
 			ret = EXIT_FAILURE;
-		}
-		else
-			ret = f_export_with_key(data->env->envp_lst, args[i]);
-		i++;
+		else if (f_export_with_key(data->env->envp_lst, args[i]))
+			ret = EXIT_FAILURE;
 	}
-	ret = f_update_envp(data->env);
+	f_update_envp(data->env);
 	return (ret);
 }
 

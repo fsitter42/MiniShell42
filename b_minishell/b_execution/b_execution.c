@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   b_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 14:26:10 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/22 17:07:59 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-// TODO free(redir->file) eventuell wo anders hin
+ 
+// TODO free(redir->file) eventuell wo anders hin JA DOUBLEFREE
 void	remove_heredoc_files(t_cmd *cmds)
 {
 	t_redir	*redir;

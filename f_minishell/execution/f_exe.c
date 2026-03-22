@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 12:32:03 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/22 16:14:14 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,12 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 
 static void	f_exec_builtin_child(t_cmd *cmd, t_data *data)
 {
+	int	status;
+
+	status = data->last_exit_code;
 	f_exec_builtin(cmd, data);
-	// TODO FRIDO: child cleanup logic
-	exit(data->last_exit_code);
+	sfbf_free_all(data);
+	exit(status);
 }
 
 static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd)

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 13:55:20 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 16:00:48 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "cd", 3) == 0)
 		printf("cd\n"); //data->last_exit_code = f_cd(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "pwd", 4) == 0)
-		data->last_exit_code = f_pwd(data, cmd->args);
+		data->last_exit_code = f_pwd();
 	else if (ft_strncmp(cmd->cmd, "export", 7) == 0)
 		data->last_exit_code = f_export(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "unset", 6) == 0)

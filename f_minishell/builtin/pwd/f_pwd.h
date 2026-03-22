@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_pwd.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 15:04:19 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/11 15:07:33 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 16:00:23 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 # define PWD_H
 
 // f_pwd.c
-int	f_pwd(t_data *data, char **args);
+int	f_pwd(void);
 
 #endif

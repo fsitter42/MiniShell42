@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 16:14:14 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 16:15:24 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ static void	f_exec_builtin_child(t_cmd *cmd, t_data *data)
 {
 	int	status;
 
-	status = data->last_exit_code;
 	f_exec_builtin(cmd, data);
+	status = data->last_exit_code;
 	sfbf_free_all(data);
 	exit(status);
 }

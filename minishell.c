@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 17:21:07 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 17:23:42 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 		if (*line)
 			add_history((const char *)line);
 		if (handle_single_line(line, envp, data) == 1)
-			printf("handle_single_line failed\n");
+			printf("handle_single_line failed\n"); // TODO brauch ma??
 		free(line);
 	}
 }

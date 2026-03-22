@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 13:01:45 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/22 14:40:02 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,12 +164,14 @@ int						count_pipes(t_token *token_list);
 void					shift_token_list_to_next_pipe(t_token **token_list);
 int						count_size_for_args_array(t_token *token_list);
 int						init_args_array(t_cmd *cmd, int size);
-void					shift_and_consume_token_list_by_x(t_token **token, int x);
+void					shift_and_consume_token_list_by_x(t_token **token,
+							int x);
 int						is_token_type_redirection(t_token *token);
 int						is_valid_redirection_target(t_token *redir_token);
 void					add_redir_to_redir_list(t_redir *new_redir, t_cmd *cmd);
 int						next_redir_id(void);
-int						add_r_t_c(t_cmd *cmd, int type, char *str, char *delimiter);
+int						add_r_t_c(t_cmd *cmd, int type, char *str,
+							char *delimiter);
 // cleanup
 void					my_exit_function(char *error_msg);
 void					free_token(t_token *token);
@@ -188,7 +190,20 @@ int						expansion(t_token *list, char **envp);
 char					*expand_word_one_pass(char *word);
 int						quote_handler(int quote_status, char c);
 int						word_split(t_token *list);
-
+char					*extract_var_from_envp(char *var_name);
+int						resolve_env_var_value(char *var_name, char **value);
+int						append_env_var(char **out, char *word, int *i);
+char					*append_str(char *dst, char *src);
+char					*append_char(char *dst, char c);
+int						is_var_char(char c);
+int						get_var_name_len(char *word, int i);
+void					add_to_list(t_token *list, t_token *new);
+int						consume_syntactic_quote(char c, int *quote_status);
+char					*extract_home_path_from_envp(char **envp);
+char					*replace_char_with_expandable(char *original,
+							char char_to_expand, char *expandable);
+int						expand_home_dir(t_token *list_elem, char **envp);
+int						expand_dollar_question(char **out, int *i);
 // execution
 int						eggsecute(t_data *data);
 

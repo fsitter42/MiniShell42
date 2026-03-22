@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   commandizer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/19 12:55:55 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 13:08:36 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/* here we want to create a second linked list that consumes the token linked list and creates the exact
-
-	*  structure that we need in order to be able to execute the commands and create the pipes needed.
-
-	*  we have to find a logic that extracts the correct amount of words that form one command (each flag
+/*  here we want to create a second linked list that consumes the token linked
+ *  list and creates the exact structure that we need in order to be able to
+ *  execute commands and create the pipes needed.
+ *  we have to find a logic that extracts the correct amount of words that
+ *  form one command (each flag
  *  is a new word).
  *  furthermore, the pipes, <,
 	> etc. define the redirection of the pipes needed.
@@ -40,61 +40,6 @@
  *
 */
 
-// TODO call do_heredoc_stuff(cmd_list) here not in eggsecute
-
-void	init_cmd(t_cmd *cmd)
-{
-	cmd->cmd = NULL;
-	cmd->is_builtin = -1;
-	cmd->is_redir_only_cmd = 0;
-	cmd->args = NULL;
-	cmd->path = NULL;
-	cmd->infile = NULL;
-	cmd->in_fd = -1;
-	cmd->outfile = NULL;
-	cmd->out_fd = -1;
-	cmd->next = NULL;
-	cmd->append = FALSE;
-	cmd->has_heredoc = FALSE;
-	cmd->delimiter = NULL;
-	cmd->redirs = NULL;
-}
-
-void	shift_and_consume_token_list_by_x(t_token **token, int x)
-{
-	int	i;
-
-	i = -1;
-	while (++i < x)
-	{
-		(*token)->consume_status = CONSUMED;
-		(*token) = (*token)->next;
-	}
-}
-
-int	is_token_type_redirection(t_token *token)
-{
-	int	x;
-
-	x = token->type;
-	if (x == HEREDOC || x == REDIR_IN || x == REDIR_APPEND || x == REDIR_OUT)
-		return (1);
-	return (0);
-}
-
-// returns 0 is the redirection target is not valid
-int	is_valid_redirection_target(t_token *redir_token)
-{
-	if (!redir_token || !redir_token->next)
-		return (0);
-	if (redir_token->next->type != WORD
-		&& redir_token->next->type != WORD_AFTER_HEREDOC)
-		return (0);
-	if (!redir_token->next->str)
-		return (0);
-	return (1);
-}
-
 /*
  *	TODO differentiate between the 2 cases where 1 is returned
  */
@@ -111,86 +56,34 @@ int	heredoc_handler(t_cmd *cmd, t_token *token_list)
 		return (1);
 	return (0);
 }
-void	add_redir_to_redir_list(t_redir *new_redir, t_cmd *cmd)
-{
-	t_redir *cur;
-	
-	if (!cmd->redirs)
-		cmd->redirs = new_redir;
-	else
-	{
-		cur = cmd->redirs;
-		while (cur->next)
-			cur = cur->next;
-		cur->next = new_redir;
-	}
-}
 
-static int	next_redir_id(void)
-{
-    static int	id;
-
-    id++;
-    if (id <= 0)
-        id = 1;
-    return (id);
-}
-
-int	add_redirection_to_cmd(t_cmd *cmd, int type, char *str, char *delimiter)
-{
-	t_redir	*new_redir;
-
-	new_redir = ft_calloc(sizeof(t_redir), 1);
-	if (!new_redir)
-		return (1);
-	if (delimiter)
-	{
-		new_redir->delimiter = ft_strdup(delimiter);
-		if (!new_redir->delimiter)
-			return (free(new_redir), 1);
-	}
-	if (str)
-	{
-		new_redir->file = ft_strdup(str);
-		if (!new_redir->file)
-		return (free(new_redir->delimiter), free(new_redir), 1);
-	}
-	new_redir->type = type;
-	new_redir->id = next_redir_id();
-	add_redir_to_redir_list(new_redir, cmd);
-	return (0);
-}
-
+// TODO check if the next element is nothing stupid (e.g. '>')
 int	handle_redirection(t_token **token_list, t_cmd *cmd)
 {
 	if (!is_valid_redirection_target(*token_list))
 		return (1);
 	if ((*token_list)->type == REDIR_IN)
 	{
-		if (add_redirection_to_cmd(cmd, REDIR_IN, (*token_list)->next->str,
-				NULL) == 1)
+		if (add_r_t_c(cmd, REDIR_IN, (*token_list)->next->str, NULL) == 1)
 			return (1);
 	}
 	else if ((*token_list)->type == REDIR_OUT)
 	{
-		if (add_redirection_to_cmd(cmd, REDIR_OUT, (*token_list)->next->str,
-				NULL) == 1)
+		if (add_r_t_c(cmd, REDIR_OUT, (*token_list)->next->str, NULL) == 1)
 			return (1);
 	}
 	else if ((*token_list)->type == HEREDOC)
 	{
-		if (add_redirection_to_cmd(cmd, HEREDOC, NULL, (*token_list)->next->str) == 1)
+		if (add_r_t_c(cmd, HEREDOC, NULL, (*token_list)->next->str) == 1)
 			return (1);
-		cmd->has_heredoc = 1;	
+		cmd->has_heredoc = 1;
 	}
 	else if ((*token_list)->type == REDIR_APPEND)
 	{
-		if (add_redirection_to_cmd(cmd, REDIR_APPEND, (*token_list)->next->str,
-				NULL) == 1)
+		if (add_r_t_c(cmd, REDIR_APPEND, (*token_list)->next->str, NULL) == 1)
 			return (1);
 		cmd->append = TRUE;
 	}
-	// TODO check if the next element is nothing stupid (e.g. '>')
 	return (shift_and_consume_token_list_by_x(token_list, 2), 0);
 }
 
@@ -217,38 +110,6 @@ int	handle_word(t_token **token_list, t_cmd *cmd)
 	return (0);
 }
 
-int	count_size_for_args_array(t_token *token_list)
-{
-    int	size;
-
-    size = 0;
-    while (token_list && token_list->type != PIPE)
-    {
-        if (is_token_type_redirection(token_list))
-        {
-            if (!token_list->next)
-                return (-1);
-            token_list = token_list->next;
-        }
-        else
-            size++;
-        token_list = token_list->next;
-    }
-    return (size);
-}
-
-// does the mallocing stuff, returns 0 on success and 1 on error
-int	init_args_array(t_cmd *cmd, int size)
-{
-	int	i;
-
-	i = 0;
-	cmd->args = ft_calloc(size + 1, sizeof(char *));
-	if (!(cmd->args))
-		return (1);
-	return (0);
-}
-
 /* in this function we will have to fill the following members of the
  *  struct t_cmd: cmd (char *), args (char **),
  *  infile / outfile (optional - char *)
@@ -259,62 +120,65 @@ int	init_args_array(t_cmd *cmd, int size)
  *  returns NULL on error
  *	TODO not yet memory safe on error (free partially built cmd)
  */
-t_cmd	*create_single_cmd(t_token *token_list)
+t_cmd	*create_single_cmd(t_token *token_list, int size)
 {
-    t_cmd	*cmd;
-    int		size;
+	t_cmd	*cmd;
 
-    cmd = ft_calloc(sizeof(t_cmd), 1);
-    if (!cmd)
-        return (NULL);
-    init_cmd(cmd);
-    size = count_size_for_args_array(token_list);
+	cmd = ft_calloc(sizeof(t_cmd), 1);
+	if (!cmd)
+		return (NULL);
+	init_cmd(cmd);
 	if (size < 0)
-        return (free(cmd), NULL);
+		return (free(cmd), NULL);
 	if (size == 0)
 		cmd->is_redir_only_cmd = 1;
-    if (init_args_array(cmd, size) == 1)
-        return (free(cmd), NULL);
-    while (token_list && token_list->type != PIPE)
-    {
-        if (is_token_type_redirection(token_list))
-        {
-            if (handle_redirection(&token_list, cmd) == 1)
-                return (cleanup_command_list(cmd), NULL);
-            continue ;
-        }
-        else if (handle_word(&token_list, cmd) == 1)
-            return (cleanup_command_list(cmd), NULL);
-    }
-    return (cmd);
-}
-
-void	add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd)
-{
-	t_cmd	*current;
-
-	if (!(*cmd_list))
+	if (init_args_array(cmd, size) == 1)
+		return (free(cmd), NULL);
+	while (token_list && token_list->type != PIPE)
 	{
-		*cmd_list = cmd;
-		return ;
+		if (is_token_type_redirection(token_list))
+		{
+			if (handle_redirection(&token_list, cmd) == 1)
+				return (cleanup_command_list(cmd), NULL);
+			continue ;
+		}
+		else if (handle_word(&token_list, cmd) == 1)
+			return (cleanup_command_list(cmd), NULL);
 	}
-	current = *cmd_list;
-	while (current->next)
-		current = current->next;
-	current->next = cmd;
+	return (cmd);
 }
 
-void	print_args_array(char **args)
+/*
+ * Step 1: go through the token list and count how many pipes there are.
+ * Step 2: for each command (pipes
+	+ 1): call separate function create_single_cmd
+ * returns NULL on error, frees all cmd stuff itself on error
+ */
+t_cmd	*create_command_list(t_token *token_list)
 {
-	int	i;
+	int		pipes_count;
+	int		i;
+	t_cmd	*cmd_list;
+	t_cmd	*cmd;
+	int		size;
 
+	pipes_count = count_pipes(token_list);
+	cmd_list = NULL;
 	i = -1;
-	printf("args: ");
-	while (args[++i])
-		printf("\"%s\" ", args[i]);
+	while (++i < pipes_count + 1)
+	{
+		size = count_size_for_args_array(token_list);
+		cmd = create_single_cmd(token_list, size);
+		if (!cmd)
+			return (cleanup_command_list(cmd_list), NULL);
+		add_cmd_to_cmd_list(&cmd_list, cmd);
+		shift_token_list_to_next_pipe(&token_list);
+		cmd->is_builtin = f_is_builtin(cmd->cmd);
+	}
+	return (cmd_list);
 }
 
-void	print_command_list(t_cmd *start)
+/* void	print_command_list(t_cmd *start)
 {
 	int	i;
 	int	j;
@@ -334,97 +198,13 @@ void	print_command_list(t_cmd *start)
 	}
 }
 
-int	count_pipes(t_token *token_list)
-{
-	int	pipe_count;
-
-	pipe_count = 0;
-	while (token_list)
-	{
-		if (token_list->type == PIPE)
-			pipe_count++;
-		token_list = token_list->next;
-	}
-	return (pipe_count);
-}
-
-// if we would go out of bounds (null check) the function returns without shifting
-void	shift_token_list_to_next_pipe(t_token **token_list)
-{
-	while (*token_list && (*token_list)->type != PIPE)
-		*token_list = (*token_list)->next;
-	if (!*token_list)
-		return ;
-	*token_list = (*token_list)->next;
-}
-
-/*
- * Step 1: go through the token list and count how many pipes there are.
- * Step 2: for each command (pipes
-	+ 1): call separate function create_single_cmd
- * returns NULL on error, frees all cmd stuff itself on error
- */
-t_cmd	*create_command_list(t_token *token_list)
-{
-	int		pipes_count;
-	int		i;
-	t_cmd	*cmd_list;
-	t_cmd	*cmd;
-
-	pipes_count = count_pipes(token_list);
-	cmd_list = NULL;
-	i = -1;
-	while (++i < pipes_count + 1)
-	{
-		cmd = create_single_cmd(token_list);
-		if (!cmd)
-			return (cleanup_command_list(cmd_list), NULL);
-		add_cmd_to_cmd_list(&cmd_list, cmd);
-		shift_token_list_to_next_pipe(&token_list);
-		cmd->is_builtin = f_is_builtin(cmd->cmd); //hat frido hinzugefügt (stört? nein)
-	}
-	// print_command_list(cmd_list);
-	return (cmd_list);
-}
-
-/* int	handle_redirection(t_token **token_list, t_cmd *cmd)
+void	print_args_array(char **args)
 {
 	int	i;
 
-	if (!is_valid_redirection_target(*token_list))
-		return (1);
-	if ((*token_list)->type == REDIR_IN)
-	{
-		cmd->infile = ft_strdup((*token_list)->next->str);
-		if (!cmd->infile)
-			return (1);
-	}
-	else if ((*token_list)->type == REDIR_OUT)
-	{
-		cmd->outfile = ft_strdup((*token_list)->next->str);
-		if (!cmd->outfile)
-			return (1);
-	}
-	else if ((*token_list)->type == HEREDOC)
-	{
-		cmd->has_heredoc = TRUE;
-		if ((*token_list)->next->type == WORD_AFTER_HEREDOC)
-		{
-			cmd->delimiter = ft_strdup((*token_list)->next->str);
-			if (!cmd->delimiter)
-				return (1);
-		}
-		else
-			return (1);
-	}
-	else if ((*token_list)->type == REDIR_APPEND)
-	{
-		cmd->outfile = ft_strdup((*token_list)->next->str);
-		if (!cmd->outfile)
-			return (1);
-		cmd->append = TRUE;
-	}
-	//TODO check if the next element is nothing stupid (e.g. '>')
-	shift_and_consume_token_list_by_x(token_list, 2);
-	return (0);
-} */
+	i = -1;
+	printf("args: ");
+	while (args[++i])
+		printf("\"%s\" ", args[i]);
+}
+*/

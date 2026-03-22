@@ -6,7 +6,7 @@
 #    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/20 16:00:01 by slambert         ###   ########.fr        #
+#    Updated: 2026/03/22 12:56:32 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,11 @@ NAME        = minishell
 SRC_MAIN    = minishell.c
 
 SRC_PARS    = b_minishell/commandizer/commandizer.c \
-              b_minishell/cleanup/cleanup.c \
+              b_minishell/commandizer/commandizer_utils1.c \
+              b_minishell/commandizer/commandizer_utils2.c \
+              b_minishell/commandizer/redirection.c \
+              b_minishell/cleanup/cleanup1.c \
+              b_minishell/cleanup/cleanup2.c \
               b_minishell/tokenizer/tokenizer.c \
               b_minishell/expansion/expansion.c \
               b_minishell/word_splitting/word_splitting.c \

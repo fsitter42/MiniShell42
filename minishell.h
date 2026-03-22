@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 11:19:59 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/22 13:01:45 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,15 +157,26 @@ enum					e_bool
 // main
 
 // commandizer
+void					init_cmd(t_cmd *cmd);
+void					add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd);
 t_cmd					*create_command_list(t_token *token_list);
-
+int						count_pipes(t_token *token_list);
+void					shift_token_list_to_next_pipe(t_token **token_list);
+int						count_size_for_args_array(t_token *token_list);
+int						init_args_array(t_cmd *cmd, int size);
+void					shift_and_consume_token_list_by_x(t_token **token, int x);
+int						is_token_type_redirection(t_token *token);
+int						is_valid_redirection_target(t_token *redir_token);
+void					add_redir_to_redir_list(t_redir *new_redir, t_cmd *cmd);
+int						next_redir_id(void);
+int						add_r_t_c(t_cmd *cmd, int type, char *str, char *delimiter);
 // cleanup
 void					my_exit_function(char *error_msg);
 void					free_token(t_token *token);
 void					cleanup_token_list(t_token *token_list);
 void					cleanup_command_list(t_cmd *cmd_list);
 void					cleanup_t_data_list(t_data *data);
-void	sfbf_free_all(t_data *data);
+void					sfbf_free_all(t_data *data);
 // tokenizer
 void					init_token(t_token *token);
 int						handle_single_line(char *line, char **envp,
@@ -180,7 +191,6 @@ int						word_split(t_token *list);
 
 // execution
 int						eggsecute(t_data *data);
-
 
 // debug
 void					print_tokens(t_token *start);

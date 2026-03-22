@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 16:02:09 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 17:26:19 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,6 @@ int	f_cd(t_data *data, char **args)
 	free(new_pwd);
 	return (EXIT_SUCCESS);
 }
+
+
+// TODOF kürzen

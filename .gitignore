@@ -15,5 +15,5 @@
 !*.h
 !*.json
 !Makefile
-!valgrind_readline.supp
+!f_valgrind_readline.supp
 

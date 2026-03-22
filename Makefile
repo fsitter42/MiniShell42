@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+         #
+#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/22 13:48:40 by fsitter          ###   ########.fr        #
+#    Updated: 2026/03/22 14:22:19 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,16 +16,16 @@ NAME        = minishell
 
 SRC_MAIN    = minishell.c
 
-SRC_PARS    = b_minishell/commandizer/commandizer.c \
-              b_minishell/commandizer/commandizer_utils1.c \
-              b_minishell/commandizer/commandizer_utils2.c \
-              b_minishell/commandizer/redirection.c \
-              b_minishell/cleanup/cleanup1.c \
-              b_minishell/cleanup/cleanup2.c \
-              b_minishell/tokenizer/tokenizer.c \
-              b_minishell/expansion/expansion.c \
-              b_minishell/word_splitting/word_splitting.c \
-              b_minishell/s_execution/execution.c 
+SRC_PARS    = b_minishell/b_commandizer/b_commandizer.c \
+              b_minishell/b_commandizer/b_commandizer_utils1.c \
+              b_minishell/b_commandizer/b_commandizer_utils2.c \
+              b_minishell/b_commandizer/b_redirection.c \
+              b_minishell/b_cleanup/b_cleanup1.c \
+              b_minishell/b_cleanup/b_cleanup2.c \
+              b_minishell/b_tokenizer/b_tokenizer.c \
+              b_minishell/b_expansion/b_expansion.c \
+              b_minishell/b_word_splitting/b_word_splitting.c \
+              b_minishell/b_execution/b_execution.c 
 
 SRC_BUILTIN = f_minishell/builtin/cd/f_cd.c \
               f_minishell/builtin/echo/f_echo.c \

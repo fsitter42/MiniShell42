@@ -6,7 +6,7 @@
 #    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/22 14:50:11 by slambert         ###   ########.fr        #
+#    Updated: 2026/03/22 14:57:47 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC_PARS    = b_minishell/b_commandizer/b_commandizer.c \
               b_minishell/b_expansion/b_exp_quote.c \
               b_minishell/b_expansion/b_exp_utils.c \
               b_minishell/b_word_splitting/b_word_splitting.c \
+              b_minishell/b_word_splitting/b_ws_utils.c \
               b_minishell/b_execution/b_execution.c 
 
 SRC_BUILTIN = f_minishell/builtin/cd/f_cd.c \

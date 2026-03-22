@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 14:54:24 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/22 15:01:50 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,12 @@ char					*replace_char_with_expandable(char *original,
 							char char_to_expand, char *expandable);
 int						expand_home_dir(t_token *list_elem, char **envp);
 int						expand_dollar_question(char **out, int *i);
+
+//word split
+void	normalize_ifs_chars(char *s, char *ifs);
+char	*ft_strchr_array(char *s, char *arr);
+void	free_str_array(char **arr);
+void	remove_implicit_null_arg(t_token **prev, t_token *next, t_token **list);
 // execution
 int						eggsecute(t_data *data);
 

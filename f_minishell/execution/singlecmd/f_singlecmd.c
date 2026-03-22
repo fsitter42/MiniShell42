@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 16:02:00 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 16:40:56 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,18 @@ static void	f_redir_restore(int saved_fds[2]);
 
 void	f_exec_cmd(t_data *data, t_cmd *cmd, char **envp)
 {
+	int status;
 	cmd->path = f_path_handler(data, cmd->cmd, envp);
-	// here frido wo gehört das hin
 	if (!cmd->path)
-		exit(data->last_exit_code);
+	{
+		status = data->last_exit_code;
+		sfbf_free_all(data);
+		exit(status);
+	}
 	execve(cmd->path, cmd->args, envp);
 	f_print_error(cmd->cmd, "execve failed");
-	exit(1);
+	sfbf_free_all(data);
+	exit(126);
 }
 
 int	f_is_builtin(char *cmd)

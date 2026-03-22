@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 16:50:51 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 16:59:11 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,17 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 
 static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 {
+	if (cmd->redir_failed)
+		exit(1);
 	if (prev_fd != -1)
 		dup2(prev_fd, STDIN_FILENO);
 	if (cmd->next)
 		dup2(pipe_fd[1], STDOUT_FILENO);
 	if (cmd->in_fd != -1)
-		dup2(cmd->in_fd, STDIN_FILENO);
+		(dup2(cmd->in_fd, STDIN_FILENO), close(cmd->in_fd));
 	if (cmd->out_fd != -1)
-		dup2(cmd->out_fd, STDOUT_FILENO);
-	if (prev_fd != -1)
-		close(prev_fd);
-	if (cmd->next)
-	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-	}
-	if (cmd->redir_failed) // here löschen
-		exit(1);
+		(dup2(cmd->out_fd, STDOUT_FILENO), close(cmd->out_fd));
+	f_close_child(pipe_fd, prev_fd, cmd);
 	if (cmd->is_builtin)
 		f_exec_builtin_child(cmd, data);
 	else

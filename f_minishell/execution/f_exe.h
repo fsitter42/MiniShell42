@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 12:00:30 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/21 11:10:47 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 16:58:58 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ int		b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir);
 // f_exec_wrapper.c
 int		f_pipeline_wrapper(t_data *data);
 void	f_close_pipe(t_cmd *cmd, int pipe_fd[2], int *prev_fd);
+void	f_close_child(int *pipe_fd, int prev_fd, t_cmd *cmd);
 
 #endif

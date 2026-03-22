@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exec_wrapper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 14:02:15 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/20 14:23:41 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 16:58:45 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,17 @@ void f_close_pipe(t_cmd *cmd, int pipe_fd[2], int *prev_fd)
 	{
 		if (*prev_fd != -1)
 			close(*prev_fd);
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+	}
+}
+
+void	f_close_child(int *pipe_fd, int prev_fd, t_cmd *cmd)
+{
+	if (prev_fd != -1)
+		close(prev_fd);
+	if (cmd->next)
+	{
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
 	}

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:26:09 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 16:29:57 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 16:31:30 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,14 @@ int	f_export(t_data *data, char **args)
 	if (!args[1])
 		return (f_print_export(data->env->envp_lst));
 	ret = EXIT_SUCCESS;
-	i = 0;
-	while (args[++i])
+	i = 1;
+	while (args[i])
 	{
 		if (f_check_arg(args[i]))
 			ret = EXIT_FAILURE;
 		else if (f_export_with_key(data->env->envp_lst, args[i]))
 			ret = EXIT_FAILURE;
+		i++;
 	}
 	f_update_envp(data->env);
 	return (ret);

@@ -1,48 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   b_tokenizer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/17 15:05:03 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/22 14:53:12 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 int		is_part_of_word(char c, int *quote_status);
-
-void	init_token(t_token *token)
-{
-	token->type = START;
-	token->str = NULL;
-	token->quote_status = DEFAULT_QUOTE;
-	token->consume_status = UNCONSUMED;
-	token->next = NULL;
-	g_last_exit_code = 0;
-}
-
-t_token	*tokenlist_add(t_token *list_start, int type, char *str,
-		int quote_status)
-{
-	t_token	*new_token;
-	t_token	*current;
-
-	new_token = ft_calloc(1, sizeof(t_token));
-	if (!new_token)
-		return (free(str), NULL);
-	current = list_start;
-	while (current->next)
-		current = current->next;
-	current->next = new_token;
-	init_token(new_token);
-	new_token->type = type;
-	new_token->str = str;
-	new_token->quote_status = quote_status;
-	return (new_token);
-}
 
 // TODO input ""< | > ""6" segfaults
 // returns -1 on error
@@ -71,33 +41,7 @@ int	word_and_var_handler(int i, char *line, t_token *list_start,
 		return (-1);
 	if (!tokenlist_add(list_start, WORD, word, quote_save))
 		return (-1);
-	// printf("WORD ");
 	return (char_to_check);
-}
-
-// this is for debugging only, will be removed!
-void	print_tokens(t_token *start)
-{
-	int	i;
-
-	i = 0;
-	start = start->next;
-	while (start)
-	{
-		printf("Token %d: Type %d, ", ++i, start->type);
-		if (start->type == WORD || start->type == WORD_AFTER_HEREDOC)
-			printf(" value: %s, quote_status: %d", start->str,
-				start->quote_status);
-		printf("\n");
-		start = start->next;
-	}
-}
-
-int	is_quote(char c)
-{
-	if (c == '\"' || c == '\'')
-		return (1);
-	return (0);
 }
 
 /*
@@ -128,21 +72,6 @@ int	quote_sytanx_check(char *line)
 	return (cur_status);
 }
 
-// for debugging
-void	print_token_type(int type)
-{
-	if (type == PIPE)
-		printf("PIPE ");
-	else if (type == HEREDOC)
-		printf("HEREDOC ");
-	else if (type == REDIR_IN)
-		printf("REDIR_IN ");
-	else if (type == REDIR_APPEND)
-		printf("REDIR_APPEND ");
-	else if (type == REDIR_OUT)
-		printf("REDIR_OUT ");
-}
-
 int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 {
 	int	type;
@@ -163,24 +92,7 @@ int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 	}
 	else if (line[*i] == '>')
 		type = REDIR_OUT;
-	//print_token_type(type);
 	if (!tokenlist_add(list_start, type, NULL, DEFAULT_QUOTE))
-		return (1);
-	return (0);
-}
-
-// returns 1 if not a word
-int	not_a_word(char c1, char c2)
-{
-	if (c1 == '|')
-		return (1);
-	if (c1 == '<' && c2 == '<')
-		return (1);
-	if (c1 == '<')
-		return (1);
-	if (c1 == '>' && c2 == '>')
-		return (1);
-	if (c1 == '>')
 		return (1);
 	return (0);
 }
@@ -211,9 +123,9 @@ int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
 	return (0);
 }
 
-/* we want to structure the input and save it in a linked list. in order to know what elements
- *   occur,
-	we have to do certain checks to the string. these tokens are possible:
+/* we want to structure the input and save it in a linked list. in order to
+ * know what elements occur, we have to do certain checks to the string.
+ * these tokens are possible:
  *   - PIPE: |
  *   - HEREDOC: <<
  *   - REDIR_IN: <
@@ -226,14 +138,14 @@ int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
  *	TODO: fix bug where it segfaults when < or > is in the end
  *
  *	should be mem safe on error
+ * 	TODO difference between these 2 cases (!line is error,
+ *	"" is a valid input)
  */
 t_token	*tokenizer(char *line)
 {
 	t_token	*list_start;
 	int		quote_status;
 
-	// TODO difference between these 2 cases (!line is error,
-	//"" is a valid input)
 	if (!line || ft_strncmp(line, "", 1) == 0)
 		return (NULL);
 	if (quote_sytanx_check(line))
@@ -254,53 +166,34 @@ t_token	*tokenizer(char *line)
 	return (list_start);
 }
 
-int	is_part_of_word(char c, int *quote_status)
+/* void	print_tokens(t_token *start)
 {
-	if (*quote_status == DEFAULT_QUOTE && (c == '|' || c == '<' || c == '>'
-			|| isspace(c) || c == '\0'))
-		return (0);
-	return (1);
+	int	i;
+
+	i = 0;
+	start = start->next;
+	while (start)
+	{
+		printf("Token %d: Type %d, ", ++i, start->type);
+		if (start->type == WORD || start->type == WORD_AFTER_HEREDOC)
+			printf(" value: %s, quote_status: %d", start->str,
+				start->quote_status);
+		printf("\n");
+		start = start->next;
+	}
 }
 
-/* int	everything_except_word_handler(t_token *list_start, char *line, int *i)
+void	print_token_type(int type)
 {
-	int	type;
-
-	if (line[*i] == '|')
-	{
+	if (type == PIPE)
 		printf("PIPE ");
-		if (!tokenlist_add(list_start, PIPE, NULL, DEFAULT_QUOTE))
-			return (1);
-		return (0);
-	}
-	if (line[*i] == '<' && line[*i + 1] == '<')
-	{
+	else if (type == HEREDOC)
 		printf("HEREDOC ");
-		if (!tokenlist_add(list_start, HEREDOC, NULL, DEFAULT_QUOTE))
-			return (1);
-		(*i) += 1;
-		return (0);
-	}
-	if (line[*i] == '<')
-	{
+	else if (type == REDIR_IN)
 		printf("REDIR_IN ");
-		if (!tokenlist_add(list_start, REDIR_IN, NULL, DEFAULT_QUOTE))
-			return (1);
-		return (0);
-	}
-	if (line[*i] == '>' && line[*i + 1] == '>')
-	{
+	else if (type == REDIR_APPEND)
 		printf("REDIR_APPEND ");
-		if (!tokenlist_add(list_start, REDIR_APPEND, NULL, DEFAULT_QUOTE))
-			return (1);
-		(*i) += 1;
-		return (0);
-	}
-	if (line[*i] == '>')
-	{
+	else if (type == REDIR_OUT)
 		printf("REDIR_OUT ");
-		if (!tokenlist_add(list_start, REDIR_OUT, NULL, DEFAULT_QUOTE))
-			return (1);
-	}
-	return (0);
-} */
+}
+*/

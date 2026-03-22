@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 14:40:02 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/22 14:54:24 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,9 @@ void					sfbf_free_all(t_data *data);
 void					init_token(t_token *token);
 int						handle_single_line(char *line, char **envp,
 							t_data *data);
+t_token					*tokenlist_add(t_token *list_start, int type, char *str,
+							int quote_status);
+int						not_a_word(char c1, char c2);
 t_token					*tokenizer(char *line);
 
 // expansion

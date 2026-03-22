@@ -6,7 +6,7 @@
 #    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/22 14:33:48 by slambert         ###   ########.fr        #
+#    Updated: 2026/03/22 14:50:11 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC_PARS    = b_minishell/b_commandizer/b_commandizer.c \
               b_minishell/b_cleanup/b_cleanup1.c \
               b_minishell/b_cleanup/b_cleanup2.c \
               b_minishell/b_tokenizer/b_tokenizer.c \
+              b_minishell/b_tokenizer/b_tok_utils.c \
               b_minishell/b_expansion/b_expansion.c \
               b_minishell/b_expansion/b_exp_env_var.c \
               b_minishell/b_expansion/b_exp_home_path.c \

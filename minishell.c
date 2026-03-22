@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/21 12:27:44 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/22 12:11:25 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,12 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	t_token	*token_list;
 	t_cmd	*cmd_list;
 
+	cmd_list = NULL;
 	if (ft_strncmp(line, "exit", 5) == 0)
+	{
+		sfbf_free_all(data);
 		my_exit_function(NULL);
+	}
 	//printf("%s is going to be tokenized\n", line);
 	token_list = tokenizer(line);
 	if (!token_list)
@@ -120,6 +124,9 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	}
 	else
 		cleanup_token_list(token_list);
+	//sfbf_free_all(data);
+	cleanup_command_list(cmd_list);
+	data->cmds = NULL;
 	return (0);
 }
 
@@ -191,7 +198,8 @@ void	debug_mode(char *input, char **envp, t_data *data)
 
 void	sfbf_free_all(t_data *data)
 {
-	
+	if (!data)
+		return ;
 	if (data->env->envp_lst)
 		f_free_env_list(data->env->envp_lst); //vll nmoch freen zusätzliuch
 	if (data->env->envp_updated)
@@ -208,7 +216,6 @@ t_data	*sfbf_init_all(char **envp)
 	t_data	*data;
 	char **args;
 	
-
 	data = ft_calloc(sizeof(t_data), 1);
 	if (!data)
 		return (NULL);
@@ -239,7 +246,7 @@ int	main(int argc, char **argv, char **envp)
 		
 
 		normal_mode(argc, argv, envp, data);
-		//TODO normal und debug modeumbauen, dass data übergeben wird
+		
 	}
 	else
 	{

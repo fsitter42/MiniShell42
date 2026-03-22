@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/20 16:11:38 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/22 12:07:47 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,21 @@ void cleanup_token_list(t_token *token_list)
 	}
 }
 
+void cleanup_redir_list(t_redir *redirs)
+{
+	t_redir	*temp;
+
+	temp = NULL;
+	while (redirs)
+	{
+		temp = redirs->next;
+		free (redirs->file);
+		free (redirs->delimiter);
+		free (redirs);
+		redirs = temp;
+	}
+}
+
 void cleanup_command_list(t_cmd *cmd_list)
 {
 	int i;
@@ -41,17 +56,18 @@ void cleanup_command_list(t_cmd *cmd_list)
 		i = 0;
 		temp = cmd_list->next;
 		free(cmd_list->cmd);
+		//cmd_list->cmd = NULL;
 		free(cmd_list->infile);
 		free (cmd_list->outfile);
-		while (cmd_list->args[i])
+		while (cmd_list->args && cmd_list->args[i])
 		{
 			free(cmd_list->args[i]);
 			i++;
 		}
 		free(cmd_list->args);
 		free (cmd_list->delimiter);
-		// if (cmd_list->in_fd >= 0)
-		// 	(close(cmd_list->in_fd)); here
+		if (cmd_list->redirs)
+			cleanup_redir_list(cmd_list->redirs);
 		free (cmd_list);
 		cmd_list = temp;
 	}

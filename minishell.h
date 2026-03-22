@@ -6,19 +6,19 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/20 15:58:22 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/22 11:19:59 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
 # include "./b_minishell/libft/libft.h"
 # include "f_includes/Libfs/libft.h"
 # include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <stdio.h>
 # include <stdlib.h>
 
 // f
@@ -165,6 +165,7 @@ void					free_token(t_token *token);
 void					cleanup_token_list(t_token *token_list);
 void					cleanup_command_list(t_cmd *cmd_list);
 void					cleanup_t_data_list(t_data *data);
+void	sfbf_free_all(t_data *data);
 // tokenizer
 void					init_token(t_token *token);
 int						handle_single_line(char *line, char **envp,

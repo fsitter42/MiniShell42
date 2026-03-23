@@ -16,4 +16,4 @@
 !*.json
 !Makefile
 !f_valgrind_readline.supp
-
+!minishell_tester

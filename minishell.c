@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/23 10:52:53 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/23 10:59:30 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ static void	cleanup_split_result(char **strs, int start)
 
 /* the difference here is that we have one string that is given to
  *  minishell, no interactions with the user. all lines have to be separated
- *  by a semicolon (;) and will be executed one after each other.
+ *  by a semicolon (;) and will be executed one afprintf("hello nur\n");ter each other.
 
 	*  note: if we want to use a $ sign (var) we have to explicitly escape that character (\\ before §).
 

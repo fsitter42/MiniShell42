@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:11:54 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/23 11:51:58 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/23 13:08:56 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	f_export_with_key(t_envl *envl, char *s)
 	if (f_valid_identifier(s))
 		return (1);
 	val = NULL;
-	if (!(eq = ft_strchr(s, '=')))
+	if (!(eq = ft_strchr(s, '='))) //TODOF 
 		key = ft_strdup(s);
 	else
 	{

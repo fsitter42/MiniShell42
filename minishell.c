@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 17:24:27 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/23 10:48:12 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	handle_delimiter(t_token *token_list)
 // this function does everything that is needed that ONE LINE is being executed correctly
 int	handle_single_line(char *line, char **envp, t_data *data)
 {
+	int ret;
 	t_token	*token_list;
 	t_cmd	*cmd_list;
 
@@ -128,14 +129,14 @@ int	handle_single_line(char *line, char **envp, t_data *data)
         	data->cmds = NULL;
         	return (1); 
     	}
-    	eggsecute(data);
+    	ret = eggsecute(data); //frido geändert
 	}
 	else
 		cleanup_token_list(token_list);
 	//sfbf_free_all(data);
 	cleanup_command_list(cmd_list);
 	data->cmds = NULL;
-	return (0);
+	return (ret);
 }
 
 /* this is the default mode in where the users enters stuff

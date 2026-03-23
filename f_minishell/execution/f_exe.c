@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 16:59:11 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/23 10:41:31 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 		f_parent_cleanup(cmd, &prev_fd, pipe_fd);
 		cmd = cmd->next;
 	}
-	return (f_wait_all(data), 0);
+	return (f_wait_all(data), data->last_exit_code);
 }
 
 static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)

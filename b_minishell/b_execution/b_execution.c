@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 17:09:34 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/23 10:43:38 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ int	eggsecute(t_data *data)
 		status = f_exec_builtin(data->cmds, data);
 	else
 	{
-		f_pipeline_wrapper(data);
-		status = data->last_exit_code;
+		status = f_pipeline_wrapper(data);
 	}
 	remove_heredoc_files(data->cmds);
 	return (status);

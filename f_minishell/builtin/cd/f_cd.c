@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_cd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 17:26:19 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/23 09:51:34 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,5 @@ int	f_cd(t_data *data, char **args)
 	free(export_str);
 	export_str = ft_strjoin("PWD=", new_pwd);
 	f_export(data, (char *[]){"export", export_str, NULL});
-	free(export_str);
-	free(old_pwd);
-	free(new_pwd);
-	return (EXIT_SUCCESS);
+	return (free(export_str), free(old_pwd), free(new_pwd), EXIT_SUCCESS);
 }
-
-
-// TODOF kürzen

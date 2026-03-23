@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:11:54 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/16 14:03:14 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/23 11:51:58 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	f_free_node(t_envl *node)
 		free(node->val);
 	free(node);
 }
+
 int	f_lst_add_one(t_envl *list, char *key, char *val)
 {
 	t_envl	*new;

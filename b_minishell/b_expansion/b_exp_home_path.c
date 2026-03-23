@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_exp_home_path.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:31:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 14:39:39 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/23 12:53:48 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,11 @@ int	expand_home_dir(t_token *list_elem, char **envp)
 /*
  *	expands $? to the exit code number
  */
-int	expand_dollar_question(char **out, int *i)
+int	expand_dollar_question(char **out, int *i, t_data *data)
 {
 	char	*temp;
 
-	temp = ft_itoa(g_last_exit_code);
+	temp = ft_itoa(data->last_exit_code);
 	if (!temp)
 		return (1);
 	*out = append_str(*out, temp);

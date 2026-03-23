@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 15:01:50 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/23 12:57:22 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,8 +189,8 @@ int						not_a_word(char c1, char c2);
 t_token					*tokenizer(char *line);
 
 // expansion
-int						expansion(t_token *list, char **envp);
-char					*expand_word_one_pass(char *word);
+int						expansion(t_token *list, char **envp, t_data *data);
+char					*expand_word_one_pass(char *word, t_data *data);
 int						quote_handler(int quote_status, char c);
 int						word_split(t_token *list);
 char					*extract_var_from_envp(char *var_name);
@@ -206,7 +206,7 @@ char					*extract_home_path_from_envp(char **envp);
 char					*replace_char_with_expandable(char *original,
 							char char_to_expand, char *expandable);
 int						expand_home_dir(t_token *list_elem, char **envp);
-int						expand_dollar_question(char **out, int *i);
+int						expand_dollar_question(char **out, int *i, t_data *data);
 
 //word split
 void	normalize_ifs_chars(char *s, char *ifs);

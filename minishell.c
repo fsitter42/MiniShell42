@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/23 10:59:30 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/23 12:57:48 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 		return (cleanup_token_list(token_list), 1);
 	//printf("\nBEFORE EXPANSION\n");
 	//print_tokens(token_list);
-	if (expansion(token_list, envp) == 1)
+	if (expansion(token_list, envp, data) == 1)
 		return (cleanup_token_list(token_list), 1);
 	//printf("\nAFTER EXPANSION\n");
 	//print_tokens(token_list);

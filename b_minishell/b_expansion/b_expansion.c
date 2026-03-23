@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   b_expansion.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 14:36:47 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/23 12:57:08 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 static int	append_expanded_char(char **out, char *word, int *i,
-		int *quote_status)
+		int *quote_status, t_data *data)
 {
 	if (consume_syntactic_quote(word[*i], quote_status) == 1)
 		return (0);
 	if (word[*i] == '$' && *quote_status != IN_SINGLE_QUOTES)
 	{
 		if (word[*i + 1] == '?')
-			return (expand_dollar_question(out, i));
+			return (expand_dollar_question(out, i, data));
 		return (append_env_var(out, word, i));
 	}
 	*out = append_char(*out, word[*i]);
@@ -33,7 +33,7 @@ static int	append_expanded_char(char **out, char *word, int *i,
  *	loops through the word, consumes syntactic quotes and expands
  *	vars (either env vars or $?)
  */
-char	*expand_word_one_pass(char *word)
+char	*expand_word_one_pass(char *word, t_data *data)
 {
 	int		i;
 	int		quote_status;
@@ -46,7 +46,7 @@ char	*expand_word_one_pass(char *word)
 	i = -1;
 	while (word[++i])
 	{
-		if (append_expanded_char(&out, word, &i, &quote_status) == 1)
+		if (append_expanded_char(&out, word, &i, &quote_status, data) == 1)
 			return (free(out), NULL);
 	}
 	return (out);
@@ -64,7 +64,7 @@ char	*expand_word_one_pass(char *word)
  *
  *  returns 1 on error
  */
-int	expand_single_word(t_token *list_elem, char **envp)
+int	expand_single_word(t_token *list_elem, char **envp, t_data *data)
 {
 	char	*expanded;
 
@@ -73,7 +73,7 @@ int	expand_single_word(t_token *list_elem, char **envp)
 		if (expand_home_dir(list_elem, envp) == 1)
 			return (1);
 	}
-	expanded = expand_word_one_pass(list_elem->str);
+	expanded = expand_word_one_pass(list_elem->str, data);
 	if (!expanded)
 		return (1);
 	free(list_elem->str);
@@ -85,13 +85,13 @@ int	expand_single_word(t_token *list_elem, char **envp)
  *  loops trough all words and executes the expand_word function
  *  returns 1 on error
  */
-int	expansion(t_token *list, char **envp)
+int	expansion(t_token *list, char **envp, t_data *data)
 {
 	while (list)
 	{
 		if (list->type == WORD)
 		{
-			if (expand_single_word(list, envp) == 1)
+			if (expand_single_word(list, envp, data) == 1)
 				return (1);
 		}
 		list = list->next;

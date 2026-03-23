@@ -10,7 +10,7 @@
             //"args": ["-d", "< file1.txt cat -e -fd fdsfg f | wc -l > file2.txt"],
             //"args": ["-d", "cat -e file1.txt | wc -l > file2.txt"],
             // "args": ["-d", "ls | grep alt | wc -l"],
-            "args": ["-d", "echo hello my friend"],
+            "args": ["-d", "asdf hello.txt"],
             //"args": ["-d", "cat < file1.txt -e > file2.txt -n"],
             //"args": ["-d", "< input.txt > output.txt"],
             //"args": ["-d", "ls | | wc"],
@@ -66,7 +66,7 @@
                 },
                 {
                     "description": "Follow child after fork",
-                    "text": "set follow-fork-mode parent",
+                    "text": "set follow-fork-mode child",
                     "ignoreFailures": false
                 },
                 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/23 13:03:55 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/23 13:15:00 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	cmd_list = NULL;
 	if (ft_strncmp(line, "exit", 5) == 0)
 	{
+		//TODO check if argument. has to be a number 0 - 255
+		//if yes, this is the exit code
 		sfbf_free_all(data);
 		my_exit_function(NULL);
 	}

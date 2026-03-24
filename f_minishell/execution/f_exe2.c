@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/24 15:42:29 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/24 15:52:46 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,3 @@ static int	f_open_outfile(t_data *data, t_cmd *cmd, char *file, int append)
 	}
 	return (0);
 }
-
-/*n*/

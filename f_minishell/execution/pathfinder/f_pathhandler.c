@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 13:01:08 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/17 23:54:52 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/24 15:39:15 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,27 +64,3 @@ void	f_print_error(char *context, char *msg)
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(msg, 2);
 }
-
-// char	*f_path_handler(char *cmd, char **envp)
-// {
-// 	char	*path;
-// 	int		err;
-
-// 	err = 0;
-// 	if (!cmd || !*cmd)
-// 		return (NULL);
-// 	path = f_handle_direct_path(cmd, &err);
-// 	if (!path && err == 0)
-// 		path = f_find_path(cmd, envp, &err);
-// 	if (!path && err != 0)
-// 	{
-// 		if (err == 127)
-// 			f_print_error(cmd, "command not found");
-// 		else if (err == 126)
-// 			f_print_error(cmd, "Permission denied or is a directory");
-// 		else if (err == 1)
-// 			f_print_error(cmd, "memory allocation error");
-// 	}
-// 	g_last_exit_code = err;
-// 	return (path);
-// }

@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 16:40:56 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/24 15:50:25 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-static void	f_redir_restore(int saved_fds[2]);
-static void	f_redir_restore(int saved_fds[2]);
+int		f_redir_setup(t_cmd *cmd, int saved_fds[2]);
+void	f_redir_restore(int saved_fds[2], t_data *data);
 
 void	f_exec_cmd(t_data *data, t_cmd *cmd, char **envp)
 {
-	int status;
+	int	status;
+
 	cmd->path = f_path_handler(data, cmd->cmd, envp);
 	if (!cmd->path)
 	{
@@ -52,27 +53,6 @@ int	f_is_builtin(char *cmd)
 	return (0);
 }
 
-// int	f_exec_builtin(t_cmd *cmd, t_data *data)
-// {
-// 	// ich brauche hier auch redirections!!!!!!!
-// 	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
-// 		printf("echo\n"); // f_echo();
-// 	else if (ft_strncmp(cmd->cmd, "cd", 3) == 0)
-// 		printf("cd\n"); // f_cd();
-// 	else if (ft_strncmp(cmd->cmd, "pwd", 4) == 0)
-// 		printf("pwd\n"); // f_pwd();
-// 	else if (ft_strncmp(cmd->cmd, "export", 7) == 0)
-// 		data->last_exit_code = f_export(data, data->cmds->args); // f_export();
-// 	else if (ft_strncmp(cmd->cmd, "unset", 6) == 0)
-// 		printf("unset\n"); // f_unset();
-// 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
-// 		data->last_exit_code = f_env(data, cmd->args);
-// 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
-// 		printf("exit\n");
-// 	; // f_exit();
-// 	return (data->last_exit_code);
-// }
-
 int	f_redir_setup(t_cmd *cmd, int saved_fds[2])
 {
 	saved_fds[0] = dup(STDIN_FILENO);
@@ -90,16 +70,22 @@ int	f_redir_setup(t_cmd *cmd, int saved_fds[2])
 		close(cmd->out_fd);
 	}
 	return (0);
-	//add errors data->lastexitcode
 }
 
-void	f_redir_restore(int saved_fds[2])
+void	f_redir_restore(int saved_fds[2], t_data *data)
 {
-	dup2(saved_fds[0], STDIN_FILENO);
-	dup2(saved_fds[1], STDOUT_FILENO);
+	if (dup2(saved_fds[0], STDIN_FILENO) == -1)
+	{
+		data->last_exit_code = 1;
+		return ;
+	}
+	if (dup2(saved_fds[1], STDOUT_FILENO) == -1)
+	{
+		data->last_exit_code = 1;
+		return ;
+	}
 	close(saved_fds[0]);
 	close(saved_fds[1]);
-	//add errors data->lastexitcode
 }
 
 int	f_exec_builtin(t_cmd *cmd, t_data *data)
@@ -107,9 +93,9 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 	int	saved_fds[2];
 
 	if (f_redir_wrapper(data, cmd) == -1)
-		return (1);
+		return (data->last_exit_code = 1, -1);
 	if (f_redir_setup(cmd, saved_fds) == -1)
-		return (1);
+		return (data->last_exit_code = 1, -1);
 	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
 		data->last_exit_code = f_echo(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "cd", 3) == 0)
@@ -123,9 +109,7 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
 		data->last_exit_code = f_env(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
-		printf("exit\n"); // f_exit(data, cmd->args);
-	f_redir_restore(saved_fds);
+		printf("exit\n");
+	f_redir_restore(saved_fds, data);
 	return (data->last_exit_code);
 }
-
-/*n*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_export.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:26:09 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/22 16:31:30 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/24 15:37:59 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,3 @@ int	f_export(t_data *data, char **args)
 	f_update_envp(data->env);
 	return (ret);
 }
-
-/*
- *   return value = g_last_exit_code = f_export() aufruden
- *	args = der command inklusve argumente
- */

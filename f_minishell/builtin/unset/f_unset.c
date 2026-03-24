@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:09:18 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/16 14:03:31 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/24 15:38:25 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,28 +65,3 @@ char	*f_get_env_val(t_envl *list, char *key)
 	}
 	return (NULL);
 }
-
-/* on error im here
-char	*f_get_env_val(t_envl *list, char *key, int *err)
-{
-	char	*res;
-
-	*err = 0; // Alles okay (Standard)
-	if (!list || !key)
-		return (NULL);
-	while (list)
-	{
-		if (f_strcmp(key, list->key) == 0)
-		{
-			res = ft_strdup(list->val);
-			if (!res)
-				*err = 1; // Malloc Fail
-			return (res);
-		}
-		list = list->next;
-	}
-	// Wenn wir hier landen: Nicht gefunden. err bleibt 0, return NULL.
-	return (NULL);
-}
-
-*/

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 15:01:17 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/25 19:00:10 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,3 @@ int	eggsecute(t_data *data)
 	remove_heredoc_files(data->cmds);
 	return (status);
 }
-
-/* alt
-TODO return return von f_exec_pipeline
-TODO nur einmal ausführen, keine loop
-int	eggsecute(t_data *data)
-{
-	t_cmd	*cmd_copy;
-
-	cmd_copy = data->cmds;
-	while (data->cmds)
-	{
-		// if (data->cmds->has_heredoc)
-		//	do_heredoc_stuff(data->cmds);
-		// eventuell hier checken ob is builtin
-		data->cmds->is_builtin = f_is_builtin(data->cmds->cmd);
-		if (!data->cmds->next && data->cmds->is_builtin)
-			return (f_exec_builtin(data->cmds, data));
-		f_exec_pipeline(data, data->cmds);
-		// f_exec_pipeline(data, cmd_list);
-		// delete .heredoc_dump
-		data->cmds = data->cmds->next;
-	}
-	// TODO cleanup all cmds
-	// TODO here we have to delete the temp heredoc files
-	remove_heredoc_files(cmd_copy);
-	return (data->last_exit_code);
-} */

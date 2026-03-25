@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 17:06:06 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/25 19:03:26 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,10 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	}
 	else
 		cleanup_token_list(token_list);
+	/* TODO das ist ein problem, weil es zumindest einen fall gibt, wo der
+	 * exit code 1 ist und minishell NICHT geschlossen werden soll, beim
+	 * input "exit 42 asdf"
+	 */
 	if (ret == 1)
 	{
 		sfbf_free_all(data);

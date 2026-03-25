@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 16:05:42 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/25 17:06:06 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ void	debug_mode(char *input, char **envp, t_data *data)
 	}
 }
 
+//TODO $EMPTY echo hi does not print anything
 void	sfbf_free_all(t_data *data)
 {
 	int i;

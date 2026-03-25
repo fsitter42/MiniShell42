@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 14:45:46 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/25 14:49:34 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	else
 		cleanup_token_list(token_list);
 	if (ret == 1)
+	{
 		sfbf_free_all(data);
+		exit (1);
+	}
 	cleanup_command_list(cmd_list);
 	data->cmds = NULL;
 	return (ret);
@@ -193,7 +196,6 @@ void	sfbf_free_all(t_data *data)
 	free(data->env);
 	cleanup_command_list(data->cmds);
 	free(data);
-	exit(1);
 }
 
 t_data	*sfbf_init_all(char **envp)

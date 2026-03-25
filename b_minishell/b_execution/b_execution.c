@@ -3,23 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   b_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/23 10:43:38 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/25 15:01:17 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 // TODO free(redir->file) eventuell wo anders hin JA DOUBLEFREE
+// TODO this segfaults at funcheck simulated error 
+// f_join_cmd_to_path full
 void	remove_heredoc_files(t_cmd *cmds)
 {
 	t_redir	*redir;
 
+	redir = NULL;
 	while (cmds)
 	{
-		redir = cmds->redirs;
+		if (cmds->redirs)
+			redir = cmds->redirs;
 		while (redir)
 		{
 			if (redir->type == HEREDOC && redir->file)

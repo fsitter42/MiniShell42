@@ -6,12 +6,13 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 12:57:09 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/25 13:14:59 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+//TODO 5 variablen
 static int	append_expanded_char(char **out, char *word, int *i,
 		int *quote_status, t_data *data)
 {

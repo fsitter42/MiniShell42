@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 14:38:22 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/25 14:45:46 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	t_cmd	*cmd_list;
 
 	cmd_list = NULL;
-	if (ft_strncmp(line, "exit", 5) == 0)
+/* 	if (ft_strncmp(line, "exit", 5) == 0)
 	{
 		//TODO check if argument. has to be a number 0 - 255
 		//if yes, this is the exit code
@@ -70,7 +70,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 		//instead of that
 		sfbf_free_all(data);
 		my_exit_function(NULL);
-	}
+	} */
 	//printf("%s is going to be tokenized\n", line);
 	token_list = tokenizer(line);
 	if (!token_list)

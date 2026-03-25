@@ -6,7 +6,7 @@
 #    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/25 11:46:03 by slambert         ###   ########.fr        #
+#    Updated: 2026/03/25 14:31:42 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ SRC_BUILTIN = f_minishell/builtin/cd/f_cd.c \
               f_minishell/builtin/export/f_export_key.c \
               f_minishell/builtin/export/f_export_no_key.c \
               f_minishell/builtin/pwd/f_pwd.c \
-              f_minishell/builtin/unset/f_unset.c
+              f_minishell/builtin/unset/f_unset.c \
+              f_minishell/builtin/exit/b_exit.c
 
 # Environment Handling
 SRC_ENVP    = f_minishell/envp/f_envp_init_destroy.c \

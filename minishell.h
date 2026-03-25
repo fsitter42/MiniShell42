@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/23 12:57:22 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/25 12:56:42 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,13 +189,13 @@ int						not_a_word(char c1, char c2);
 t_token					*tokenizer(char *line);
 
 // expansion
-int						expansion(t_token *list, char **envp, t_data *data);
+int						expansion(t_token *list, t_data *data);
 char					*expand_word_one_pass(char *word, t_data *data);
 int						quote_handler(int quote_status, char c);
 int						word_split(t_token *list);
 char					*extract_var_from_envp(char *var_name);
-int						resolve_env_var_value(char *var_name, char **value);
-int						append_env_var(char **out, char *word, int *i);
+int						resolve_env_var_value(char *var_name, char **value, t_data *data);
+int						append_env_var(char **out, char *word, int *i, t_data *data);
 char					*append_str(char *dst, char *src);
 char					*append_char(char *dst, char c);
 int						is_var_char(char c);

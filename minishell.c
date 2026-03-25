@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 11:52:58 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/25 12:43:53 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 		return (cleanup_token_list(token_list), 1);
 	//printf("\nBEFORE EXPANSION\n");
 	//print_tokens(token_list);
-	if (expansion(token_list, envp, data) == 1)
+	if (expansion(token_list, data) == 1)
 		return (cleanup_token_list(token_list), 1);
 	//printf("\nAFTER EXPANSION\n");
 	//print_tokens(token_list);

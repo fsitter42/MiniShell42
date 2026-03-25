@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_expansion.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/23 12:57:08 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/25 12:57:09 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	append_expanded_char(char **out, char *word, int *i,
 	{
 		if (word[*i + 1] == '?')
 			return (expand_dollar_question(out, i, data));
-		return (append_env_var(out, word, i));
+		return (append_env_var(out, word, i, data));
 	}
 	*out = append_char(*out, word[*i]);
 	if (!*out)
@@ -58,19 +58,19 @@ char	*expand_word_one_pass(char *word, t_data *data)
  *  - double quotes (or no quotes) allow the expansion of variables
  *
  * 	we have to expand 3 things:
- *  1. variables
- *  2. ~
- *  3. $? TODO
+ *  1. env variables
+ *  2. ~ (home dir)
+ *  3. $?
  *
  *  returns 1 on error
  */
-int	expand_single_word(t_token *list_elem, char **envp, t_data *data)
+int	expand_single_word(t_token *list_elem, t_data *data)
 {
 	char	*expanded;
 
 	if (list_elem->str && list_elem->str[0] == '~')
 	{
-		if (expand_home_dir(list_elem, envp) == 1)
+		if (expand_home_dir(list_elem, data->env->envp_updated) == 1)
 			return (1);
 	}
 	expanded = expand_word_one_pass(list_elem->str, data);
@@ -85,13 +85,13 @@ int	expand_single_word(t_token *list_elem, char **envp, t_data *data)
  *  loops trough all words and executes the expand_word function
  *  returns 1 on error
  */
-int	expansion(t_token *list, char **envp, t_data *data)
+int	expansion(t_token *list, t_data *data)
 {
 	while (list)
 	{
 		if (list->type == WORD)
 		{
-			if (expand_single_word(list, envp, data) == 1)
+			if (expand_single_word(list, data) == 1)
 				return (1);
 		}
 		list = list->next;

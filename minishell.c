@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/23 13:15:00 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/25 11:52:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,41 +17,11 @@ int			g_last_exit_code;
 
 int f_is_syntax_valid(t_data *data);
 /*
-	input parsing - Stefan
 	TODO:
-	- prompt blinking cursor?
-	- detection of syntax errors
-	- creation of pipes and correct redirection of pipe ends
-	execution - Frido
-	TODO:
-	- handle environment variables (how do we store them?)
-	- find the PATHS for the given commands (absolute/relative paths also have to work)
-	- do the actual execve
-	- echo with option -n
-	- cd with only a relative or absolute path
-	- pwd with no options
-	- export with no options
-	- unset with no options
-	- env with no options or arguments
-	-
-	TODO - not defined:
-	- handle exit status (stored in $?)
+	- handle exit status (should work now, test)
 	- ctrl-C displays a new prompt on a new line
 	- ctrl-D exits the shell
 	- ctrl-\ does nothing
-*/
-
-/* this is where the magic happens, same in debug and in normal mode
-	tokenizer(line);
-	syntax check , if negative return error msg and return prompt
-	if positive, continue
-	create list of structs that are relevant for execution.
-	this includes:
-	- expansion
-	- quotes
-	- list of cmds
-	free(line);
-	pass this list to execute part of program (frido)
 */
 
 int	is_token_list_empty(t_token *token_list)
@@ -64,8 +34,6 @@ int	is_token_list_empty(t_token *token_list)
 	return (0);
 }
 
-// changes the type of the WORD token after the HEREDOC to WORD_AFTER_HEREDOC
-// returns 1 on error and 0 on success
 int	handle_delimiter(t_token *token_list)
 {
 	while (1)
@@ -87,7 +55,6 @@ int	handle_delimiter(t_token *token_list)
 	return (0);
 }
 
-// this function does everything that is needed that ONE LINE is being executed correctly
 int	handle_single_line(char *line, char **envp, t_data *data)
 {
 	int ret;
@@ -99,6 +66,8 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	{
 		//TODO check if argument. has to be a number 0 - 255
 		//if yes, this is the exit code
+		//maybe we actually have to create a "real" builtin
+		//instead of that
 		sfbf_free_all(data);
 		my_exit_function(NULL);
 	}
@@ -161,7 +130,10 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 		if (*line)
 			add_history((const char *)line);
 		if (handle_single_line(line, envp, data) == 1)
-			printf("handle_single_line failed\n"); // TODO brauch ma??
+			//printf("handle_single_line failed\n"); 
+/* 			TODO brauch ma??
+			naa aber wir miasn zb "syntax error near unexpected token |"
+			printen - zb bei input ""  */
 		free(line);
 	}
 }

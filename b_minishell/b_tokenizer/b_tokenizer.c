@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 14:53:12 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/25 11:51:37 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,8 @@ t_token	*tokenizer(char *line)
 		return (NULL);
 	if (quote_sytanx_check(line))
 	{
-		printf("quote syntax check failed\n");
+		printf("minishell: missing quote\n");
+		//TODO is this enough?
 		return (NULL);
 	}
 	list_start = ft_calloc(1, sizeof(t_token));

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/24 15:50:25 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/25 13:16:46 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
 		data->last_exit_code = f_env(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
-		printf("exit\n");
+		printf("exit\n"); //data->last_exit_code = b_exit(data, cmd->args); //TODO call exit
 	f_redir_restore(saved_fds, data);
 	return (data->last_exit_code);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
+#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/25 14:31:42 by slambert         ###   ########.fr        #
+#    Updated: 2026/03/25 15:38:58 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

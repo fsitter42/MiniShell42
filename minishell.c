@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 14:49:34 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/25 16:05:42 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,22 +169,24 @@ void	debug_mode(char *input, char **envp, t_data *data)
 	strs = ft_split(input, ';');
 	if (!strs)
 		my_exit_function("ft_split returned NULL");
+	data->strs = strs;
 	i = -1;
 	while (strs[++i])
 	{
 		if (handle_single_line(strs[i], envp, data) == 1)
 		{
+			printf("adsdasdadsadasd\n");
 			cleanup_split_result(strs, i);
 			my_exit_function("handle_single_line failed\n");
 		}
 		data->cmds = NULL;
-		free(strs[i]);
 	}
-	free(strs);
 }
 
 void	sfbf_free_all(t_data *data)
 {
+	int i;
+	
 	if (!data)
 		return ;
 	if (data->env->envp_lst)
@@ -194,6 +196,14 @@ void	sfbf_free_all(t_data *data)
 	// if (data->env->envp_ori)
 	// 	free(data->env->envp_ori);	
 	free(data->env);
+	i = 0;
+	while (data->strs && data->strs[i])
+	{
+		free (data->strs[i]);
+		i++;
+	}
+	if (data->strs)
+		free(data->strs);
 	cleanup_command_list(data->cmds);
 	free(data);
 }
@@ -211,6 +221,7 @@ t_data	*sfbf_init_all(char **envp)
 		return (free(data), NULL);
 	args = (char *[]){"export", "OLDPWD", NULL};
 	f_export(data, args);
+	data->strs = NULL;
 	return (data);
 }
 

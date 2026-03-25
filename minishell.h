@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 12:56:42 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/25 15:05:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,22 +82,6 @@ typedef struct s_cmd
 	char *infile;  // kommt weg
 	char *outfile; // kommt weg
 }						t_cmd;
-
-// typedef struct s_cmd
-// {
-// 	char *cmd; // filled by bert
-// 	int				is_builtin;
-// 	char **args; // filled by bert
-// 	char			*path;
-// 	char *infile; // filled by bert
-// 	int				in_fd;
-// 	char *outfile; // filled by bert
-// 	int				out_fd;
-// 	int				has_heredoc;
-// 	char			*delimiter;
-// 	int append; // filled by bert
-// 	struct s_cmd	*next;
-// }					t_cmd;
 
 typedef struct s_data
 {
@@ -213,8 +197,15 @@ void	normalize_ifs_chars(char *s, char *ifs);
 char	*ft_strchr_array(char *s, char *arr);
 void	free_str_array(char **arr);
 void	remove_implicit_null_arg(t_token **prev, t_token *next, t_token **list);
+
 // execution
 int						eggsecute(t_data *data);
+
+// builtins
+void b_exit (t_data *data, char **args, int* saved_fds);
+
+//singlecmds
+void	f_redir_restore(int saved_fds[2], t_data *data);
 
 // debug
 void					print_tokens(t_token *start);

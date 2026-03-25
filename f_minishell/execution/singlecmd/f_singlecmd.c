@@ -6,14 +6,13 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/25 14:34:11 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/25 15:05:09 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
 int		f_redir_setup(t_cmd *cmd, int saved_fds[2]);
-void	f_redir_restore(int saved_fds[2], t_data *data);
 
 void	f_exec_cmd(t_data *data, t_cmd *cmd, char **envp)
 {

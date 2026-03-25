@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 12:43:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/25 14:38:22 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	}
 	else
 		cleanup_token_list(token_list);
-	//sfbf_free_all(data);
+	if (ret == 1)
+		sfbf_free_all(data);
 	cleanup_command_list(cmd_list);
 	data->cmds = NULL;
 	return (ret);
@@ -192,6 +193,7 @@ void	sfbf_free_all(t_data *data)
 	free(data->env);
 	cleanup_command_list(data->cmds);
 	free(data);
+	exit(1);
 }
 
 t_data	*sfbf_init_all(char **envp)

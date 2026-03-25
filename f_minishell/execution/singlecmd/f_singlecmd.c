@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/25 16:05:47 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/25 17:25:05 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,7 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
 		data->last_exit_code = f_env(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
-		b_exit(data, cmd->args, &saved_fds); //TODO call exit
-		//printf("exit");
+		b_exit(data, cmd->args, &saved_fds);
 	f_redir_restore(saved_fds, data);
 	return (data->last_exit_code);
 }

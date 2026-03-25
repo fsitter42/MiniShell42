@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
+#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/25 16:54:36 by fsitter          ###   ########.fr        #
+#    Updated: 2026/03/25 17:36:25 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,8 +69,8 @@ CFLAGS      = -g
 INCLUDE     = -I .
 
 # -- Bibliotheken --
-#LIBFT_PATH  = b_minishell/libft	
-LIBFT_PATH  = f_includes/Libfs	#//frido libft
+LIBFT_PATH  = b_minishell/libft	
+#LIBFT_PATH  = f_includes/Libfs	#//frido libft
 LIBFT       = $(LIBFT_PATH)/libft.a
 
 # WICHTIG: -lreadline muss HINTER den Objekten stehen

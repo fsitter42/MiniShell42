@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 19:03:26 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/26 12:18:05 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_token_list_empty(t_token *token_list)
 {
 	if (!token_list || !token_list->next)
 	{
-		printf("Token list is empty\n");
+		//printf("Token list is empty\n");
 		return (1);
 	}
 	return (0);
@@ -55,38 +55,27 @@ int	handle_delimiter(t_token *token_list)
 	return (0);
 }
 
+/* TODO think about return value. does 1 always mean something went wrong 
+ * (close minishell)  * or are there cases where nothing went wrong and we 
+ * just do nothing and give the input back to the user? 
+ */
 int	handle_single_line(char *line, char **envp, t_data *data)
 {
 	int ret;
 	t_token	*token_list;
 	t_cmd	*cmd_list;
 
+	ret = 0;
 	cmd_list = NULL;
-/* 	if (ft_strncmp(line, "exit", 5) == 0)
-	{
-		//TODO check if argument. has to be a number 0 - 255
-		//if yes, this is the exit code
-		//maybe we actually have to create a "real" builtin
-		//instead of that
-		sfbf_free_all(data);
-		my_exit_function(NULL);
-	} */
-	//printf("%s is going to be tokenized\n", line);
 	token_list = tokenizer(line);
 	if (!token_list)
 		return (1);
 	if (handle_delimiter(token_list) == 1)
 		return (cleanup_token_list(token_list), 1);
-	//printf("\nBEFORE EXPANSION\n");
-	//print_tokens(token_list);
 	if (expansion(token_list, data) == 1)
 		return (cleanup_token_list(token_list), 1);
-	//printf("\nAFTER EXPANSION\n");
-	//print_tokens(token_list);
 	if (word_split(token_list) == 1)
 		return (cleanup_token_list(token_list), 1);
-	//printf("\nAFTER WORD SPLIT\n");
-	//print_tokens(token_list);
 	if (!is_token_list_empty(token_list))
 	{
     	cmd_list = create_command_list(token_list->next);
@@ -104,11 +93,8 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	}
 	else
 		cleanup_token_list(token_list);
-	/* TODO das ist ein problem, weil es zumindest einen fall gibt, wo der
-	 * exit code 1 ist und minishell NICHT geschlossen werden soll, beim
-	 * input "exit 42 asdf"
-	 */
-	if (ret == 1)
+	//TODO wir müssen überall data->should_exit auf 1 setzen in den builtins
+	if (ret == 1 && data->should_exit == 1)
 	{
 		sfbf_free_all(data);
 		exit (1);
@@ -127,7 +113,6 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 	while (1)
 	{
 		line = readline("minishell$ ");
-		// printf("read line is %s\n", line);
 		if (!line)
 			break ;
 		if (ft_strncmp(line, "", 1) == 0)
@@ -138,10 +123,9 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 		if (*line)
 			add_history((const char *)line);
 		if (handle_single_line(line, envp, data) == 1)
-			//printf("handle_single_line failed\n"); 
-/* 			TODO brauch ma??
-			naa aber wir miasn zb "syntax error near unexpected token |"
-			printen - zb bei input ""  */
+		{
+			//was hier?
+		}
 		free(line);
 	}
 }
@@ -179,8 +163,8 @@ void	debug_mode(char *input, char **envp, t_data *data)
 	{
 		if (handle_single_line(strs[i], envp, data) == 1)
 		{
-			printf("adsdasdadsadasd\n");
 			cleanup_split_result(strs, i);
+			//TODO cleanup gscheid
 			my_exit_function("handle_single_line failed\n");
 		}
 		data->cmds = NULL;
@@ -227,12 +211,11 @@ t_data	*sfbf_init_all(char **envp)
 	args = (char *[]){"export", "OLDPWD", NULL};
 	f_export(data, args);
 	data->strs = NULL;
+	data->last_exit_code = 0;
+	data->should_exit = 0;
 	return (data);
 }
 
-/* we can start minishell in normal (user input) mode (argc = 1) or in
- * debug mode (with the -d flag followed by a string) - argc = 3
- */
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
@@ -246,10 +229,7 @@ int	main(int argc, char **argv, char **envp)
 		data = sfbf_init_all(envp);
 		if (!data)
 			return (1);
-		
-
-		normal_mode(argc, argv, envp, data);
-		
+		normal_mode(argc, argv, envp, data);	
 	}
 	else
 	{
@@ -258,7 +238,6 @@ int	main(int argc, char **argv, char **envp)
 		data = sfbf_init_all(envp);
 		if (!data)
 			return (1);
-		//f_print_env(data->env->envp_lst);
 		debug_mode(argv[2], envp, data);
 	}
 	sfbf_free_all(data);

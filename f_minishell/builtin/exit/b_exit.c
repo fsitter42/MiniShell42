@@ -6,14 +6,10 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 13:22:51 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 18:56:31 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/26 12:27:06 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* TODO for the input exit 42 asdf | echo asd the output is
-minishell: exit: too many arguments
-asd
-but in bash the sequence of the outputs is different (asd is the first line) */
 #include "../../../minishell.h"
 
 static void	write_exit_error_and_free(char *str, t_data *data, int *saved_fds,
@@ -31,6 +27,7 @@ static void	write_exit_error_and_free(char *str, t_data *data, int *saved_fds,
 	f_redir_restore(saved_fds, data);
 }
 
+// is_num holds the info whether the argument holds only digits
 int	set_is_num(char **args)
 {
 	int	i;
@@ -54,27 +51,39 @@ int	set_is_num(char **args)
 	return (is_num);
 }
 
+void	too_many_args_handler(t_data *data)
+{
+	ft_putendl_fd("exit", STDOUT_FILENO);
+	ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
+	data->last_exit_code = 1;
+	data->should_exit = 0;
+}
+
 void	b_exit(t_data *data, char **args, int *saved_fds)
 {
 	int	exit_no;
 	int	is_num;
 	int	i;
 
+	is_num = 0;
 	exit_no = 0;
 	if (args[1] && args[2])
 	{
-		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-		data->last_exit_code = 1;
+		too_many_args_handler(data);
 		return ;
 	}
 	if (args[1])
 	{
 		is_num = set_is_num(args);
 		if (is_num == 0)
-			exit_no = 2;
+		{
+			write_exit_error_and_free(args[1], data, saved_fds, 0);
+			exit(2);
+		}
 		else
 			exit_no = ft_atoi(args[1]);
 	}
-	write_exit_error_and_free(args[1], data, saved_fds, is_num);
+	sfbf_free_all(data);
+	f_redir_restore(saved_fds, data);
 	exit(exit_no);
 }

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/23 09:51:34 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/26 17:00:28 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	f_cd(t_data *data, char **args)
 	char	*new_pwd;
 	char	*export_str;
 	char	*target;
-
+	
 	if (args[1])
 		target = args[1];
 	else
@@ -27,11 +27,8 @@ int	f_cd(t_data *data, char **args)
 		return (EXIT_FAILURE);
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(target) == -1)
-	{
-		f_print_error(target, strerror(errno));
-		free(old_pwd);
-		return (EXIT_FAILURE);
-	}
+		return (f_print_error(target, strerror(errno)), free(old_pwd),
+			EXIT_FAILURE);
 	new_pwd = getcwd(NULL, 0);
 	export_str = ft_strjoin("OLDPWD=", old_pwd);
 	f_export(data, (char *[]){"export", export_str, NULL});

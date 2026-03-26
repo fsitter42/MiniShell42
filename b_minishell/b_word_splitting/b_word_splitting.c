@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 13:22:19 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 14:59:57 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/26 15:36:28 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ static int	normalizer(char *str, char *ifs, char ***split_result)
 
 	normalized = ft_strdup(str);
 	if (!normalized)
-		return (1);
+		return (ERROR_HARD);
 	normalize_ifs_chars(normalized, ifs);
 	*split_result = ft_split(normalized, ifs[0]);
 	free(normalized);
-	if (!split_result)
-		return (1);
-	return (0);
+	if (!*split_result)
+		return (ERROR_HARD);
+	return (RET_OK);
 }
 
 /*
@@ -45,18 +45,18 @@ int	create_and_fill_new_tokens(char **split_result, t_token *list)
 	{
 		new = ft_calloc(sizeof(t_token), 1);
 		if (!new)
-			return (1);
+			return (ERROR_HARD);
 		init_token(new);
 		new->type = WORD;
 		new->str = ft_strdup(split_result[i]);
 		if (!new->str)
-			return (free(new), 1);
+			return (free(new), ERROR_HARD);
 		tail->next = new;
 		tail = new;
 		i++;
 	}
 	tail->next = orig;
-	return (0);
+	return (RET_OK);
 }
 
 /*
@@ -67,24 +67,27 @@ int	split_single_word(t_token *list, char *ifs)
 {
 	char	**split_result;
 	char	*new_first;
+	int	ret;
 
 	if (list->str && ft_strchr_array(list->str, ifs))
 	{
-		if (normalizer(list->str, ifs, &split_result) == 1)
-			return (1);
+		ret = normalizer(list->str, ifs, &split_result);
+		if (ret != RET_OK)
+			return (ret);
 		if (split_result[0])
 			new_first = ft_strdup(split_result[0]);
 		else
 			new_first = ft_strdup("");
 		if (!new_first)
-			return (free_str_array(split_result), 1);
+			return (free_str_array(split_result), ERROR_HARD);
 		free(list->str);
 		list->str = new_first;
-		if (create_and_fill_new_tokens(split_result, list) == 1)
-			return (free_str_array(split_result), 1);
+		ret = create_and_fill_new_tokens(split_result, list);
+		if (ret != RET_OK)
+			return (free_str_array(split_result), ret);
 		free_str_array(split_result);
 	}
-	return (0);
+	return (RET_OK);
 }
 
 void	init_ifs_and_split(char **ifs, int *split)
@@ -105,6 +108,7 @@ int	word_split(t_token *list)
 {
 	char	*ifs;
 	int		split;
+	int		ret;
 	t_token	*prev;
 	t_token	*next;
 
@@ -119,10 +123,13 @@ int	word_split(t_token *list)
 			continue ;
 		}
 		if (list->type == WORD && split && list->quote_status == DEFAULT_QUOTE)
-			if (split_single_word(list, ifs) == 1)
-				return (1);
+		{
+			ret = split_single_word(list, ifs);
+			if (ret != RET_OK)
+				return (ret);
+		}
 		prev = list;
 		list = list->next;
 	}
-	return (0);
+	return (RET_OK);
 }

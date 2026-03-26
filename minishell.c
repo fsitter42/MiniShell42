@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 15:21:23 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/26 15:48:21 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ int	handle_delimiter(t_token *token_list)
 		while (token_list && token_list->type != HEREDOC)
 			token_list = token_list->next;
 		if (!token_list)
-			return (0);
+			return (RET_OK);
 		if (token_list->next && token_list->next->type == WORD)
 		{
 			token_list->next->type = WORD_AFTER_HEREDOC;
 			token_list = token_list->next;
 		}
 		else
-			return (1);
+			return (ERROR_SOFT);
 	}
-	return (0);
+	return (RET_OK);
 }
 
 /* TODO think about return value. does 1 always mean something went wrong 
@@ -61,48 +61,50 @@ int	handle_delimiter(t_token *token_list)
  */
 int	handle_single_line(char *line, char **envp, t_data *data)
 {
-	int ret;
+	int	exec_ret;
+	int	ret;
 	t_token	*token_list;
 	t_cmd	*cmd_list;
 
-	ret = 0;
+	exec_ret = RET_OK;
 	cmd_list = NULL;
 	token_list = tokenizer(line);
 	if (!token_list)
-		return (1);
-	if (handle_delimiter(token_list) == 1)
-		return (cleanup_token_list(token_list), 1);
-	if (expansion(token_list, data) == 1)
-		return (cleanup_token_list(token_list), 1);
-	if (word_split(token_list) == 1)
-		return (cleanup_token_list(token_list), 1);
+		return (ERROR_HARD);
+	ret = handle_delimiter(token_list);
+	if (ret != RET_OK)
+		return (cleanup_token_list(token_list), ret);
+	ret = expansion(token_list, data);
+	if (ret != RET_OK)
+		return (cleanup_token_list(token_list), ret);
+	ret = word_split(token_list);
+	if (ret != RET_OK)
+		return (cleanup_token_list(token_list), ret);
 	if (!is_token_list_empty(token_list))
 	{
     	cmd_list = create_command_list(token_list->next);
     	if (!cmd_list)
-    	    return (cleanup_token_list(token_list), 1);	
+	    	    return (cleanup_token_list(token_list), ERROR_HARD);	
     	cleanup_token_list(token_list);
     	data->cmds = cmd_list; 	
-    	if (f_is_syntax_valid(data) == 0)
+	    	ret = f_is_syntax_valid(data);
+	    	if (ret != RET_OK)
     	{
         	cleanup_command_list(cmd_list);
         	data->cmds = NULL;
-        	return (1); 
+	        	return (ret);
     	}
-    	ret = eggsecute(data); //frido geändert
+	    	exec_ret = eggsecute(data); //frido geändert
 	}
 	else
 		cleanup_token_list(token_list);
 	//TODO wir müssen überall data->should_exit auf 1 setzen in den builtins
 	//alternativ ret -1 oder 600
-	if (ret == 1 && data->should_exit == 1)
-	{
-		sfbf_free_all(data);
-		exit (1);
-	}
+	if (exec_ret == 1 && data->should_exit == 1)
+		return (ERROR_HARD);
 	cleanup_command_list(cmd_list);
 	data->cmds = NULL;
-	return (ret);
+	return (RET_OK);
 }
 
 /* this is the default mode in where the users enters stuff
@@ -110,6 +112,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 {
 	char	*line;
+	int		ret_from_hsl;
 
 	while (1)
 	{
@@ -123,11 +126,12 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 		}
 		if (*line)
 			add_history((const char *)line);
-		if (handle_single_line(line, envp, data) == 1)
-		{
-			//was hier?
-		}
+		ret_from_hsl = handle_single_line(line, envp, data);
 		free(line);
+		if (ret_from_hsl == ERROR_SOFT || ret_from_hsl == RET_OK)
+			continue ;
+		else if (ret_from_hsl == ERROR_HARD)
+			break ;
 	}
 }
 
@@ -153,6 +157,7 @@ void	debug_mode(char *input, char **envp, t_data *data)
 {
 	char	**strs;
 	int		i;
+	int		ret;
 
 	strs = NULL;
 	strs = ft_split(input, ';');
@@ -162,12 +167,15 @@ void	debug_mode(char *input, char **envp, t_data *data)
 	i = -1;
 	while (strs[++i])
 	{
-		if (handle_single_line(strs[i], envp, data) == 1)
+		ret = handle_single_line(strs[i], envp, data);
+		if (ret == ERROR_HARD)
 		{
 			cleanup_split_result(strs, i);
-			//TODO cleanup gscheid
+			return ;
 			my_exit_function("handle_single_line failed\n");
 		}
+		if (ret == ERROR_SOFT)
+			continue ;
 		data->cmds = NULL;
 	}
 }
@@ -195,6 +203,9 @@ void	sfbf_free_all(t_data *data)
 	if (data->strs)
 		free(data->strs);
 	cleanup_command_list(data->cmds);
+	clear_history();
+	rl_clear_history();
+	rl_free_line_state();
 	free(data);
 }
 
@@ -210,7 +221,7 @@ t_data	*sfbf_init_all(char **envp)
 	if (!data->env)
 		return (free(data), NULL);
 	args = (char *[]){"export", "OLDPWD", NULL};
-	if (f_export(data, args) == 0) //funcheck 15 OK
+	if (f_export(data, args) == 1) //funcheck 15 OK
 	{
 		f_destroy_envp(data->env);
 		free(data);
@@ -260,11 +271,11 @@ int f_is_syntax_valid(t_data *data)
         {
             ft_putstr_fd("minishell: syntax error near unexpected token '|'\n", 2);
             data->last_exit_code = 258;
-            return (0);
+			return (ERROR_SOFT);
         }
         tmp = tmp->next;
     }
-    return (1);
+	return (RET_OK);
 }
 
 /* size_t count_cmds(t_token *cmd_list)

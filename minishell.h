@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 14:18:41 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/26 15:37:04 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,12 @@ enum					e_bool
 	TRUE
 };
 
+enum					e_ret_status
+{
+	RET_OK = 0,
+	ERROR_SOFT = -1,
+	ERROR_HARD = -2	
+};
 // main
 
 // commandizer

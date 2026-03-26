@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 13:14:59 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/26 15:36:15 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,24 @@
 static int	append_expanded_char(char **out, char *word, int *i,
 		int *quote_status, t_data *data)
 {
+	int	ret;
+
 	if (consume_syntactic_quote(word[*i], quote_status) == 1)
-		return (0);
+		return (RET_OK);
 	if (word[*i] == '$' && *quote_status != IN_SINGLE_QUOTES)
 	{
 		if (word[*i + 1] == '?')
-			return (expand_dollar_question(out, i, data));
-		return (append_env_var(out, word, i, data));
+			ret = expand_dollar_question(out, i, data);
+		else
+			ret = append_env_var(out, word, i, data);
+		if (ret != RET_OK)
+			return (ERROR_HARD);
+		return (RET_OK);
 	}
 	*out = append_char(*out, word[*i]);
 	if (!*out)
-		return (1);
-	return (0);
+		return (ERROR_HARD);
+	return (RET_OK);
 }
 
 /*
@@ -47,7 +53,8 @@ char	*expand_word_one_pass(char *word, t_data *data)
 	i = -1;
 	while (word[++i])
 	{
-		if (append_expanded_char(&out, word, &i, &quote_status, data) == 1)
+		if (append_expanded_char(&out, word, &i, &quote_status, data)
+			!= RET_OK)
 			return (free(out), NULL);
 	}
 	return (out);
@@ -71,15 +78,15 @@ int	expand_single_word(t_token *list_elem, t_data *data)
 
 	if (list_elem->str && list_elem->str[0] == '~')
 	{
-		if (expand_home_dir(list_elem, data->env->envp_updated) == 1)
-			return (1);
+		if (expand_home_dir(list_elem, data->env->envp_updated) != RET_OK)
+			return (ERROR_HARD);
 	}
 	expanded = expand_word_one_pass(list_elem->str, data);
 	if (!expanded)
-		return (1);
+		return (ERROR_HARD);
 	free(list_elem->str);
 	list_elem->str = expanded;
-	return (0);
+	return (RET_OK);
 }
 
 /*
@@ -92,12 +99,12 @@ int	expansion(t_token *list, t_data *data)
 	{
 		if (list->type == WORD)
 		{
-			if (expand_single_word(list, data) == 1)
-				return (1);
+			if (expand_single_word(list, data) != RET_OK)
+				return (ERROR_HARD);
 		}
 		list = list->next;
 	}
-	return (0);
+	return (RET_OK);
 }
 
 /* static int	append_env_var(char **out, char *word, int *i, char **envp)

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:11:54 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/23 13:08:56 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/26 15:19:00 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,10 @@ int	f_export_with_key(t_envl *envl, char *s)
 	if (!val)
 		val = f_get_env_val(envl, key);
 	f_lst_del_one(&envl, key);
-	f_lst_add_one(envl, key, val);
-	if (val)
-		free(val);
-	return (free(key), 0);
+	if (!f_lst_add_one(envl, key, val))
+		return (f_free_key_n_val(key, val), 1); 
+	f_free_key_n_val(key, val);
+	return (0);
 }
 
 void	f_free_key_n_val(char *key, char *val)

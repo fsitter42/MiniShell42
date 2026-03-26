@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 15:05:34 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/26 15:08:19 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	handle_delimiter(t_token *token_list)
 /* TODO think about return value. does 1 always mean something went wrong 
  * (close minishell)  * or are there cases where nothing went wrong and we 
  * just do nothing and give the input back to the user? 
+ * i think we need 3 states, OK, ERROR_RECOVERABLE (user gets input back)
+ * and ERROR_FATAL (minishell exits and everything gets cleaned up)
  */
 int	handle_single_line(char *line, char **envp, t_data *data)
 {
@@ -92,6 +94,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	else
 		cleanup_token_list(token_list);
 	//TODO wir müssen überall data->should_exit auf 1 setzen in den builtins
+	//alternativ ret -1 oder 600
 	if (ret == 1 && data->should_exit == 1)
 	{
 		sfbf_free_all(data);

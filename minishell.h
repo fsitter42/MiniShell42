@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 11:57:14 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/26 14:18:41 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_cmd
 	int					redir_failed;
 	char *delimiter; //überlegen, wird wsl. erst im heredoc handling gesetzt
 	int					has_heredoc;
+	int					is_first;
 
 	int append;    // kommt weg
 	char *infile;  // kommt weg
@@ -204,7 +205,7 @@ void	remove_implicit_null_arg(t_token **prev, t_token *next, t_token **list);
 int						eggsecute(t_data *data);
 
 // builtins
-void b_exit (t_data *data, char **args, int* saved_fds);
+void b_exit (t_data *data, t_cmd *cmd, int* saved_fds);
 
 //singlecmds
 void	f_redir_restore(int saved_fds[2], t_data *data);

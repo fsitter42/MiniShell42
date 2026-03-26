@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_commandizer_utils2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:54:58 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 16:02:01 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/26 14:47:04 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,17 @@ void	init_cmd(t_cmd *cmd)
 	cmd->has_heredoc = FALSE;
 	cmd->delimiter = NULL;
 	cmd->redirs = NULL;
+	cmd->is_first = 0;
 }
 
 void	add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd)
 {
-	t_cmd	*current;
+	t_cmd		*current;
 
 	if (!(*cmd_list))
 	{
 		*cmd_list = cmd;
+		cmd->is_first = 1;
 		return ;
 	}
 	current = *cmd_list;

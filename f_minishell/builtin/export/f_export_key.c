@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:11:54 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/26 15:55:07 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/26 16:42:01 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	f_lst_add_one(t_envl *list, char *key, char *val)
 	{
 		new->val = ft_strdup(val);
 		if (!new->val)
-			return (f_free_node(new), 0); //memsafe FRIDO
+			return (f_free_node(new), 0);
 	}
 	list->next = new;
 	return (1);

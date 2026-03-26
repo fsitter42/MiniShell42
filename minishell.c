@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 15:48:21 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/26 16:43:11 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ t_data	*sfbf_init_all(char **envp)
 	if (!data->env)
 		return (free(data), NULL);
 	args = (char *[]){"export", "OLDPWD", NULL};
-	if (f_export(data, args) == 1) //funcheck 15 OK
+	if (f_export(data, args) == EXIT_FAILURE) //funcheck 15 OK
 	{
 		f_destroy_envp(data->env);
 		free(data);

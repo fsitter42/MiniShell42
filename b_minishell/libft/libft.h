@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 14:20:51 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 17:35:49 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/26 12:53:49 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 int					ft_putchar_fd(char c, int fd);
 size_t				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
-void				ft_putendl_fd_no_newline(char *s, int fd);
+void				ft_putendl_fd_no_nl(char *s, int fd);
 int					ft_putnbr_fd(int n, int fd);
 
 // bonus

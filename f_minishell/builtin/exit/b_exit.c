@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 13:22:51 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 12:27:06 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/26 12:55:13 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 static void	write_exit_error_and_free(char *str, t_data *data, int *saved_fds,
 		int is_num)
 {
+	// TODO das nicht printen, wenn der exit cmd nicht der allererste ist
+	// (also nur, wenn minishell auch tatsächlich geexited wird, nicht
+	// nur der child process)
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (!is_num)
 	{
-		ft_putendl_fd_no_newline("minishell: exit: ", STDERR_FILENO);
-		ft_putendl_fd_no_newline(str, STDERR_FILENO);
-		ft_putendl_fd_no_newline(": numeric argument required\n",
-			STDERR_FILENO);
+		ft_putendl_fd_no_nl("minishell: exit: ", STDERR_FILENO);
+		ft_putendl_fd_no_nl(str, STDERR_FILENO);
+		ft_putendl_fd_no_nl(": numeric argument required\n", STDERR_FILENO);
 	}
 	sfbf_free_all(data);
 	f_redir_restore(saved_fds, data);
@@ -41,7 +43,7 @@ int	set_is_num(char **args)
 		is_num = 0;
 	while (is_num && args[1][i])
 	{
-		if (!ft_isdigit((unsigned char)args[1][i]))
+		if (!ft_isdigit(args[1][i]))
 		{
 			is_num = 0;
 			break ;

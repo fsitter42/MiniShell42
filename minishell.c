@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 12:18:05 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/26 12:50:05 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	handle_delimiter(t_token *token_list)
 			token_list = token_list->next;
 		if (!token_list)
 			return (0);
-		// heredoc found
 		if (token_list->next && token_list->next->type == WORD)
 		{
 			token_list->next->type = WORD_AFTER_HEREDOC;
@@ -50,7 +49,6 @@ int	handle_delimiter(t_token *token_list)
 		}
 		else
 			return (1);
-		// token_list = token_list->next;
 	}
 	return (0);
 }

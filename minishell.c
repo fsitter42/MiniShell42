@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/28 11:25:53 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 11:32:15 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ t_data	*sfbf_init_all(char **envp)
 	if (!data->env)
 		return (free(data), NULL);
 	args = (char *[]){"export", "OLDPWD", NULL};
-	if (f_export(data, args) == EXIT_FAILURE) //funcheck 15 OK
+	if (f_export(data, args) == EXIT_FAILURE)
 	{
 		f_destroy_envp(data->env);
 		free(data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 15:37:04 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/28 11:24:23 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ void	f_redir_restore(int saved_fds[2], t_data *data);
 
 // debug
 void					print_tokens(t_token *start);
+void					*test_calloc(size_t nmemb, size_t size);
 
 # include "f_minishell/builtin/cd/f_cd.h"
 # include "f_minishell/builtin/echo/f_echo.h"

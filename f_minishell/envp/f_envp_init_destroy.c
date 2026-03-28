@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 23:58:21 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/16 14:03:37 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 12:14:02 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_envp	*f_init_envp(char **envp)
 	p->envp_lst = f_copy_env(envp);
 	if (!p->envp_lst)
 		return (free(p), NULL);
-	if (f_update_envp(p))
+	if (f_update_envp(p, NULL))
 		return (f_destroy_envp(p));
 	return (p);
 }

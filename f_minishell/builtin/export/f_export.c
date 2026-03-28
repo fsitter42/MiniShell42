@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:26:09 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/28 12:03:13 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 12:11:00 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ int	f_export(t_data *data, char **args)
 		}
 		i++;
 	}
-	f_update_envp(data->env);
+	f_update_envp(data->env, data);
 	return (ret);
 }

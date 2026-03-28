@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/28 12:01:27 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 12:09:04 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,5 @@ int	f_cd(t_data *data, char **args)
 		return (free(export_str), free(old_pwd), free(new_pwd), EXIT_FAILURE);
 	return (free(export_str), free(old_pwd), free(new_pwd), EXIT_SUCCESS);
 }
+
+//TODOF getcwd protecten

@@ -6,19 +6,23 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 23:00:29 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/25 16:55:36 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 12:13:46 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	f_update_envp(t_envp *data)
+int	f_update_envp(t_envp *data, t_data *bigdata)
 {
 	if (data->envp_updated)
 		data->envp_updated = f_free_envp(data->envp_updated);
 	data->envp_updated = f_envp_lst_to_p(data->envp_lst, 0, 0, 0);
 	if (!data->envp_updated)
+	{
+		if (bigdata != NULL)
+			bigdata->should_exit = 1;
 		return (1);
+	}
 	return (0);
 }
 

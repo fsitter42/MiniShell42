@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 13:22:51 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 14:59:24 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/28 16:49:27 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	too_many_args_handler(t_data *data, t_cmd *cmd)
 	if (cmd->is_first)
 		ft_putendl_fd("exit", STDOUT_FILENO);
 	ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-	data->last_exit_code = 1;
+	data->last_exit_code = 2;
 	data->should_exit = 0;
 }
 

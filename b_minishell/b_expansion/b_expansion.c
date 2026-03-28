@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 15:36:15 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/28 16:47:24 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	append_expanded_char(char **out, char *word, int *i,
 
 	if (consume_syntactic_quote(word[*i], quote_status) == 1)
 		return (RET_OK);
-	if (word[*i] == '$' && *quote_status != IN_SINGLE_QUOTES)
+	if (word[*i] == '$' && *quote_status != IN_SINGLE_QUOTES && word[(*i) + 1])
 	{
 		if (word[*i + 1] == '?')
 			ret = expand_dollar_question(out, i, data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/28 11:59:39 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 16:36:29 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
 		data->last_exit_code = f_env(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
-		b_exit(data, cmd, &saved_fds);
+		b_exit(data, cmd, (int*) &saved_fds);
 	f_redir_restore(saved_fds, data);
 	return (data->last_exit_code);
 }

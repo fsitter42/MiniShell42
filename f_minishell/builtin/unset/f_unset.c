@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_unset.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:09:18 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/25 14:03:06 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/28 11:58:32 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,21 @@ int	f_lst_del_one(t_envl **list, char *key)
 	return (EXIT_SUCCESS);
 }
 
-char	*f_get_env_val(t_envl *list, char *key)
+char	*f_get_env_val(t_envl *list, char *key, t_data *data)
 {
+	char *ret;
+	
 	if (!list || !key)
 		return (NULL);
 	while (list)
 	{
 		if (f_strcmp(key, list->key) == 0)
-			return (ft_strdup(list->val));
+		{
+			ret = ft_strdup(list->val);
+			if (!ret)
+				data->should_exit = 1;
+			return (ret);
+		}
 		list = list->next;
 	}
 	return (NULL);

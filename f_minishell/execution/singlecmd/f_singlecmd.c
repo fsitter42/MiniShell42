@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/26 14:18:28 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/28 11:59:39 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "cd", 3) == 0)
 		data->last_exit_code = f_cd(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "pwd", 4) == 0)
-		data->last_exit_code = f_pwd();
+		data->last_exit_code = f_pwd(data);
 	else if (ft_strncmp(cmd->cmd, "export", 7) == 0)
 		data->last_exit_code = f_export(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "unset", 6) == 0)

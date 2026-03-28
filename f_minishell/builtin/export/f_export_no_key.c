@@ -6,13 +6,13 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 00:45:56 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/16 14:03:10 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 12:21:23 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-int	f_print_export(t_envl *original_list)
+int	f_print_export(t_envl *original_list, t_data *data)
 {
 	t_envl	*copy;
 	t_envl	*tmp;
@@ -21,7 +21,7 @@ int	f_print_export(t_envl *original_list)
 		return (1);
 	copy = f_copy_list(original_list);
 	if (!copy)
-		return (1);
+		return (data->should_exit = 1, 1);
 	f_sort_env_list(copy);
 	tmp = copy;
 	while (tmp)

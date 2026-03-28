@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/28 12:09:04 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 12:36:46 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	f_cd(t_data *data, char **args)
 	char	*export_str;
 	char	*target;
 
+	if (args[2] != NULL)
+		return (f_print_error("cd", "too many arguments"), EXIT_FAILURE);
 	if (args[1])
 		target = args[1];
 	else

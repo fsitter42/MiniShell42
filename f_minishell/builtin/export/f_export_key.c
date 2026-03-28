@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:11:54 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/26 16:42:01 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 12:03:43 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	f_valid_identifier(char *s)
  *	es sinn sie gar zu ersetzen!!!
  *
  */
-int	f_export_with_key(t_envl *envl, char *s)
+int	f_export_with_key(t_envl *envl, char *s, t_data *data)
 {
 	char	*key;
 	char	*val;
@@ -106,7 +106,7 @@ int	f_export_with_key(t_envl *envl, char *s)
 	if (!key || (eq && !val))
 		return (f_free_key_n_val(key, val), 1);
 	if (!val)
-		val = f_get_env_val(envl, key);
+		val = f_get_env_val(envl, key, data);
 	f_lst_del_one(&envl, key);
 	if (!f_lst_add_one(envl, key, val))
 		return (f_free_key_n_val(key, val), 1); 

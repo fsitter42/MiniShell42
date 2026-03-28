@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_exp_env_var.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:32:14 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 12:56:31 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/28 12:02:17 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*extract_var_from_envp(char *var_name)
 int	resolve_env_var_value(char *var_name, char **value, t_data *data)
 {
 	//*value = extract_var_from_envp(var_name);
-	*value = f_get_env_val(data->env->envp_lst, var_name);
+	*value = f_get_env_val(data->env->envp_lst, var_name, data);
 	if (!*value)
 		return (1);
 	return (0);

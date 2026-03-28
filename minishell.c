@@ -6,11 +6,13 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/28 11:33:53 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 12:01:58 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_last_exit_code;
 
 void	*test_calloc(size_t nmemb, size_t size);
 

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 00:46:00 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/28 12:02:53 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 12:23:23 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define EXPORT_H
 
 // f_export_no_key.c
-int		f_print_export(t_envl *original_list);
+int	f_print_export(t_envl *original_list, t_data *data);
 t_envl	*f_copy_list(t_envl *head);
 void	f_sort_env_list(t_envl *head);
 int		f_strcmp(const char *s1, const char *s2);

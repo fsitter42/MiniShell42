@@ -6,11 +6,20 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/28 11:22:21 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/28 11:25:53 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	*test_calloc(size_t nmemb, size_t size);
+
+void	*test_calloc(size_t nmemb, size_t size)
+{
+	(void)nmemb;
+	(void)size;
+	return (NULL);
+}
 
 int			f_is_syntax_valid(t_data *data);
 /*

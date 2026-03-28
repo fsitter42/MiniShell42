@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
+#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/25 17:36:25 by slambert         ###   ########.fr        #
+#    Updated: 2026/03/28 11:25:35 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME        = minishell
 
 # -- Dateien --
 
-SRC_MAIN    = minishell.c
+SRC_MAIN    = minishell.c \
 
 SRC_PARS    = b_minishell/b_commandizer/b_commandizer.c \
               b_minishell/b_commandizer/b_commandizer_utils1.c \

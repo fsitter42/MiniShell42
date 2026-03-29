@@ -14,7 +14,7 @@
             //"args": ["-d", "export aaa=\"asd\";export zzzz=\\$aaa;export"],
             // "args": ["-d", "echo asdf | exit 42 s"],
             //"args": ["-d", "echo $;echo $;echo $;echo $;echo $;echo $;echo $;echo $"],
-            "args": ["-d", "echo hi >./minishell_tester/test_files/invalid_permission | echo hi"],
+            "args": ["-d", "./haha.out"],
             //"args": [],
             //"args": ["-d", "cat < file1.txt -e > file2.txt -n"],
             //"args": ["-d", "< input.txt > output.txt"],

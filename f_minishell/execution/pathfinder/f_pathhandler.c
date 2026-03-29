@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 13:01:08 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/29 12:47:19 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/29 13:18:12 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static char	*f_handle_direct_path(char *cmd, int *err, int *err2);
 static void	f_print_126(int *err2);
+static void	f_print_127(char *cmd);
 
 char	*f_path_handler(t_data *data, char *cmd, char **envp)
 {
@@ -33,7 +34,7 @@ char	*f_path_handler(t_data *data, char *cmd, char **envp)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
 		if (err == 127)
-			ft_putendl_fd(": command not found", 2);
+			f_print_127(cmd); // ft_putendl_fd(": command not found", 2);
 		else if (err == 126)
 			f_print_126(&err2);
 		else if (err == 1)
@@ -41,6 +42,14 @@ char	*f_path_handler(t_data *data, char *cmd, char **envp)
 	}
 	data->last_exit_code = err;
 	return (path);
+}
+
+static void	f_print_127(char *cmd)
+{
+	if (cmd && ft_strchr(cmd, '/'))
+		ft_putendl_fd(": No such file or directory", 2);
+	else
+		ft_putendl_fd(": command not found", 2);
 }
 
 static void	f_print_126(int *err2)
@@ -61,7 +70,7 @@ static char	*f_handle_direct_path(char *cmd, int *err, int *err2)
 		if (*err != 0)
 			return (NULL);
 		res = ft_strdup(cmd);
-		if (!res)
+		if (!res) // TODOF should end
 			*err = 1;
 		return (res);
 	}

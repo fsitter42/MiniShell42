@@ -59,7 +59,6 @@ int	append_env_var(char **out, char *word, int *i, t_data* data)
 		*out = append_char(*out, '$');
 		if (!*out)
 			return (1);
-		(*i)++;
 		return (0);
 	}
 	var_name = ft_substr(word, *i + 1, var_name_len);

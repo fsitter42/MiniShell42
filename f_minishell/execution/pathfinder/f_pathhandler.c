@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 13:01:08 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/29 13:27:16 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/29 13:28:43 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ static char	*f_handle_direct_path(char *cmd, int *err, int *err2)
 		if (*err != 0)
 			return (NULL);
 		res = ft_strdup(cmd);
-		free (res);
-		res = NULL;
 		if (!res)
 			*err = 1;
 		return (res);

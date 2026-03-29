@@ -6,14 +6,14 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 13:01:08 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/29 12:44:03 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/29 12:47:19 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
 static char	*f_handle_direct_path(char *cmd, int *err, int *err2);
-static void f_print_126(int *err2);
+static void	f_print_126(int *err2);
 
 char	*f_path_handler(t_data *data, char *cmd, char **envp)
 {
@@ -35,7 +35,7 @@ char	*f_path_handler(t_data *data, char *cmd, char **envp)
 		if (err == 127)
 			ft_putendl_fd(": command not found", 2);
 		else if (err == 126)
-			ft_putendl_fd(": Permission denied or is a directory", 2);
+			f_print_126(&err2);
 		else if (err == 1)
 			ft_putendl_fd(": memory allocation error", 2);
 	}
@@ -43,7 +43,7 @@ char	*f_path_handler(t_data *data, char *cmd, char **envp)
 	return (path);
 }
 
-static void f_print_126(int *err2)
+static void	f_print_126(int *err2)
 {
 	if (*err2 != 0)
 		ft_putendl_fd(": Is a directory", 2);

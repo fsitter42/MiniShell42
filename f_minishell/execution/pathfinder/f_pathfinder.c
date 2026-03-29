@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 11:59:42 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/29 12:43:25 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/29 12:47:47 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ static char	*f_join_cmd_to_path(char *dir, char *cmd)
 	if (!tmp)
 		return (NULL);
 	full = ft_strjoin(tmp, cmd);
-	// free (full);
-	// full = NULL;
 	if (!full)
 		return (free(tmp), NULL);
 	free(tmp);

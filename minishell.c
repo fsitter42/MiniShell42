@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/28 12:01:58 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/29 11:26:54 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,7 +288,7 @@ int	f_is_syntax_valid(t_data *data)
 		{
 			ft_putstr_fd("minishell: syntax error near unexpected token '|'\n",
 				2);
-			data->last_exit_code = 258;
+			data->last_exit_code = 2;
 			return (ERROR_SOFT);
 		}
 		tmp = tmp->next;

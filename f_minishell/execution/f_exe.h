@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 12:00:30 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/24 15:53:17 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/29 12:43:50 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define F_EXE_H
 
 // f_pathfinder.c
-char	*f_find_path(char *cmd, char **envp, int *err);
-void	f_validate_path(char *path, int *err);
+char	*f_find_path(char *cmd, char **envp, int *err, int *err2);
+void	f_validate_path(char *path, int *err, int *err2);
 
 // f_pathhandler.c
 char	*f_path_handler(t_data *data, char *cmd, char **envp);

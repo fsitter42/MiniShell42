@@ -3,28 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   f_pathhandler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 13:01:08 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/25 16:15:24 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/29 12:44:03 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-static char	*f_handle_direct_path(char *cmd, int *err);
+static char	*f_handle_direct_path(char *cmd, int *err, int *err2);
+static void f_print_126(int *err2);
 
 char	*f_path_handler(t_data *data, char *cmd, char **envp)
 {
 	char	*path;
 	int		err;
+	int		err2;
 
 	err = 0;
+	err2 = 0;
 	if (!cmd || !*cmd)
 		return (NULL);
-	path = f_handle_direct_path(cmd, &err);
+	path = f_handle_direct_path(cmd, &err, &err2);
 	if (!path && err == 0)
-		path = f_find_path(cmd, envp, &err);
+		path = f_find_path(cmd, envp, &err, &err2);
 	if (!path && err != 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -40,13 +43,21 @@ char	*f_path_handler(t_data *data, char *cmd, char **envp)
 	return (path);
 }
 
-static char	*f_handle_direct_path(char *cmd, int *err)
+static void f_print_126(int *err2)
+{
+	if (*err2 != 0)
+		ft_putendl_fd(": Is a directory", 2);
+	else
+		ft_putendl_fd(": Permission denied", 2);
+}
+
+static char	*f_handle_direct_path(char *cmd, int *err, int *err2)
 {
 	char	*res;
 
 	if (cmd && ft_strchr(cmd, '/'))
 	{
-		f_validate_path(cmd, err);
+		f_validate_path(cmd, err, err2);
 		if (*err != 0)
 			return (NULL);
 		res = ft_strdup(cmd);

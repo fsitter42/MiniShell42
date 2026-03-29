@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_pathfinder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 11:59:42 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/25 16:20:37 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/29 12:43:25 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*f_join_cmd_to_path(char *dir, char *cmd)
 	return (full);
 }
 
-void	f_validate_path(char *path, int *err)
+void	f_validate_path(char *path, int *err, int *err2)
 {
 	struct stat	s;
 
@@ -57,14 +57,17 @@ void	f_validate_path(char *path, int *err)
 		return ;
 	}
 	if (stat(path, &s) == 0 && S_ISDIR(s.st_mode))
+	{
 		*err = 126;
+		*err2 = 1;
+	}
 	else if (access(path, X_OK) != 0)
 		*err = 126;
 	else
 		*err = 0;
 }
 
-char	*f_find_path(char *cmd, char **envp, int *err)
+char	*f_find_path(char *cmd, char **envp, int *err, int *err2)
 {
 	char	**dirs;
 	char	*full;
@@ -83,7 +86,7 @@ char	*f_find_path(char *cmd, char **envp, int *err)
 		full = f_join_cmd_to_path(dirs[i], cmd);
 		if (!full)
 			return (*err = 1, f_free_envp(dirs), NULL);
-		f_validate_path(full, err);
+		f_validate_path(full, err, err2);
 		if (*err == 0)
 			return (f_free_envp(dirs), full);
 		free(full);

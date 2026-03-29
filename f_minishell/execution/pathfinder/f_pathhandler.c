@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 13:01:08 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/29 13:18:12 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/29 13:27:16 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*f_path_handler(t_data *data, char *cmd, char **envp)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
 		if (err == 127)
-			f_print_127(cmd); // ft_putendl_fd(": command not found", 2);
+			f_print_127(cmd);
 		else if (err == 126)
 			f_print_126(&err2);
 		else if (err == 1)
@@ -70,7 +70,9 @@ static char	*f_handle_direct_path(char *cmd, int *err, int *err2)
 		if (*err != 0)
 			return (NULL);
 		res = ft_strdup(cmd);
-		if (!res) // TODOF should end
+		free (res);
+		res = NULL;
+		if (!res)
 			*err = 1;
 		return (res);
 	}

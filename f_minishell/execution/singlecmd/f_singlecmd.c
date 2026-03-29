@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/28 16:36:29 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/29 13:26:25 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	f_exec_cmd(t_data *data, t_cmd *cmd, char **envp)
 	{
 		status = data->last_exit_code;
 		sfbf_free_all(data);
-		exit(status);
+		exit(status); // TODOF ???? exit oder bexit?
 	}
 	execve(cmd->path, cmd->args, envp);
 	f_print_error(cmd->cmd, "execve failed");

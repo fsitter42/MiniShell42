@@ -6,13 +6,13 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 17:06:30 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 18:29:14 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*test_calloc(size_t nmemb, size_t size);
+void				*test_calloc(size_t nmemb, size_t size);
 
 void	*test_calloc(size_t nmemb, size_t size)
 {
@@ -21,7 +21,67 @@ void	*test_calloc(size_t nmemb, size_t size)
 	return (NULL);
 }
 
-int			f_is_syntax_valid(t_data *data);
+int					f_is_syntax_valid(t_data *data);
+
+static const char	*b_token_type_to_str(int type)
+{
+	if (type == PIPE)
+		return ("|");
+	if (type == HEREDOC)
+		return ("<<");
+	if (type == REDIR_IN)
+		return ("<");
+	if (type == REDIR_APPEND)
+		return (">>");
+	if (type == REDIR_OUT)
+		return (">");
+	if (type == WORD_AFTER_HEREDOC || type == WORD)
+		return ("word");
+	return ("newline");
+}
+
+static int	b_report_syntax_error(t_data *data, char *unexpected)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `",
+		STDERR_FILENO);
+	ft_putstr_fd(unexpected, STDERR_FILENO);
+	ft_putstr_fd("'\n", STDERR_FILENO);
+	data->last_exit_code = 2;
+	return (ERROR_SOFT);
+}
+
+static int	b_validate_token_sequence(t_token *token, t_data *data)
+{
+	t_token	*next;
+	t_token	*prev;
+
+	prev = NULL;
+	while (token)
+	{
+		next = token->next;
+		if (token->type == PIPE)
+		{
+			if (!prev)
+				return (b_report_syntax_error(data, "|"));
+			if (!next)
+				return (b_report_syntax_error(data, "newline"));
+			if (next->type == PIPE)
+				return (b_report_syntax_error(data, "|"));
+		}
+		if (is_token_type_redirection(token))
+		{
+			if (!next)
+				return (b_report_syntax_error(data, "newline"));
+			if (next->type != WORD && next->type != WORD_AFTER_HEREDOC)
+				return (b_report_syntax_error(data,
+						b_token_type_to_str(next->type)));
+			token = next;
+		}
+		prev = token;
+		token = token->next;
+	}
+	return (RET_OK);
+}
 /*
 	TODO:
 	- handle exit status (should work now, test)
@@ -33,10 +93,7 @@ int			f_is_syntax_valid(t_data *data);
 int	is_token_list_empty(t_token *token_list)
 {
 	if (!token_list || !token_list->next)
-	{
-		// printf("Token list is empty\n");
 		return (1);
-	}
 	return (0);
 }
 
@@ -61,37 +118,23 @@ int	handle_delimiter(t_token *token_list)
 
 int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 {
-	int ret;
+	int	ret;
 
 	ret = RET_OK;
 	if (!is_token_list_empty(token_list))
 	{
-		cmd_list = create_command_list(token_list->next);
-		
-		if (!cmd_list)
-			return (cleanup_token_list(token_list), ERROR_HARD);
+		ret = create_command_list(token_list->next, &cmd_list);
+		if (ret != RET_OK)
+			return (cleanup_token_list(token_list), ret);
 		cleanup_token_list(token_list);
 		data->cmds = cmd_list;
-		ret = f_is_syntax_valid(data);
-		if (ret != RET_OK)
-		{
-			cleanup_command_list(cmd_list);
-			data->cmds = NULL;
-			data->e_has_been_set = 1;
-			return (ret);
-		}
-		ret = eggsecute(data); // frido geändert
+		ret = eggsecute(data);
 	}
 	else
 	{
 		data->e_has_been_set = 1;
 		cleanup_token_list(token_list);
 	}
-	// TODO wir müssen überall data->should_exit auf 1 setzen in den builtins
-	// alternativ ret -1 oder 600
-	// oder wir ändern exec_ret auch auf ERROR_HARD (dann müssten wir return
-	// von f_exec_builtin und f_pipeline_wrapper ändern und in allen dahinter
-	// liegenden funktionen)
 	if (ret == 1 && data->should_exit == 1)
 		return (ERROR_HARD);
 	cleanup_command_list(cmd_list);
@@ -99,6 +142,15 @@ int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 	data->e_has_been_set = 1;
 	return (RET_OK);
 }
+// das war vor eggsecute call
+/* 		ret = f_is_syntax_valid(data);
+		if (ret != RET_OK)
+		{
+			cleanup_command_list(cmd_list);
+			data->cmds = NULL;
+			data->e_has_been_set = 1;
+			return (ret);
+		} */
 
 /* TODO think about return value. does 1 always mean something went wrong
  * (close minishell)  * or are there cases where nothing went wrong and we
@@ -113,9 +165,13 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	t_cmd	*cmd_list;
 
 	cmd_list = NULL;
-	token_list = tokenizer(line); // token_list = test_calloc(1,1);  doublefree TODOS
+	token_list = tokenizer(line);
+	// token_list = test_calloc(1,1);  doublefree TODOS
 	if (!token_list)
 		return (ERROR_HARD);
+	ret = b_validate_token_sequence(token_list->next, data);
+	if (ret != RET_OK)
+		return (cleanup_token_list(token_list), ret);
 	ret = handle_delimiter(token_list);
 	if (ret != RET_OK)
 		return (cleanup_token_list(token_list), ret);
@@ -125,7 +181,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	ret = word_split(token_list);
 	if (ret != RET_OK)
 		return (cleanup_token_list(token_list), ret);
-	return hsl_helper(token_list, cmd_list, data);
+	return (hsl_helper(token_list, cmd_list, data));
 }
 
 /* this is the default mode in where the users enters stuff
@@ -148,7 +204,7 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 		if (quote_syntax_check(line))
 		{
 			printf("minishell: missing quote\n");
-			continue;;
+			continue ;
 		}
 		if (*line)
 			add_history((const char *)line);
@@ -189,7 +245,7 @@ void	debug_mode(char *input, char **envp, t_data *data)
 	strs = NULL;
 	strs = ft_split(input, ';');
 	if (!strs)
-		return;
+		return ;
 	data->strs = strs;
 	i = -1;
 	while (strs[++i])
@@ -283,10 +339,14 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		debug_mode(argv[2], envp, data);
 	}
+	last_exit_code = data->last_exit_code;
 	sfbf_free_all(data);
+	return (last_exit_code);
 }
 
-int	f_is_syntax_valid(t_data *data)
+// TODO brauch ma des noch? oder hama des eh mit validate_token_sequence
+// TODO Frido schhaun ob des ok is wenn ma des so machen
+/* int	f_is_syntax_valid(t_data *data)
 {
 	t_cmd	*tmp;
 
@@ -295,7 +355,7 @@ int	f_is_syntax_valid(t_data *data)
 	{
 		if (!tmp->cmd && !tmp->redirs)
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token '|'\n",
+			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n",
 				2);
 			data->last_exit_code = 2;
 			return (ERROR_SOFT);
@@ -303,7 +363,7 @@ int	f_is_syntax_valid(t_data *data)
 		tmp = tmp->next;
 	}
 	return (RET_OK);
-}
+} */
 
 /* size_t count_cmds(t_token *cmd_list)
 {

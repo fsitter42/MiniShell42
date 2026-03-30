@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:54:58 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 13:50:29 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 17:27:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	init_cmd(t_cmd *cmd)
 	cmd->out_fd = -1;
 	cmd->next = NULL;
 	cmd->append = FALSE;
-	cmd->has_heredoc = FALSE;
+	//cmd->has_heredoc = FALSE;
 	cmd->delimiter = NULL;
 	cmd->redirs = NULL;
 	cmd->is_first = 0;

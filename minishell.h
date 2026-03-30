@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 16:23:59 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 17:27:28 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct s_cmd
 	t_cmd				*next;
 	int					redir_failed;
 	char *delimiter; //überlegen, wird wsl. erst im heredoc handling gesetzt
-	int					has_heredoc;
+	//int					has_heredoc;
 	int					is_first;
 
 	int append;    // kommt weg
@@ -151,7 +151,7 @@ enum					e_ret_status
 // commandizer
 void					init_cmd(t_cmd *cmd);
 void					add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd);
-t_cmd					*create_command_list(t_token *token_list);
+int						create_command_list(t_token *token_list, t_cmd **cmd_list);
 int						count_pipes(t_token *token_list);
 void					shift_token_list_to_next_pipe(t_token **token_list);
 int						count_size_for_args_array(t_token *token_list);

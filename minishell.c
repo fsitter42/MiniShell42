@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 16:23:59 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 17:06:30 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 	if (!is_token_list_empty(token_list))
 	{
 		cmd_list = create_command_list(token_list->next);
+		
 		if (!cmd_list)
 			return (cleanup_token_list(token_list), ERROR_HARD);
 		cleanup_token_list(token_list);

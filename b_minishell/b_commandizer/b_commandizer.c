@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commandizer.c                                      :+:      :+:    :+:   */
+/*   b_commandizer.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 13:10:17 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 17:07:45 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ t_cmd	*create_single_cmd(t_token *token_list, int size)
  * Step 2: for each command (pipes
 	+ 1): call separate function create_single_cmd
  * returns NULL on error, frees all cmd stuff itself on error
+ * TODO change the return to be an int (status) that indicated ERROR_HARD
+ * or ERROR_SOFT OR OK
  */
 t_cmd	*create_command_list(t_token *token_list)
 {

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 16:26:14 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 17:03:34 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int		is_part_of_word(char c, int *quote_status);
 
 // TODO input ""< | > ""6" segfaults
 // returns -1 on error
-int	word_and_var_handler(int i, char *line, t_token *list_start,
+//TODO this shit is ugly af, refactor!! i as a pointer, 
+//should return 0 if OK and 1 on error
+int	word_handler(int i, char *line, t_token *list_start,
 		int *quote_status)
 {
 	int		word_start;
@@ -97,7 +99,6 @@ int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 	return (0);
 }
 
-// returns 1 on error
 int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
 {
 	int	i;
@@ -115,7 +116,7 @@ int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
 		}
 		else
 		{
-			i = word_and_var_handler(i, line, list_start, quote_status);
+			i = word_handler(i, line, list_start, quote_status);
 			if (i == -1)
 				return (1);
 		}
@@ -135,8 +136,7 @@ int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
  *   additionally we have to save the state of the quotes (default, in single,
  *	in double quotes)
  *  	return: NULL on empty line or a pointer to the first element
- *	TODO: fix bug where it segfaults when < or > is in the end - i think this is fixed
- *  BUT if e.g. < is in the end minishell exits. we should have "parse error near char"
+ *  TODO if e.g. < is in the end minishell exits. we should have "parse error near char"
  *
  *	should be mem safe on error
  */

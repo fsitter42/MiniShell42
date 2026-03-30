@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/30 10:50:27 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/30 10:52:16 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	f_cd(t_data *data, char **args)
 	cd.new_pwd = getcwd(NULL, 0);
 	if (!cd.new_pwd)
 		return (data->should_exit = 1, f_deinit_cd(&cd), EXIT_FAILURE);
-	if (f_path_exporter)
+	if (f_path_exporter(&cd, data) != EXIT_SUCCESS)
 		return (f_deinit_cd(&cd), EXIT_FAILURE);
 	return (f_deinit_cd(&cd), EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 14:07:26 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 16:13:51 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ void	debug_mode(char *input, char **envp, t_data *data)
 	strs = NULL;
 	strs = ft_split(input, ';');
 	if (!strs)
-		my_exit_function("ft_split returned NULL");
+		return;
 	data->strs = strs;
 	i = -1;
 	while (strs[++i])
@@ -193,7 +193,6 @@ void	debug_mode(char *input, char **envp, t_data *data)
 		{
 			cleanup_split_result(strs, i);
 			return ;
-			my_exit_function("handle_single_line failed\n");
 		}
 		if (ret == ERROR_SOFT)
 			continue ;

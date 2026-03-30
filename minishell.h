@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 14:05:02 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 16:15:53 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,6 @@ int						next_redir_id(void);
 int						add_r_t_c(t_cmd *cmd, int type, char *str,
 							char *delimiter);
 // cleanup
-void					my_exit_function(char *error_msg);
 void					free_token(t_token *token);
 void					cleanup_token_list(t_token *token_list);
 void					cleanup_command_list(t_cmd *cmd_list);

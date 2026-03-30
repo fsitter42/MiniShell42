@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
+#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/30 12:04:43 by fsitter          ###   ########.fr        #
+#    Updated: 2026/03/30 16:15:33 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,7 @@ SRC_PARS    = b_minishell/b_commandizer/b_commandizer.c \
               b_minishell/b_commandizer/b_commandizer_utils1.c \
               b_minishell/b_commandizer/b_commandizer_utils2.c \
               b_minishell/b_commandizer/b_redirection.c \
-              b_minishell/b_cleanup/b_cleanup1.c \
-              b_minishell/b_cleanup/b_cleanup2.c \
+              b_minishell/b_cleanup/b_cleanup.c \
               b_minishell/b_tokenizer/b_tokenizer.c \
               b_minishell/b_tokenizer/b_tok_utils.c \
               b_minishell/b_expansion/b_expansion.c \

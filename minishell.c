@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/29 11:26:54 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/30 12:11:38 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	t_cmd	*cmd_list;
 
 	cmd_list = NULL;
-	token_list = tokenizer(line);
+	token_list = tokenizer(line); // token_list = test_calloc(1,1);  doublefree TODOS
 	if (!token_list)
 		return (ERROR_HARD);
 	ret = handle_delimiter(token_list);

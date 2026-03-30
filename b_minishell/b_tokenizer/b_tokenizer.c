@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/25 11:51:37 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 16:22:03 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,22 +138,14 @@ int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
  *	TODO: fix bug where it segfaults when < or > is in the end
  *
  *	should be mem safe on error
- * 	TODO difference between these 2 cases (!line is error,
- *	"" is a valid input)
  */
 t_token	*tokenizer(char *line)
 {
 	t_token	*list_start;
 	int		quote_status;
 
-	if (!line || ft_strncmp(line, "", 1) == 0)
+	if (!line)
 		return (NULL);
-	if (quote_sytanx_check(line))
-	{
-		printf("minishell: missing quote\n");
-		//TODO is this enough?
-		return (NULL);
-	}
 	list_start = ft_calloc(1, sizeof(t_token));
 	if (!list_start)
 		return (NULL);

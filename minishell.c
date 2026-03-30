@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 16:13:51 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 16:21:15 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,11 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 		{
 			free(line);
 			continue ;
+		}
+		if (quote_sytanx_check(line))
+		{
+			printf("minishell: missing quote\n");
+			continue;;
 		}
 		if (*line)
 			add_history((const char *)line);

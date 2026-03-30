@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/30 10:52:16 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/30 10:56:39 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	f_deinit_cd(t_cd *cd)
 		free(cd->old_pwd);
 	if (cd->new_pwd)
 		free(cd->new_pwd);
-	if (cd->has_target && cd->target)
+	if (!cd->has_target && cd->target)
 		free(cd->target);
 	return ;
 }

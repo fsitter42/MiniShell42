@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:49:47 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 14:51:39 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 13:48:08 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	init_token(t_token *token)
 	token->quote_status = DEFAULT_QUOTE;
 	token->consume_status = UNCONSUMED;
 	token->next = NULL;
-	g_last_exit_code = 0;
 }
 
 t_token	*tokenlist_add(t_token *list_start, int type, char *str,

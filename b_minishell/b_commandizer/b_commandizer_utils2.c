@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:54:58 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 14:47:04 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 13:50:29 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	init_cmd(t_cmd *cmd)
 	cmd->is_redir_only_cmd = 0;
 	cmd->args = NULL;
 	cmd->path = NULL;
-	cmd->infile = NULL;
+	//cmd->infile = NULL;
 	cmd->in_fd = -1;
-	cmd->outfile = NULL;
+	//cmd->outfile = NULL;
 	cmd->out_fd = -1;
 	cmd->next = NULL;
 	cmd->append = FALSE;

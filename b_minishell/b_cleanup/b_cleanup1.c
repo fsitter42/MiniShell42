@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleanup1.c                                         :+:      :+:    :+:   */
+/*   b_cleanup1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 12:40:55 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 13:50:38 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void	cleanup_command_list(t_cmd *cmd_list)
 		i = 0;
 		temp = cmd_list->next;
 		free(cmd_list->cmd);
-		free(cmd_list->infile);
-		free(cmd_list->outfile);
+		//free(cmd_list->infile);
+		//free(cmd_list->outfile);
 		while (cmd_list->args && cmd_list->args[i])
 		{
 			free(cmd_list->args[i]);

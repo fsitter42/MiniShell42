@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 13:48:10 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 14:07:26 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,16 @@ int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 		{
 			cleanup_command_list(cmd_list);
 			data->cmds = NULL;
+			data->e_has_been_set = 1;
 			return (ret);
 		}
 		ret = eggsecute(data); // frido geändert
 	}
 	else
+	{
+		data->e_has_been_set = 1;
 		cleanup_token_list(token_list);
+	}
 	// TODO wir müssen überall data->should_exit auf 1 setzen in den builtins
 	// alternativ ret -1 oder 600
 	// oder wir ändern exec_ret auch auf ERROR_HARD (dann müssten wir return
@@ -91,6 +95,7 @@ int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 		return (ERROR_HARD);
 	cleanup_command_list(cmd_list);
 	data->cmds = NULL;
+	data->e_has_been_set = 1;
 	return (RET_OK);
 }
 
@@ -246,6 +251,7 @@ t_data	*sfbf_init_all(char **envp)
 	data->strs = NULL;
 	data->last_exit_code = 0;
 	data->should_exit = 0;
+	data->e_has_been_set = 0;
 	return (data);
 }
 

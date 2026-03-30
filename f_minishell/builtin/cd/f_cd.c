@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_cd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/30 12:31:36 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/30 14:13:54 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	f_cd(t_data *data, char **args)
 		return (data->should_exit = 1, f_deinit_cd(&cd), EXIT_FAILURE);
 	if (f_path_exporter(&cd, data) != EXIT_SUCCESS)
 		return (f_deinit_cd(&cd), EXIT_FAILURE);
-	return (f_deinit_cd(&cd), EXIT_FAILURE);
+	return (f_deinit_cd(&cd), EXIT_SUCCESS);
 }
 
 static int	f_path_exporter(t_cd *cd, t_data *data)

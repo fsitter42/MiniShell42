@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 13:48:14 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 14:05:02 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ typedef struct s_cmd
 	int					is_first;
 
 	int append;    // kommt weg
-	char *infile;  // kommt weg
-	char *outfile; // kommt weg
+	//char *infile;  // kommt weg
+	//char *outfile; // kommt weg
 }						t_cmd;
 
 typedef struct s_data
@@ -88,6 +88,7 @@ typedef struct s_data
 	t_envp				*env;
 	int					last_exit_code;
 	int					should_exit;
+	int					e_has_been_set;
 	char **strs;
 }						t_data;
 

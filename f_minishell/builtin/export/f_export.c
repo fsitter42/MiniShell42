@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:26:09 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/30 11:05:57 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/30 12:37:52 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	f_export(t_data *data, char **args)
 		else if (f_export_with_key(data->env->envp_lst, args[i], data, &err))
 		{
 			if (err != 2)
-				data->should_exit = 1; //frage an bert wenn ich hier rein komme war ein malloc error kann man das dann so setzen?? damit er nach den fehler alles beendet?
+				data->should_exit = 1;
 			ret = EXIT_FAILURE;
 		}
 		i++;

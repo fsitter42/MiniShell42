@@ -10,3 +10,9 @@
 	...
 	fun:add_history
 }
+{
+   ignore_ls_leaks
+   Memcheck:Leak
+   ...
+   obj:/usr/bin/ls
+}

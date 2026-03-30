@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
+#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/29 11:48:38 by slambert         ###   ########.fr        #
+#    Updated: 2026/03/30 11:36:16 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,7 +103,7 @@ fclean: clean
 
 re: fclean all
 
-valgrind:
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=f_valgrind_readline.supp --trace-children=yes --track-fds=yes ./minishell
+valgrind: re
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind_readline.supp --trace-children=yes --track-fds=yes ./minishell -d "ls"
 
 .PHONY: all clean fclean re valgrind

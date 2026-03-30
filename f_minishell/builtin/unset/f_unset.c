@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:09:18 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/28 12:12:54 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/30 11:06:19 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int	f_lst_del_one(t_envl **list, char *key)
 
 char	*f_get_env_val(t_envl *list, char *key, t_data *data)
 {
-	char *ret;
-	
+	char	*ret;
+
 	if (!list || !key)
 		return (NULL);
 	while (list)

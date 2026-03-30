@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:11:54 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/28 12:46:00 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/30 11:04:45 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,6 @@ int	f_valid_identifier(char *s)
 	return (ret);
 }
 
-/* here
- *
- *	f_export_with_key()
- *	da ich hier überall mallociere könnte ich
- *	eine abwandlung von lst add one machen in der ich nur den poiter setzte
- *	dann bräcuhte ich auch hier nicht freen
- *	würde mir viele zeilen sparen und könnte error besser messen
- *	!!!wenn ich lst add one nur hier brauche macht
- *	es sinn sie gar zu ersetzen!!!
- *
- */
 int	f_export_with_key(t_envl *envl, char *s, t_data *data, int *err)
 {
 	char	*key;

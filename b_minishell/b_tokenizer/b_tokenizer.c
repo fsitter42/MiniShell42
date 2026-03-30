@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 16:22:03 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 16:23:59 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	word_and_var_handler(int i, char *line, t_token *list_start,
  *  bracket of the same type
  * returns 0 on success and 1 or 2 on failure
  */
-int	quote_sytanx_check(char *line)
+int	quote_syntax_check(char *line)
 {
 	int	i;
 	int	cur_status;

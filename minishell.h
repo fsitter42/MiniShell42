@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 16:15:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 16:23:59 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void					cleanup_t_data_list(t_data *data);
 void					sfbf_free_all(t_data *data);
 // tokenizer
 void					init_token(t_token *token);
+int	quote_syntax_check(char *line);
 int						handle_single_line(char *line, char **envp,
 							t_data *data);
 t_token					*tokenlist_add(t_token *list_start, int type, char *str,

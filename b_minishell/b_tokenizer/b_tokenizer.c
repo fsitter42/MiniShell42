@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 16:23:59 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/30 16:26:14 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,8 @@ int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
  *   additionally we have to save the state of the quotes (default, in single,
  *	in double quotes)
  *  	return: NULL on empty line or a pointer to the first element
- *	TODO: fix bug where it segfaults when < or > is in the end
+ *	TODO: fix bug where it segfaults when < or > is in the end - i think this is fixed
+ *  BUT if e.g. < is in the end minishell exits. we should have "parse error near char"
  *
  *	should be mem safe on error
  */

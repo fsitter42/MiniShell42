@@ -1,0 +1,88 @@
+echo -n hello
+
+echo -nnn hello
+
+echo "a b c"
+
+echo '$USER'"-$USER"
+
+export MYVAR=42
+echo $MYVAR
+
+export MYVAR='hello world'
+echo "$MYVAR"
+
+echo $?
+
+false
+echo $?
+
+nosuchcommand123
+echo $?
+
+echo hi | grep h
+echo $?
+
+echo hi | grep z
+echo $?
+
+/bin/echo ABS_PATH_OK
+
+unset PATH
+ls
+
+export PATH=/bin:/usr/bin
+ls | head -n 2
+
+pwd
+cd ..
+pwd
+cd -
+pwd
+
+cd /tmp /var
+
+cat << EOF
+hello heredoc
+EOF
+
+cat << EOF | wc -l
+one
+two
+EOF
+
+echo first > ./outfiles/custom01
+cat < ./outfiles/custom01
+
+echo A > ./outfiles/custom02
+echo B >> ./outfiles/custom02
+cat ./outfiles/custom02
+
+echo left | tr a-z A-Z
+
+echo left | cat < ./test_files/infile
+
+cat < ./test_files/infile | grep hello > ./outfiles/custom03
+cat ./outfiles/custom03
+
+echo x > ./outfiles/custom04 > ./outfiles/custom05
+cat ./outfiles/custom04
+cat ./outfiles/custom05
+
+export PIPEVAR=777 | cat
+env | grep PIPEVAR
+
+exit 256
+
+exit -1
+
+exit +42
+
+exit 1 2
+
+unset HOME
+cd
+
+export HOME=/tmp
+cd
+pwd

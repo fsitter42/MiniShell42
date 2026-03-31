@@ -127,23 +127,24 @@ void	debug_mode(char *input, char **envp, t_data *data)
 	int		ret;
 
 	strs = NULL;
+	data->strs = NULL;
 	strs = ft_split(input, ';');
 	if (!strs)
 		return ;
-	data->strs = strs;
 	i = -1;
 	while (strs[++i])
 	{
 		ret = handle_single_line(strs[i], envp, data);
 		if (ret == ERROR_HARD)
 		{
-			cleanup_split_result(strs, i);
+			cleanup_split_result(strs, 0);
 			return ;
 		}
 		if (ret == ERROR_SOFT)
 			continue ;
 		data->cmds = NULL;
 	}
+	cleanup_split_result(strs, 0);
 }
 
 int	main(int argc, char **argv, char **envp)

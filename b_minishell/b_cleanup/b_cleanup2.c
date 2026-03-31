@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 12:07:37 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 14:05:17 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 void	cleanup_split_result(char **strs, int start)
 {
+	if (!strs)
+		return ;
 	while (strs[start])
 	{
 		free(strs[start]);

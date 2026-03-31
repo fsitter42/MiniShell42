@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commandizer_utils1.c                               :+:      :+:    :+:   */
+/*   b_commandizer_utils1.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:44:31 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 12:57:49 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 12:32:10 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int	init_args_array(t_cmd *cmd, int size)
 	i = 0;
 	cmd->args = ft_calloc(size + 1, sizeof(char *));
 	if (!(cmd->args))
-		return (1);
-	return (0);
+		return (ERROR_HARD);
+	return (RET_OK);
 }
 
 void	shift_and_consume_token_list_by_x(t_token **token, int x)

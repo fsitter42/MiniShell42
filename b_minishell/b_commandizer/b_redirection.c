@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirection.c                                      :+:      :+:    :+:   */
+/*   b_redirection.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:51:27 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 13:01:45 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 12:34:50 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,21 @@ int	add_r_t_c(t_cmd *cmd, int type, char *str, char *delimiter)
 
 	new_redir = ft_calloc(sizeof(t_redir), 1);
 	if (!new_redir)
-		return (1);
+		return (ERROR_HARD);
 	if (delimiter)
 	{
 		new_redir->delimiter = ft_strdup(delimiter);
 		if (!new_redir->delimiter)
-			return (free(new_redir), 1);
+			return (free(new_redir), ERROR_HARD);
 	}
 	if (str)
 	{
 		new_redir->file = ft_strdup(str);
 		if (!new_redir->file)
-			return (free(new_redir->delimiter), free(new_redir), 1);
+			return (free(new_redir->delimiter), free(new_redir), ERROR_HARD);
 	}
 	new_redir->type = type;
 	new_redir->id = next_redir_id();
 	add_redir_to_redir_list(new_redir, cmd);
-	return (0);
+	return (RET_OK);
 }

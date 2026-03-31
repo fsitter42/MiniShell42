@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 17:58:57 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 13:53:34 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,51 +40,45 @@
  *
 */
 
-/*
- *	TODO differentiate between the 2 cases where 1 is returned
- */
 int	heredoc_handler(t_cmd *cmd, t_token *token_list)
 {
-	//cmd->has_heredoc = TRUE;
 	if (token_list->next->type == WORD_AFTER_HEREDOC)
 	{
 		cmd->delimiter = ft_strdup(token_list->next->str);
 		if (!cmd->delimiter)
-			return (1);
+			return (ERROR_HARD);
 	}
 	else
-		return (1);
-	return (0);
+		return (ERROR_SOFT);
+	return (RET_OK);
 }
 
-// TODO check if the next element is nothing stupid (e.g. '>')
-int	handle_redirection(t_token **token_list, t_cmd *cmd)
+int	handle_redirection(t_token **tl, t_cmd *cmd)
 {
-	if (!is_valid_redirection_target(*token_list))
+	if (!is_valid_redirection_target(*tl))
 		return (ERROR_SOFT);
-	if ((*token_list)->type == REDIR_IN)
+	if ((*tl)->type == REDIR_IN)
 	{
-		if (add_r_t_c(cmd, REDIR_IN, (*token_list)->next->str, NULL) == 1)
+		if (add_r_t_c(cmd, REDIR_IN, (*tl)->next->str, NULL) == ERROR_HARD)
 			return (ERROR_HARD);
 	}
-	else if ((*token_list)->type == REDIR_OUT)
+	else if ((*tl)->type == REDIR_OUT)
 	{
-		if (add_r_t_c(cmd, REDIR_OUT, (*token_list)->next->str, NULL) == 1)
+		if (add_r_t_c(cmd, REDIR_OUT, (*tl)->next->str, NULL) == ERROR_HARD)
 			return (ERROR_HARD);
 	}
-	else if ((*token_list)->type == HEREDOC)
+	else if ((*tl)->type == HEREDOC)
 	{
-		if (add_r_t_c(cmd, HEREDOC, NULL, (*token_list)->next->str) == 1)
+		if (add_r_t_c(cmd, HEREDOC, NULL, (*tl)->next->str) == ERROR_HARD)
 			return (ERROR_HARD);
-		//cmd->has_heredoc = 1;
 	}
-	else if ((*token_list)->type == REDIR_APPEND)
+	else if ((*tl)->type == REDIR_APPEND)
 	{
-		if (add_r_t_c(cmd, REDIR_APPEND, (*token_list)->next->str, NULL) == 1)
+		if (add_r_t_c(cmd, REDIR_APPEND, (*tl)->next->str, NULL) == ERROR_HARD)
 			return (ERROR_HARD);
 		cmd->append = TRUE;
 	}
-	return (shift_and_consume_token_list_by_x(token_list, 2), RET_OK);
+	return (shift_and_consume_token_list_by_x(tl, 2), RET_OK);
 }
 
 int	handle_word(t_token **token_list, t_cmd *cmd)
@@ -107,19 +101,12 @@ int	handle_word(t_token **token_list, t_cmd *cmd)
 	return (RET_OK);
 }
 
-/* in this function we will have to fill the following members of the
- *  struct t_cmd: cmd (char *), args (char **),
- *  infile / outfile (optional - char *)
- *  walkthrough for the example "< file1.txt cat -e" (REDIT_IN WORD WORD WORD)
- *  if the first token is a REDIR_IN, the next token defines the infile.
- *  the token after that is the cmd itself and all other tokens define args.
- *  if there is a REDIR_OUT encountered, the next token defines the outfile
- *  returns status in enum e_ret_status and writes command to out_cmd
- *	TODO not yet memory safe on error (free partially built cmd)
+/* 
+ *	TODO memory safe on error?? (free partially built cmd)
  */
 int	create_single_cmd(t_token *token_list, int size, t_cmd **cmd)
 {
-	int		ret;
+	int	ret;
 
 	*cmd = ft_calloc(sizeof(t_cmd), 1);
 	if (!*cmd)
@@ -127,7 +114,7 @@ int	create_single_cmd(t_token *token_list, int size, t_cmd **cmd)
 	init_cmd(*cmd);
 	if (size == 0)
 		(*cmd)->is_redir_only_cmd = 1;
-	if (init_args_array(*cmd, size) == 1)
+	if (init_args_array(*cmd, size) == ERROR_HARD)
 		return (free(*cmd), ERROR_HARD);
 	while (token_list && token_list->type != PIPE)
 	{

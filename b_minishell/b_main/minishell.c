@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 12:14:50 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 12:18:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,6 @@ int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 			return (ret);
 		} */
 
-/* TODO think about return value. does 1 always mean something went wrong
- * (close minishell)  * or are there cases where nothing went wrong and we
- * just do nothing and give the input back to the user?
- * i think we need 3 states, OK, ERROR_RECOVERABLE (user gets input back)
- * and ERROR_FATAL (minishell exits and everything gets cleaned up)
- */
 int	handle_single_line(char *line, char **envp, t_data *data)
 {
 	int		ret;
@@ -126,15 +120,6 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 	}
 }
 
-/* the difference here is that we have one string that is given to
- *  minishell, no interactions with the user. all lines have to be separated
-
-	*  by a semicolon (;) and will be executed one afprintf("hello nur\n");ter each other.
-
-	*  note: if we want to use a $ sign (var) we have to explicitly escape that character (\\ before §).
-
-	*  otherwise the shell tries to expand the variable before it is given to minishell as an input
- */
 void	debug_mode(char *input, char **envp, t_data *data)
 {
 	char	**strs;

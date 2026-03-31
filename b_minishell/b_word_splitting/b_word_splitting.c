@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 13:22:19 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 15:36:28 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:53:49 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	word_split(t_token *list)
 			remove_implicit_null_arg(&prev, next, &list);
 			continue ;
 		}
-		if (list->type == WORD && split && list->quote_status == DEFAULT_QUOTE)
+		if (list->type == WORD && split && list->quote_status == DEFAULT_Q)
 		{
 			ret = split_single_word(list, ifs);
 			if (ret != RET_OK)

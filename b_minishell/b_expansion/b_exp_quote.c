@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:32:34 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 14:42:06 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:53:49 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 int	quote_handler(int quote_status, char c)
 {
-	if (quote_status == DEFAULT_QUOTE)
+	if (quote_status == DEFAULT_Q)
 	{
 		if (c == '\'')
-			return (IN_SINGLE_QUOTES);
+			return (IN_SINGLE_Q);
 		if (c == '\"')
-			return (IN_DOUBLE_QUOTES);
+			return (IN_DOUBLE_Q);
 	}
-	else if ((quote_status == IN_SINGLE_QUOTES && c == '\'')
-		|| (quote_status == IN_DOUBLE_QUOTES && c == '\"'))
-		return (DEFAULT_QUOTE);
+	else if ((quote_status == IN_SINGLE_Q && c == '\'')
+		|| (quote_status == IN_DOUBLE_Q && c == '\"'))
+		return (DEFAULT_Q);
 	return (quote_status);
 }
 

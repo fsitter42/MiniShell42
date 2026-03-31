@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 17:16:09 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:53:49 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ enum					e_token_status
 
 enum					e_quote_status
 {
-	DEFAULT_QUOTE = 0,
-	IN_SINGLE_QUOTES,
-	IN_DOUBLE_QUOTES
+	DEFAULT_Q = 0,
+	IN_SINGLE_Q,
+	IN_DOUBLE_Q
 };
 
 enum					e_bool

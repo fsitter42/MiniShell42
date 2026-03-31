@@ -6,31 +6,30 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 19:39:26 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:53:53 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-//TODO 5 variablen
-static int	append_expanded_char(char **out, char *word, int *i,
-		int *quote_status, t_data *data)
+static int	append_expanded_char(char **out, char *word, int *state,
+		t_data *data)
 {
 	int	ret;
 
-	if (consume_syntactic_quote(word[*i], quote_status) == 1)
+	if (consume_syntactic_quote(word[state[0]], &state[1]) == 1)
 		return (RET_OK);
-	if (word[*i] == '$' && *quote_status != IN_SINGLE_QUOTES && word[(*i) + 1])
+	if (word[state[0]] == '$' && state[1] != IN_SINGLE_Q && word[state[0] + 1])
 	{
-		if (word[*i + 1] == '?')
-			ret = expand_dollar_question(out, i, data);
+		if (word[state[0] + 1] == '?')
+			ret = expand_dollar_question(out, &state[0], data);
 		else
-			ret = append_env_var(out, word, i, data);
+			ret = append_env_var(out, word, &state[0], data);
 		if (ret != RET_OK)
 			return (ret);
 		return (RET_OK);
 	}
-	*out = append_char(*out, word[*i]);
+	*out = append_char(*out, word[state[0]]);
 	if (!*out)
 		return (ERROR_HARD);
 	return (RET_OK);
@@ -39,29 +38,28 @@ static int	append_expanded_char(char **out, char *word, int *i,
 /*
  *	loops through the word, consumes syntactic quotes and expands
  *	vars (either env vars or $?)
+ *  state[0] holds i
+ *  state[1] holds quote_status
  */
 char	*expand_word_one_pass(char *word, t_data *data, int *ret_status)
 {
-	int		i;
-	int		quote_status;
 	char	*out;
+	int		state[2];
 
 	*ret_status = RET_OK;
-	quote_status = DEFAULT_QUOTE;
+	state[1] = DEFAULT_Q;
 	out = ft_strdup("");
 	if (!out)
 	{
 		*ret_status = ERROR_HARD;
 		return (NULL);
 	}
-	i = -1;
-	while (word[++i])
+	state[0] = -1;
+	while (word[++state[0]])
 	{
-		*ret_status = append_expanded_char(&out, word, &i, &quote_status, data);
+		*ret_status = append_expanded_char(&out, word, state, data);
 		if (*ret_status != RET_OK)
-		{
 			return (free(out), NULL);
-		}
 	}
 	return (out);
 }
@@ -97,7 +95,6 @@ int	expand_single_word(t_token *list_elem, t_data *data)
 	return (RET_OK);
 }
 
-//TODO check returns HARD vs SOFT
 int	expansion(t_token *list, t_data *data)
 {
 	int	ret;

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 16:59:42 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:53:49 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 	}
 	else if (line[*i] == '>')
 		type = REDIR_OUT;
-	if (!tokenlist_add(list_start, type, NULL, DEFAULT_QUOTE))
+	if (!tokenlist_add(list_start, type, NULL, DEFAULT_Q))
 		return (ERROR_HARD);
 	return (RET_OK);
 }
@@ -142,7 +142,7 @@ t_token	*tokenizer(char *line)
 	if (!list_start)
 		return (NULL);
 	init_token(list_start);
-	quote_status = DEFAULT_QUOTE;
+	quote_status = DEFAULT_Q;
 	if (tokenizer_loop(line, list_start, &quote_status) == ERROR_HARD)
 	{
 		cleanup_token_list(list_start);

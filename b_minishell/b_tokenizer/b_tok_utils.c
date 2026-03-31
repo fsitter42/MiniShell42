@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:49:47 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 13:48:08 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:53:49 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	init_token(t_token *token)
 {
 	token->type = START;
 	token->str = NULL;
-	token->quote_status = DEFAULT_QUOTE;
+	token->quote_status = DEFAULT_Q;
 	token->consume_status = UNCONSUMED;
 	token->next = NULL;
 }
@@ -66,7 +66,7 @@ int	not_a_word(char c1, char c2)
 
 int	is_part_of_word(char c, int *quote_status)
 {
-	if (*quote_status == DEFAULT_QUOTE && (c == '|' || c == '<' || c == '>'
+	if (*quote_status == DEFAULT_Q && (c == '|' || c == '<' || c == '>'
 			|| isspace(c) || c == '\0'))
 		return (0);
 	return (1);

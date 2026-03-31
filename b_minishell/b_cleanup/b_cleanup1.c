@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 16:09:51 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 16:36:36 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	cleanup_command_list(t_cmd *cmd_list)
 			i++;
 		}
 		free(cmd_list->args);
-		free(cmd_list->delimiter);
+		//free(cmd_list->delimiter);
 		if (cmd_list->redirs)
 			cleanup_redir_list(cmd_list->redirs);
 		free(cmd_list);

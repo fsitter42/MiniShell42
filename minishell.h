@@ -6,19 +6,20 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 12:15:21 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 16:58:45 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
 # include "./b_minishell/libft/libft.h"
 # include "f_includes/Libfs/libft.h"
 # include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <stdio.h>
+
 # include <stdlib.h>
 
 // f
@@ -29,7 +30,6 @@
 
 # define MAX_ENV_LEN 600
 
-// prototypes structs
 typedef struct s_envl	t_envl;
 typedef struct s_envp	t_envp;
 typedef struct s_cmd	t_cmd;
@@ -73,13 +73,7 @@ typedef struct s_cmd
 	int					out_fd;
 	t_cmd				*next;
 	int					redir_failed;
-	char *delimiter; //überlegen, wird wsl. erst im heredoc handling gesetzt
-	// int					has_heredoc;
 	int					is_first;
-
-	int append; // kommt weg
-				// char *infile;  // kommt weg
-	// char *outfile; // kommt weg
 }						t_cmd;
 
 typedef struct s_data
@@ -151,8 +145,10 @@ enum					e_ret_status
 int						line_is_empty(char *line);
 int						is_token_list_empty(t_token *token_list);
 int						find_delimiters(t_token *token_list);
+
 // init
 t_data					*sfbf_init_all(char **envp);
+
 // commandizer
 void					init_cmd(t_cmd *cmd);
 void					add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd);
@@ -170,6 +166,7 @@ void					add_redir_to_redir_list(t_redir *new_redir, t_cmd *cmd);
 int						next_redir_id(void);
 int						add_r_t_c(t_cmd *cmd, int type, char *str,
 							char *delimiter);
+							
 // cleanup
 void					free_token(t_token *token);
 void					cleanup_token_list(t_token *token_list);
@@ -177,8 +174,10 @@ void					cleanup_command_list(t_cmd *cmd_list);
 void					cleanup_t_data_list(t_data *data);
 void					cleanup_split_result(char **strs, int start);
 void					sfbf_free_all(t_data *data);
+
 // tokenizer
 void					init_token(t_token *token);
+int						is_part_of_word(char c, int *quote_status);
 int						quote_syntax_check(char *line);
 int						handle_single_line(char *line, char **envp,
 							t_data *data);
@@ -241,37 +240,3 @@ void					*test_calloc(size_t nmemb, size_t size);
 # include "f_minishell/execution/f_exe.h"
 
 #endif
-
-/*				old					*/
-/* possible TODOS:
- *  add permission flags for path, infile and outfile
- */
-// typedef struct s_cmd
-// {
-// 	char *cmd; // filled by bert
-// 	int				is_builtin;
-// 	char **args; // filled by bert
-// 	char			*path;
-// 	char *infile; // filled by bert
-// 	int				in_fd;
-// 	char *outfile; // filled by bert
-// 	int				out_fd;
-// 	int				has_heredoc;
-// 	char			*delimiter;
-// 	int append; // filled by bert
-// 	struct s_cmd	*next;
-// }					t_cmd;
-
-// enums
-// enum				e_token_types
-// {
-// 	START = 0,
-// 	WORD,
-// 	// VAR,
-// 	PIPE,
-// 	HEREDOC,      //<<
-// 	REDIR_IN,     //<
-// 	REDIR_APPEND, //>>
-// 	REDIR_OUT,    //>
-// 	WORD_AFTER_HEREDOC
-// };

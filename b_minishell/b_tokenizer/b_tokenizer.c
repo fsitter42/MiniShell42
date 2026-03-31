@@ -6,45 +6,11 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 17:03:34 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 16:59:42 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-int		is_part_of_word(char c, int *quote_status);
-
-// TODO input ""< | > ""6" segfaults
-// returns -1 on error
-//TODO this shit is ugly af, refactor!! i as a pointer, 
-//should return 0 if OK and 1 on error
-int	word_handler(int i, char *line, t_token *list_start,
-		int *quote_status)
-{
-	int		word_start;
-	int		char_to_check;
-	char	*word;
-	int		quote_save;
-
-	word_start = i;
-	char_to_check = word_start + 1;
-	quote_save = *quote_status;
-	while (TRUE)
-	{
-		if (!is_part_of_word(line[char_to_check], quote_status))
-			break ;
-		quote_save = *quote_status;
-		*quote_status = quote_handler(*quote_status, line[char_to_check]);
-		char_to_check++;
-	}
-	char_to_check--;
-	word = ft_substr(line, word_start, char_to_check - word_start + 1);
-	if (!word)
-		return (-1);
-	if (!tokenlist_add(list_start, WORD, word, quote_save))
-		return (-1);
-	return (char_to_check);
-}
 
 /*
  *  checks if every opening quote has a dedicated closing
@@ -74,6 +40,34 @@ int	quote_syntax_check(char *line)
 	return (cur_status);
 }
 
+// TODO this shit is ugly af, refactor!! i as a pointer
+int	word_handler(int i, char *line, t_token *list_start, int *quote_status)
+{
+	int		word_start;
+	int		char_to_check;
+	char	*word;
+	int		quote_save;
+
+	word_start = i;
+	char_to_check = word_start + 1;
+	quote_save = *quote_status;
+	while (TRUE)
+	{
+		if (!is_part_of_word(line[char_to_check], quote_status))
+			break ;
+		quote_save = *quote_status;
+		*quote_status = quote_handler(*quote_status, line[char_to_check]);
+		char_to_check++;
+	}
+	char_to_check--;
+	word = ft_substr(line, word_start, char_to_check - word_start + 1);
+	if (!word)
+		return (ERROR_HARD);
+	if (!tokenlist_add(list_start, WORD, word, quote_save))
+		return (ERROR_HARD);
+	return (char_to_check);
+}
+
 int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 {
 	int	type;
@@ -95,8 +89,8 @@ int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 	else if (line[*i] == '>')
 		type = REDIR_OUT;
 	if (!tokenlist_add(list_start, type, NULL, DEFAULT_QUOTE))
-		return (1);
-	return (0);
+		return (ERROR_HARD);
+	return (RET_OK);
 }
 
 int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
@@ -111,17 +105,18 @@ int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
 			continue ;
 		if (not_a_word(line[i], line[i + 1]))
 		{
-			if (everything_except_word_handler(list_start, line, &i) == 1)
-				return (1);
+			if (everything_except_word_handler(list_start, line,
+					&i) == ERROR_HARD)
+				return (ERROR_HARD);
 		}
 		else
 		{
 			i = word_handler(i, line, list_start, quote_status);
-			if (i == -1)
-				return (1);
+			if (i == ERROR_HARD)
+				return (ERROR_HARD);
 		}
 	}
-	return (0);
+	return (RET_OK);
 }
 
 /* we want to structure the input and save it in a linked list. in order to
@@ -135,10 +130,6 @@ int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
  *   - WORD
  *   additionally we have to save the state of the quotes (default, in single,
  *	in double quotes)
- *  	return: NULL on empty line or a pointer to the first element
- *  TODO if e.g. < is in the end minishell exits. we should have "parse error near char"
- *
- *	should be mem safe on error
  */
 t_token	*tokenizer(char *line)
 {
@@ -152,7 +143,7 @@ t_token	*tokenizer(char *line)
 		return (NULL);
 	init_token(list_start);
 	quote_status = DEFAULT_QUOTE;
-	if (tokenizer_loop(line, list_start, &quote_status) == 1)
+	if (tokenizer_loop(line, list_start, &quote_status) == ERROR_HARD)
 	{
 		cleanup_token_list(list_start);
 		return (NULL);
@@ -160,6 +151,7 @@ t_token	*tokenizer(char *line)
 	return (list_start);
 }
 
+// debug stuff, remove before finalizing
 /* void	print_tokens(t_token *start)
 {
 	int	i;

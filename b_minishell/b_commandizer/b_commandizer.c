@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 13:53:34 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 16:37:56 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,6 @@
  *
 */
 
-int	heredoc_handler(t_cmd *cmd, t_token *token_list)
-{
-	if (token_list->next->type == WORD_AFTER_HEREDOC)
-	{
-		cmd->delimiter = ft_strdup(token_list->next->str);
-		if (!cmd->delimiter)
-			return (ERROR_HARD);
-	}
-	else
-		return (ERROR_SOFT);
-	return (RET_OK);
-}
-
 int	handle_redirection(t_token **tl, t_cmd *cmd)
 {
 	if (!is_valid_redirection_target(*tl))
@@ -76,7 +63,6 @@ int	handle_redirection(t_token **tl, t_cmd *cmd)
 	{
 		if (add_r_t_c(cmd, REDIR_APPEND, (*tl)->next->str, NULL) == ERROR_HARD)
 			return (ERROR_HARD);
-		cmd->append = TRUE;
 	}
 	return (shift_and_consume_token_list_by_x(tl, 2), RET_OK);
 }
@@ -162,6 +148,20 @@ int	create_command_list(t_token *token_list, t_cmd **cmd_list)
 	}
 	return (RET_OK);
 }
+
+//brauch ma nima
+/* int	heredoc_handler(t_cmd *cmd, t_token *token_list)
+{
+	if (token_list->next->type == WORD_AFTER_HEREDOC)
+	{
+		cmd->delimiter = ft_strdup(token_list->next->str);
+		if (!cmd->delimiter)
+			return (ERROR_HARD);
+	}
+	else
+		return (ERROR_SOFT);
+	return (RET_OK);
+} */
 
 /* void	print_command_list(t_cmd *start)
 {

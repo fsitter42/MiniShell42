@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 18:32:42 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 11:49:41 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 16:42:15 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	b_validate_token_sequence(t_token *token, t_data *data)
 	t_token	*next;
 
 	prev = NULL;
+	next = NULL;
 	while (token)
 	{
 		next = token->next;

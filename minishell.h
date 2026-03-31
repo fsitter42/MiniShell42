@@ -6,19 +6,19 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 18:35:28 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 12:15:21 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h>
 # include "./b_minishell/libft/libft.h"
 # include "f_includes/Libfs/libft.h"
 # include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <stdio.h>
 # include <stdlib.h>
 
 // f
@@ -74,12 +74,12 @@ typedef struct s_cmd
 	t_cmd				*next;
 	int					redir_failed;
 	char *delimiter; //überlegen, wird wsl. erst im heredoc handling gesetzt
-	//int					has_heredoc;
+	// int					has_heredoc;
 	int					is_first;
 
-	int append;    // kommt weg
-	//char *infile;  // kommt weg
-	//char *outfile; // kommt weg
+	int append; // kommt weg
+				// char *infile;  // kommt weg
+	// char *outfile; // kommt weg
 }						t_cmd;
 
 typedef struct s_data
@@ -89,7 +89,7 @@ typedef struct s_data
 	int					last_exit_code;
 	int					should_exit;
 	int					e_has_been_set;
-	char **strs;
+	char				**strs;
 }						t_data;
 
 // s
@@ -144,14 +144,20 @@ enum					e_ret_status
 {
 	RET_OK = 0,
 	ERROR_SOFT = -1,
-	ERROR_HARD = -2	
+	ERROR_HARD = -2
 };
-// main
 
+// main
+int						line_is_empty(char *line);
+int						is_token_list_empty(t_token *token_list);
+int						find_delimiters(t_token *token_list);
+// init
+t_data					*sfbf_init_all(char **envp);
 // commandizer
 void					init_cmd(t_cmd *cmd);
 void					add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd);
-int						create_command_list(t_token *token_list, t_cmd **cmd_list);
+int						create_command_list(t_token *token_list,
+							t_cmd **cmd_list);
 int						count_pipes(t_token *token_list);
 void					shift_token_list_to_next_pipe(t_token **token_list);
 int						count_size_for_args_array(t_token *token_list);
@@ -169,6 +175,7 @@ void					free_token(t_token *token);
 void					cleanup_token_list(t_token *token_list);
 void					cleanup_command_list(t_cmd *cmd_list);
 void					cleanup_t_data_list(t_data *data);
+void					cleanup_split_result(char **strs, int start);
 void					sfbf_free_all(t_data *data);
 // tokenizer
 void					init_token(t_token *token);
@@ -187,8 +194,10 @@ char					*expand_word_one_pass(char *word, t_data *data);
 int						quote_handler(int quote_status, char c);
 int						word_split(t_token *list);
 char					*extract_var_from_envp(char *var_name);
-int						resolve_env_var_value(char *var_name, char **value, t_data *data);
-int						append_env_var(char **out, char *word, int *i, t_data *data);
+int						resolve_env_var_value(char *var_name, char **value,
+							t_data *data);
+int						append_env_var(char **out, char *word, int *i,
+							t_data *data);
 char					*append_str(char *dst, char *src);
 char					*append_char(char *dst, char c);
 int						is_var_char(char c);
@@ -199,22 +208,24 @@ char					*extract_home_path_from_envp(char **envp);
 char					*replace_char_with_expandable(char *original,
 							char char_to_expand, char *expandable);
 int						expand_home_dir(t_token *list_elem, char **envp);
-int						expand_dollar_question(char **out, int *i, t_data *data);
+int						expand_dollar_question(char **out, int *i,
+							t_data *data);
 
-//word split
-void	normalize_ifs_chars(char *s, char *ifs);
-char	*ft_strchr_array(char *s, char *arr);
-void	free_str_array(char **arr);
-void	remove_implicit_null_arg(t_token **prev, t_token *next, t_token **list);
+// word split
+void					normalize_ifs_chars(char *s, char *ifs);
+char					*ft_strchr_array(char *s, char *arr);
+void					free_str_array(char **arr);
+void					remove_implicit_null_arg(t_token **prev, t_token *next,
+							t_token **list);
 
 // execution
 int						eggsecute(t_data *data);
 
 // builtins
-void b_exit (t_data *data, t_cmd *cmd, int* saved_fds);
+void					b_exit(t_data *data, t_cmd *cmd, int *saved_fds);
 
-//singlecmds
-void	f_redir_restore(int saved_fds[2], t_data *data);
+// singlecmds
+void					f_redir_restore(int saved_fds[2], t_data *data);
 
 // debug
 void					print_tokens(t_token *start);

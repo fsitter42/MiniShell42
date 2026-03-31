@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/30 18:34:36 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 12:14:50 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,32 +29,6 @@ void	*test_calloc(size_t nmemb, size_t size)
 	- ctrl-D exits the shell
 	- ctrl-\ does nothing
 */
-
-int	is_token_list_empty(t_token *token_list)
-{
-	if (!token_list || !token_list->next)
-		return (1);
-	return (0);
-}
-
-int	handle_delimiter(t_token *token_list)
-{
-	while (1)
-	{
-		while (token_list && token_list->type != HEREDOC)
-			token_list = token_list->next;
-		if (!token_list)
-			return (RET_OK);
-		if (token_list->next && token_list->next->type == WORD)
-		{
-			token_list->next->type = WORD_AFTER_HEREDOC;
-			token_list = token_list->next;
-		}
-		else
-			return (ERROR_SOFT);
-	}
-	return (RET_OK);
-}
 
 int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 {
@@ -112,7 +86,7 @@ int	handle_single_line(char *line, char **envp, t_data *data)
 	ret = b_validate_token_sequence(token_list->next, data);
 	if (ret != RET_OK)
 		return (cleanup_token_list(token_list), ret);
-	ret = handle_delimiter(token_list);
+	ret = find_delimiters(token_list);
 	if (ret != RET_OK)
 		return (cleanup_token_list(token_list), ret);
 	ret = expansion(token_list, data);
@@ -136,17 +110,12 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 		line = readline("minishell$ ");
 		if (!line)
 			break ;
-		if (ft_strncmp(line, "", 1) == 0)
-		{
-			free(line);
-			continue ;
-		}
 		if (quote_syntax_check(line))
 		{
 			printf("minishell: missing quote\n");
 			continue ;
 		}
-		if (*line)
+		if (*line && !line_is_empty(line))
 			add_history((const char *)line);
 		ret_from_hsl = handle_single_line(line, envp, data);
 		free(line);
@@ -155,16 +124,6 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 		else if (ret_from_hsl == ERROR_HARD)
 			break ;
 	}
-}
-
-static void	cleanup_split_result(char **strs, int start)
-{
-	while (strs[start])
-	{
-		free(strs[start]);
-		start++;
-	}
-	free(strs);
 }
 
 /* the difference here is that we have one string that is given to
@@ -200,60 +159,6 @@ void	debug_mode(char *input, char **envp, t_data *data)
 			continue ;
 		data->cmds = NULL;
 	}
-}
-
-// TODO $EMPTY echo hi does not print anything
-void	sfbf_free_all(t_data *data)
-{
-	int	i;
-
-	if (!data)
-		return ;
-	if (data->env->envp_lst)
-		f_free_env_list(data->env->envp_lst); // vll nmoch freen zusätzliuch
-	if (data->env->envp_updated)
-		f_free_envp(data->env->envp_updated);
-	// if (data->env->envp_ori)
-	// 	free(data->env->envp_ori);
-	free(data->env);
-	i = 0;
-	while (data->strs && data->strs[i])
-	{
-		free(data->strs[i]);
-		i++;
-	}
-	if (data->strs)
-		free(data->strs);
-	cleanup_command_list(data->cmds);
-	clear_history();
-	rl_clear_history();
-	rl_free_line_state();
-	free(data);
-}
-
-t_data	*sfbf_init_all(char **envp)
-{
-	t_data	*data;
-	char	**args;
-
-	data = ft_calloc(sizeof(t_data), 1);
-	if (!data)
-		return (NULL);
-	data->env = f_init_envp(envp);
-	if (!data->env)
-		return (free(data), NULL);
-	args = (char *[]){"export", "OLDPWD", NULL};
-	if (f_export(data, args) == EXIT_FAILURE)
-	{
-		f_destroy_envp(data->env);
-		free(data);
-		return (NULL);
-	}
-	data->strs = NULL;
-	data->last_exit_code = 0;
-	data->should_exit = 0;
-	data->e_has_been_set = 0;
-	return (data);
 }
 
 int	main(int argc, char **argv, char **envp)

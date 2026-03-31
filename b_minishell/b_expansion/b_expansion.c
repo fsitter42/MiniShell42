@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/28 16:47:24 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 17:29:41 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	append_expanded_char(char **out, char *word, int *i,
 		else
 			ret = append_env_var(out, word, i, data);
 		if (ret != RET_OK)
-			return (ERROR_HARD);
+			return (ret);
 		return (RET_OK);
 	}
 	*out = append_char(*out, word[*i]);
@@ -54,7 +54,7 @@ char	*expand_word_one_pass(char *word, t_data *data)
 	while (word[++i])
 	{
 		if (append_expanded_char(&out, word, &i, &quote_status, data)
-			!= RET_OK)
+			== ERROR_HARD)
 			return (free(out), NULL);
 	}
 	return (out);
@@ -78,6 +78,7 @@ int	expand_single_word(t_token *list_elem, t_data *data)
 
 	if (list_elem->str && list_elem->str[0] == '~')
 	{
+		//TODO differ between ERROR_SOFT and ERROR_HARD
 		if (expand_home_dir(list_elem, data->env->envp_updated) != RET_OK)
 			return (ERROR_HARD);
 	}
@@ -89,10 +90,7 @@ int	expand_single_word(t_token *list_elem, t_data *data)
 	return (RET_OK);
 }
 
-/*
- *  loops trough all words and executes the expand_word function
- *  returns 1 on error
- */
+//TODO check returns HARD vs SOFT
 int	expansion(t_token *list, t_data *data)
 {
 	while (list)

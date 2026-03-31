@@ -189,7 +189,8 @@ t_token					*tokenizer(char *line);
 
 // expansion
 int						expansion(t_token *list, t_data *data);
-char					*expand_word_one_pass(char *word, t_data *data);
+char					*expand_word_one_pass(char *word, t_data *data,
+							int *ret_status);
 int						quote_handler(int quote_status, char c);
 int						word_split(t_token *list);
 char					*extract_var_from_envp(char *var_name);

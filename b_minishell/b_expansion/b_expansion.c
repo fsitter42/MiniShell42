@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 17:29:41 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:39:26 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,28 @@ static int	append_expanded_char(char **out, char *word, int *i,
  *	loops through the word, consumes syntactic quotes and expands
  *	vars (either env vars or $?)
  */
-char	*expand_word_one_pass(char *word, t_data *data)
+char	*expand_word_one_pass(char *word, t_data *data, int *ret_status)
 {
 	int		i;
 	int		quote_status;
 	char	*out;
 
+	*ret_status = RET_OK;
 	quote_status = DEFAULT_QUOTE;
 	out = ft_strdup("");
 	if (!out)
+	{
+		*ret_status = ERROR_HARD;
 		return (NULL);
+	}
 	i = -1;
 	while (word[++i])
 	{
-		if (append_expanded_char(&out, word, &i, &quote_status, data)
-			== ERROR_HARD)
+		*ret_status = append_expanded_char(&out, word, &i, &quote_status, data);
+		if (*ret_status != RET_OK)
+		{
 			return (free(out), NULL);
+		}
 	}
 	return (out);
 }
@@ -75,16 +81,17 @@ char	*expand_word_one_pass(char *word, t_data *data)
 int	expand_single_word(t_token *list_elem, t_data *data)
 {
 	char	*expanded;
+	int		ret;
 
 	if (list_elem->str && list_elem->str[0] == '~')
 	{
-		//TODO differ between ERROR_SOFT and ERROR_HARD
-		if (expand_home_dir(list_elem, data->env->envp_updated) != RET_OK)
-			return (ERROR_HARD);
+		ret = expand_home_dir(list_elem, data->env->envp_updated);
+		if (ret != RET_OK)
+			return (ret);
 	}
-	expanded = expand_word_one_pass(list_elem->str, data);
+	expanded = expand_word_one_pass(list_elem->str, data, &ret);
 	if (!expanded)
-		return (ERROR_HARD);
+		return (ret);
 	free(list_elem->str);
 	list_elem->str = expanded;
 	return (RET_OK);
@@ -93,12 +100,15 @@ int	expand_single_word(t_token *list_elem, t_data *data)
 //TODO check returns HARD vs SOFT
 int	expansion(t_token *list, t_data *data)
 {
+	int	ret;
+
 	while (list)
 	{
 		if (list->type == WORD)
 		{
-			if (expand_single_word(list, data) != RET_OK)
-				return (ERROR_HARD);
+			ret = expand_single_word(list, data);
+			if (ret != RET_OK)
+				return (ret);
 		}
 		list = list->next;
 	}

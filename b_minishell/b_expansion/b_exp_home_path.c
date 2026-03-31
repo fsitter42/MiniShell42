@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:31:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 17:28:45 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:10:40 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,33 @@ char	*replace_char_with_expandable(char *original, char char_to_expand,
 	return (temp);
 }
 
-/* we can't use getenv because the PATH variable could be changed and differ from
-the PATH that is in envp (we call it with envp_updated)
-TODO differ between var not found and ft_substr error -
-do we maybe need a status var? */
-char	*extract_home_path_from_envp(char **envp)
+/* we can't use getenv because the PATH variable could be changed and 
+ * differ from
+ * the PATH that is in envp (we call it with envp_updated)
+ * TODO differ between var not found and ft_substr error -
+ * do we maybe need a status var? 
+ */
+static char	*extract_home_path_from_envp(char **envp, int *ret_status)
 {
 	char	*home;
 	int		i;
 
+	if (ret_status)
+		*ret_status = RET_OK;
 	home = NULL;
 	i = -1;
 	while (envp[++i])
 	{
 		if (ft_strncmp(envp[i], "HOME=", 5) == 0)
-			return (ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5));
+		{
+			home = ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5);
+			if (!home && ret_status)
+				*ret_status = ERROR_HARD;
+			return (home);
+		}
 	}
+	if (ret_status)
+		*ret_status = ERROR_SOFT;
 	return (NULL);
 }
 
@@ -67,11 +78,11 @@ int	expand_home_dir(t_token *list_elem, char **envp)
 {
 	char	*home;
 	char	*temp;
+	int		ret;
 
-	home = extract_home_path_from_envp(envp);
-	// home = getenv("HOME");
+	home = extract_home_path_from_envp(envp, &ret);
 	if (!home)
-		return (ERROR_SOFT);
+		return (ret);
 	temp = replace_char_with_expandable(list_elem->str, '~', home);
 	if (!temp)
 		return (free(home), ERROR_HARD);

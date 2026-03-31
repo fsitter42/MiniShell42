@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 19:53:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 23:28:50 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	append_expanded_char(char **out, char *word, int *state,
  *  state[0] holds i
  *  state[1] holds quote_status
  */
-char	*expand_word_one_pass(char *word, t_data *data, int *ret_status)
+static char	*expand_word_one_pass(char *word, t_data *data, int *ret_status)
 {
 	char	*out;
 	int		state[2];

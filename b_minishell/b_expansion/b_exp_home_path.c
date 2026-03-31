@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:31:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 19:40:29 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 23:32:42 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // replaces a singular character with a string
 // mem safe on error
-char	*replace_char_with_expandable(char *original, char char_to_expand,
+static char	*replace_char_with_expandable(char *original, char char_to_expand,
 		char *expandable)
 {
 	char	*temp;

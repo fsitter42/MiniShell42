@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 19:53:49 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 23:35:02 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-
 # include <stdlib.h>
 
 // f
@@ -162,11 +161,9 @@ void					shift_and_consume_token_list_by_x(t_token **token,
 							int x);
 int						is_token_type_redirection(t_token *token);
 int						is_valid_redirection_target(t_token *redir_token);
-void					add_redir_to_redir_list(t_redir *new_redir, t_cmd *cmd);
-int						next_redir_id(void);
 int						add_r_t_c(t_cmd *cmd, int type, char *str,
 							char *delimiter);
-							
+
 // cleanup
 void					free_token(t_token *token);
 void					cleanup_token_list(t_token *token_list);
@@ -179,8 +176,6 @@ void					sfbf_free_all(t_data *data);
 void					init_token(t_token *token);
 int						is_part_of_word(char c, int *quote_status);
 int						quote_syntax_check(char *line);
-int						handle_single_line(char *line, char **envp,
-							t_data *data);
 t_token					*tokenlist_add(t_token *list_start, int type, char *str,
 							int quote_status);
 int						not_a_word(char c1, char c2);
@@ -189,24 +184,14 @@ t_token					*tokenizer(char *line);
 
 // expansion
 int						expansion(t_token *list, t_data *data);
-char					*expand_word_one_pass(char *word, t_data *data,
-							int *ret_status);
 int						quote_handler(int quote_status, char c);
 int						word_split(t_token *list);
-char					*extract_var_from_envp(char *var_name);
-int						resolve_env_var_value(char *var_name, char **value,
-							t_data *data);
 int						append_env_var(char **out, char *word, int *i,
 							t_data *data);
 char					*append_str(char *dst, char *src);
 char					*append_char(char *dst, char c);
-int						is_var_char(char c);
 int						get_var_name_len(char *word, int i);
-void					add_to_list(t_token *list, t_token *new);
 int						consume_syntactic_quote(char c, int *quote_status);
-//char					*extract_home_path_from_envp(char **envp);
-char					*replace_char_with_expandable(char *original,
-							char char_to_expand, char *expandable);
 int						expand_home_dir(t_token *list_elem, char **envp);
 int						expand_dollar_question(char **out, int *i,
 							t_data *data);

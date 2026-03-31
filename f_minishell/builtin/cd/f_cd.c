@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/30 14:13:54 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 23:05:48 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static int	f_init_cd(t_cd *cd, t_data *data, char **args)
 	cd->has_target = 0;
 	if (args[1] && args[2] != NULL)
 		return (f_print_error("cd", "too many arguments"), EXIT_FAILURE);
+	//TODO @ Frido exit code ist falsch, sollte 2 sein
 	if (args[1])
 	{
 		cd->target = args[1];
@@ -77,7 +78,11 @@ static int	f_init_cd(t_cd *cd, t_data *data, char **args)
 	}
 	else
 		cd->target = f_get_env_val(data->env->envp_lst, "HOME", data);
-	if (!cd->target)
+		
+	//TODO @ Frido hier auf data->should_exit checken (wenn zb leeres 
+	//environment) und ev. umbau auf ERROR_HARD etc. ?? bringt uns das 
+	//was? wäre wsl viel zu ändern
+	if (!cd->target)	
 		return (EXIT_FAILURE);
 	cd->old_pwd = getcwd(NULL, 0);
 	if (!cd->old_pwd)

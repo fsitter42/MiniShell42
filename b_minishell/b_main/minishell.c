@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 12:18:58 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 23:27:19 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*test_calloc(size_t nmemb, size_t size)
 	- ctrl-\ does nothing
 */
 
-int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
+static int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 {
 	int	ret;
 
@@ -66,7 +66,7 @@ int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 			return (ret);
 		} */
 
-int	handle_single_line(char *line, char **envp, t_data *data)
+static int	handle_single_line(char *line, char **envp, t_data *data)
 {
 	int		ret;
 	t_token	*token_list;

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:32:14 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 19:09:20 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 23:29:56 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  *  TODO ned getenv sondern eigene funktion die auf data->env_copied extrahiert
  *  ret = f_get_env_val
  */
-char	*extract_var_from_envp(char *var_name)
+static char	*extract_var_from_envp(char *var_name)
 {
 	char	*ret;
 
@@ -28,7 +28,7 @@ char	*extract_var_from_envp(char *var_name)
 	return (ft_strdup(ret));
 }
 
-int	resolve_env_var_value(char *var_name, char **value, t_data *data)
+static int	resolve_env_var_value(char *var_name, char **value, t_data *data)
 {
 	*value = f_get_env_val(data->env->envp_lst, var_name, data);
 	if (!*value)

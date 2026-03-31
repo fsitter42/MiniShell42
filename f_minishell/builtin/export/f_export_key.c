@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_export_key.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:11:54 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/30 12:37:27 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/03/31 22:58:51 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	f_export_with_key(t_envl *envl, char *s, t_data *data, int *err)
 	if (!key || (eq && !val))
 		return (f_free_key_n_val(key, val), 1);
 	if (!val)
-		val = f_get_env_val(envl, key, data);
+		val = f_get_env_val(envl, key, data);	//TODO @ Frido hier auf should_exit
 	f_lst_del_one(&envl, key);
 	if (!f_lst_add_one(envl, key, val))
 		return (f_free_key_n_val(key, val), 1);

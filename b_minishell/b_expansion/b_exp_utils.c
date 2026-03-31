@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:32:44 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 19:10:56 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 23:31:51 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*append_char(char *dst, char c)
 	return (append_str(dst, tmp));
 }
 
-int	is_var_char(char c)
+static int	is_var_char(char c)
 {
 	return (ft_isalnum(c) || c == '_');
 }
@@ -45,11 +45,4 @@ int	get_var_name_len(char *word, int i)
 	while (word[i + 1 + len] && is_var_char(word[i + 1 + len]))
 		len++;
 	return (len);
-}
-
-void	add_to_list(t_token *list, t_token *new)
-{
-	while (list->next)
-		list = list->next;
-	list->next = new;
 }

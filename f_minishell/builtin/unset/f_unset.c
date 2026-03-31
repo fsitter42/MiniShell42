@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:09:18 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/31 18:09:47 by slambert         ###   ########.fr       */
+/*   Updated: 2026/03/31 22:54:51 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	f_lst_del_one(t_envl **list, char *key)
 	return (EXIT_SUCCESS);
 }
 
-//TODO differ between ERROR_SOFT and ERROR_HARD (probably through should_exit)
 char	*f_get_env_val(t_envl *list, char *key, t_data *data)
 {
 	char	*ret;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_cd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/31 23:05:48 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/02 15:14:51 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,6 @@ static int	f_init_cd(t_cd *cd, t_data *data, char **args)
 	}
 	else
 		cd->target = f_get_env_val(data->env->envp_lst, "HOME", data);
-		
-	//TODO @ Frido hier auf data->should_exit checken (wenn zb leeres 
-	//environment) und ev. umbau auf ERROR_HARD etc. ?? bringt uns das 
-	//was? wäre wsl viel zu ändern
 	if (!cd->target)	
 		return (EXIT_FAILURE);
 	cd->old_pwd = getcwd(NULL, 0);

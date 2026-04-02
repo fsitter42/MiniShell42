@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/02 10:43:25 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/02 11:50:30 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,5 +225,6 @@ void					*test_calloc(size_t nmemb, size_t size);
 # include "f_minishell/builtin/unset/f_unset.h"
 # include "f_minishell/envp/f_envp.h"
 # include "f_minishell/execution/f_exe.h"
+# include "f_minishell/signal/f_signal.h"
 
 #endif

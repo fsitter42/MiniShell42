@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/29 11:38:40 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/02 10:44:40 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 	while (cmd)
 	{
 		if (f_redir_wrapper(data, cmd) == -1)
-			cmd->redir_failed = 1; // return (f_wait_all(), 1);
+			cmd->redir_failed = 1;
 		if (cmd->next)
 		{
 			if (pipe(pipe_fd) == -1)
@@ -46,6 +46,8 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 
 static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (cmd->redir_failed)
 		exit(1);
 	if (prev_fd != -1)
@@ -90,11 +92,23 @@ static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd)
 
 static void	f_wait_all(t_data *data)
 {
-	int	status;
+	int		status;
+	pid_t	pid;
 
-	while (waitpid(-1, &status, 0) > 0)
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	while ((waitpid(-1, &status, 0)) > 0)
 	{
 		if (WIFEXITED(status))
 			data->last_exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			data->last_exit_code = 128 + WTERMSIG(status);
+			if (WTERMSIG(status) == SIGINT)
+				write(1, "\n", 1);
+			else if (WTERMSIG(status) == SIGQUIT)
+				ft_printf("Quit (core dumped)\n");
+		}
 	}
+	setup_signals();
 }

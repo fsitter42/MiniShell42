@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/02 11:16:41 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/02 12:14:42 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,5 @@ static void	f_wait_all(t_data *data)
 			data->last_exit_code = 128 + sig;
 		}
 	}
-	setup_signals();
+	f_setup_signals();
 }

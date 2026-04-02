@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/02 11:50:30 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/02 12:18:39 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <signal.h>
 
 # define MAX_ENV_LEN 600
+#define _POSIX_C_SOURCE 200809L
 
 typedef struct s_envl	t_envl;
 typedef struct s_envp	t_envp;

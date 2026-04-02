@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
+#    By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/03/31 12:14:05 by slambert         ###   ########.fr        #
+#    Updated: 2026/04/02 12:13:02 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,9 @@ SRC_EXE     = f_minishell/execution/f_exe.c \
               f_minishell/execution/b_heredoc.c \
               f_minishell/execution/f_exec_wrapper.c 
 
-SRC         = $(SRC_MAIN) $(SRC_PARS) $(SRC_BUILTIN) $(SRC_ENVP) $(SRC_EXE)
+SRC_SIG     = f_minishell/signal/f_signal.c
+
+SRC         = $(SRC_MAIN) $(SRC_PARS) $(SRC_BUILTIN) $(SRC_ENVP) $(SRC_EXE) $(SRC_SIG)
 
 OBJS        = $(SRC:.c=.o)
 

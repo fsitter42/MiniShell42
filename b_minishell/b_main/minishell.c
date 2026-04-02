@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/02 12:22:20 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/02 12:39:03 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 	{
 		line = readline("minishell$ ");
 		if (!line)
+		{
+			ft_putendl_fd("exit", 1);
 			break ;
+		}
 		if (quote_syntax_check(line))
 		{
 			printf("minishell: missing quote\n");

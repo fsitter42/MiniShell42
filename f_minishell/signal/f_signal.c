@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   f_signal.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 12:05:46 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/02 12:41:28 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/03 16:51:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <signal.h>
 
 static void	f_handle_sigint(int sig);
 

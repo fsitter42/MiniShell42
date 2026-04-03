@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/02 12:14:42 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/03 17:02:34 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ static void	f_wait_all(t_data *data)
 			sig = WTERMSIG(status);
 			if (sig == SIGQUIT)
 				ft_putendl_fd("Quit (core dumped)", 2);
+			if (sig == SIGSEGV)
+				ft_putendl_fd("Segmentation fault (core dumped)", 2);
 			else if (sig == SIGINT)
 				write(1, "\n", 1);
 			data->last_exit_code = 128 + sig;

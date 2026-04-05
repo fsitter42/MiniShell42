@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 16:36:36 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/05 18:06:43 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ void	cleanup_command_list(t_cmd *cmd_list)
 		i = 0;
 		temp = cmd_list->next;
 		free(cmd_list->cmd);
+		free(cmd_list->path);
 		while (cmd_list->args && cmd_list->args[i])
 		{
 			free(cmd_list->args[i]);
 			i++;
 		}
 		free(cmd_list->args);
-		//free(cmd_list->delimiter);
 		if (cmd_list->redirs)
 			cleanup_redir_list(cmd_list->redirs);
 		free(cmd_list);

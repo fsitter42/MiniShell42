@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 14:19:41 by slambert          #+#    #+#             */
-/*   Updated: 2026/02/22 16:26:35 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/05 18:04:22 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,13 @@ char	**ft_split(char const *s, char c)
 	}
 	i = 0;
 	ss = shift_to_next_word((char *)s, c, 1);
-	while (i++ < word_count)
+	while (i < word_count)
 	{
-		p[i - 1] = extract_next_word(ss, c);
-		if (!p[i - 1])
-			return (free_all(p, i - 1));
+		p[i] = extract_next_word(ss, c);
+		if (!p[i])
+			return (free_all(p, i));
 		ss = shift_to_next_word(ss, c, 0);
+		i++;
 	}
 	return (p);
 }

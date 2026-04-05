@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/02 12:18:39 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/05 13:16:45 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ t_token					*tokenizer(char *line);
 // expansion
 int						expansion(t_token *list, t_data *data);
 int						quote_handler(int quote_status, char c);
-int						word_split(t_token *list);
+int						word_split(t_token *list, t_data *data);
 int						append_env_var(char **out, char *word, int *i,
 							t_data *data);
 char					*append_str(char *dst, char *src);

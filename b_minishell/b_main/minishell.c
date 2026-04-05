@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/02 12:39:03 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/05 13:17:00 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int	handle_single_line(char *line, char **envp, t_data *data)
 	ret = expansion(token_list, data);
 	if (ret != RET_OK)
 		return (cleanup_token_list(token_list), ret);
-	ret = word_split(token_list);
+	ret = word_split(token_list, data);
 	if (ret != RET_OK)
 		return (cleanup_token_list(token_list), ret);
 	return (hsl_helper(token_list, cmd_list, data));

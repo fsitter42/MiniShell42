@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 13:22:19 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 19:53:49 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/05 13:26:42 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,11 @@ int	split_single_word(t_token *list, char *ifs)
 	return (RET_OK);
 }
 
-void	init_ifs_and_split(char **ifs, int *split)
+void	init_ifs_and_split(char **ifs, int *split, t_data *data)
 {
 	*split = 1;
-	*ifs = getenv("IFS");
+	//TODO is envp_list correct or updated?
+	*ifs = f_get_env_val(data->env->envp_lst, "IFS", data);
 	if (!*ifs)
 		*ifs = " \n\t";
 	else if ((*ifs)[0] == '\0')
@@ -104,7 +105,7 @@ void	init_ifs_and_split(char **ifs, int *split)
  *   TODO give the command back to the user on empty input (now it is
  *   removed so no cmd is created, commandizer fails)
  */
-int	word_split(t_token *list)
+int	word_split(t_token *list, t_data *data)
 {
 	char	*ifs;
 	int		split;
@@ -112,7 +113,7 @@ int	word_split(t_token *list)
 	t_token	*prev;
 	t_token	*next;
 
-	init_ifs_and_split(&ifs, &split);
+	init_ifs_and_split(&ifs, &split, data);
 	prev = NULL;
 	while (list)
 	{

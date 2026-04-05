@@ -11,6 +11,7 @@ We implemented the following features:
 - quote handling
 - environment variable expansion
 - word splitting
+During word splitting, the shell divides input based on the characters defined in the Internal Field Separator (IFS) variable. If IFS is unset, it defaults to splitting by spaces, tabs, and newlines (" \t\n"). Empty arguments (such as "") are removed during this process. This splitting mechanism applies consistently even when IFS contains non-whitespace characters.
 - pipe handling
 - file descriptor redirection
 - ...

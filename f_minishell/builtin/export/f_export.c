@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_export.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:26:09 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/30 12:37:52 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/05 11:48:49 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	f_export(t_data *data, char **args)
 {
 	int	i;
 	int	ret;
-	int err;
+	int	err;
 
 	if (!data || !args)
 		return (EXIT_FAILURE);

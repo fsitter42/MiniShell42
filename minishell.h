@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/05 13:16:45 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/05 17:39:47 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,11 @@ char					*ft_strchr_array(char *s, char *arr);
 void					free_str_array(char **arr);
 void					remove_implicit_null_arg(t_token **prev, t_token *next,
 							t_token **list);
+int	create_and_fill_new_tokens(char **split_result, t_token *list);
+int	normalizer(char *str, char *ifs, char ***split_result);
+int	cleanup_ifs_and_return(char *ifs, int ifs_is_allocated, int ret);
+int	is_implicit_null_word(t_token *list);
+int	replace_first_split_word(t_token *list, char **split_result);
 
 // execution
 int						eggsecute(t_data *data);

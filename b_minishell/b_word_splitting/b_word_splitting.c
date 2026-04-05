@@ -6,58 +6,11 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 13:22:19 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/05 13:26:42 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/05 17:45:01 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-static int	normalizer(char *str, char *ifs, char ***split_result)
-{
-	char	*normalized;
-
-	normalized = ft_strdup(str);
-	if (!normalized)
-		return (ERROR_HARD);
-	normalize_ifs_chars(normalized, ifs);
-	*split_result = ft_split(normalized, ifs[0]);
-	free(normalized);
-	if (!*split_result)
-		return (ERROR_HARD);
-	return (RET_OK);
-}
-
-/*
- *  creates the new needed tokens
- *  TODO free the tokens that have been created (on failure)
- */
-int	create_and_fill_new_tokens(char **split_result, t_token *list)
-{
-	int		i;
-	t_token	*new;
-	t_token	*orig;
-	t_token	*tail;
-
-	orig = list->next;
-	tail = list;
-	i = 1;
-	while (split_result[i])
-	{
-		new = ft_calloc(sizeof(t_token), 1);
-		if (!new)
-			return (ERROR_HARD);
-		init_token(new);
-		new->type = WORD;
-		new->str = ft_strdup(split_result[i]);
-		if (!new->str)
-			return (free(new), ERROR_HARD);
-		tail->next = new;
-		tail = new;
-		i++;
-	}
-	tail->next = orig;
-	return (RET_OK);
-}
 
 /*
  *  executes the word splitting on a singular word. a word is split if it has
@@ -66,39 +19,72 @@ int	create_and_fill_new_tokens(char **split_result, t_token *list)
 int	split_single_word(t_token *list, char *ifs)
 {
 	char	**split_result;
-	char	*new_first;
-	int	ret;
+	int		ret;
 
-	if (list->str && ft_strchr_array(list->str, ifs))
+	if (!list->str || !ft_strchr_array(list->str, ifs))
+		return (RET_OK);
+	ret = normalizer(list->str, ifs, &split_result);
+	if (ret != RET_OK)
+		return (ret);
+	ret = replace_first_split_word(list, split_result);
+	if (ret != RET_OK)
+		return (free_str_array(split_result), ret);
+	ret = create_and_fill_new_tokens(split_result, list);
+	free_str_array(split_result);
+	if (ret != RET_OK)
+		return (ret);
+	return (RET_OK);
+}
+
+static int	split_word_if_needed(t_token *list, char *ifs, int should_split)
+{
+	if (list->type == WORD && should_split && list->quote_status == DEFAULT_Q)
+		return (split_single_word(list, ifs));
+	return (RET_OK);
+}
+
+static int	process_word_split_loop(t_token *list, char *ifs, int should_split)
+{
+	t_token	*prev;
+	t_token	*next;
+	int		ret;
+
+	prev = NULL;
+	while (list)
 	{
-		ret = normalizer(list->str, ifs, &split_result);
+		next = list->next;
+		if (is_implicit_null_word(list))
+		{
+			remove_implicit_null_arg(&prev, next, &list);
+			continue ;
+		}
+		ret = split_word_if_needed(list, ifs, should_split);
 		if (ret != RET_OK)
 			return (ret);
-		if (split_result[0])
-			new_first = ft_strdup(split_result[0]);
-		else
-			new_first = ft_strdup("");
-		if (!new_first)
-			return (free_str_array(split_result), ERROR_HARD);
-		free(list->str);
-		list->str = new_first;
-		ret = create_and_fill_new_tokens(split_result, list);
-		if (ret != RET_OK)
-			return (free_str_array(split_result), ret);
-		free_str_array(split_result);
+		prev = list;
+		list = list->next;
 	}
 	return (RET_OK);
 }
 
-void	init_ifs_and_split(char **ifs, int *split, t_data *data)
+static int	init_ifs_and_split(char **ifs, int *should_split, int *ifs_alloc,
+		t_data *data)
 {
-	*split = 1;
-	//TODO is envp_list correct or updated?
+	*should_split = 1;
+	*ifs_alloc = 0;
+	// TODO is envp_list correct or updated?
 	*ifs = f_get_env_val(data->env->envp_lst, "IFS", data);
-	if (!*ifs)
+	if (!*ifs && data->should_exit == 1)
+		return (ERROR_HARD);
+	else if (!*ifs)
 		*ifs = " \n\t";
-	else if ((*ifs)[0] == '\0')
-		*split = 0;
+	else
+	{
+		*ifs_alloc = 1;
+		if ((*ifs)[0] == '\0')
+			*should_split = 0;
+	}
+	return (RET_OK);
 }
 
 /*
@@ -108,29 +94,16 @@ void	init_ifs_and_split(char **ifs, int *split, t_data *data)
 int	word_split(t_token *list, t_data *data)
 {
 	char	*ifs;
-	int		split;
+	int		should_split;
+	int		ifs_alloc;
 	int		ret;
-	t_token	*prev;
-	t_token	*next;
 
-	init_ifs_and_split(&ifs, &split, data);
-	prev = NULL;
-	while (list)
-	{
-		next = list->next;
-		if (list->type == WORD && list->str && list->str[0] == '\0')
-		{
-			remove_implicit_null_arg(&prev, next, &list);
-			continue ;
-		}
-		if (list->type == WORD && split && list->quote_status == DEFAULT_Q)
-		{
-			ret = split_single_word(list, ifs);
-			if (ret != RET_OK)
-				return (ret);
-		}
-		prev = list;
-		list = list->next;
-	}
+	if (init_ifs_and_split(&ifs, &should_split, &ifs_alloc, data) == ERROR_HARD)
+		return (ERROR_HARD);
+	ret = process_word_split_loop(list, ifs, should_split);
+	if (ret != RET_OK)
+		return (cleanup_ifs_and_return(ifs, ifs_alloc, ret));
+	if (ifs_alloc)
+		free(ifs);
 	return (RET_OK);
 }

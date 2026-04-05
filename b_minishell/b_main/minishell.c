@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/05 13:17:00 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/05 17:59:32 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,29 +127,29 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 
 void	debug_mode(char *input, char **envp, t_data *data)
 {
-	char	**strs;
 	int		i;
 	int		ret;
 
-	strs = NULL;
 	data->strs = NULL;
-	strs = ft_split(input, ';');
-	if (!strs)
+	data->strs = ft_split(input, ';');
+	if (!data->strs)
 		return ;
 	i = -1;
-	while (strs[++i])
+	while (data->strs[++i])
 	{
-		ret = handle_single_line(strs[i], envp, data);
+		ret = handle_single_line(data->strs[i], envp, data);
 		if (ret == ERROR_HARD)
 		{
-			cleanup_split_result(strs, 0);
+			cleanup_split_result(data->strs, 0);
+			data->strs = NULL;
 			return ;
 		}
 		if (ret == ERROR_SOFT)
 			continue ;
 		data->cmds = NULL;
 	}
-	cleanup_split_result(strs, 0);
+	cleanup_split_result(data->strs, 0);
+	data->strs = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)

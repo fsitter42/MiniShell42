@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:32:44 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 23:31:51 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/05 17:50:13 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*append_str(char *dst, char *src)
 
 	new_str = ft_strjoin(dst, src);
 	if (!new_str)
-		return (NULL);
+		return (free(dst), NULL);
 	free(dst);
 	return (new_str);
 }

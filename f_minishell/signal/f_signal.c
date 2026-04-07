@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 12:05:46 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/07 11:38:24 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 11:41:46 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 // {
 //     (void)sig;
 //     g_signal_received = SIGINT;
+// 	// write(1, "^C", 2);
 // }
 
 // void    f_setup_signals(void)
@@ -103,7 +104,7 @@
 
 
 
-#include "minishell.h"
+// #include "minishell.h"
 
 static int f_sigint_event_hook(void)
 {

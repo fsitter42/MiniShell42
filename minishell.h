@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/05 17:39:47 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/07 09:32:27 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+#define _POSIX_C_SOURCE 200809L
+# define MAX_ENV_LEN 600
 
 # include <stdio.h>
 # include "./b_minishell/libft/libft.h"
@@ -27,9 +30,6 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <signal.h>
-
-# define MAX_ENV_LEN 600
-#define _POSIX_C_SOURCE 200809L
 
 typedef struct s_envl	t_envl;
 typedef struct s_envp	t_envp;

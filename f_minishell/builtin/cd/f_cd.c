@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/07 12:35:05 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 16:17:23 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	f_init_cd(t_cd *cd, t_data *data, char **args)
 	}
 	else
 		cd->target = f_get_env_val(data->env->envp_lst, "HOME", data);
-	if (!cd->target)	
+	if (!cd->target)
 		return (EXIT_FAILURE);
 	cd->old_pwd = getcwd(NULL, 0);
 	if (!cd->old_pwd)

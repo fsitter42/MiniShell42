@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 13:01:08 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/07 15:14:59 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 16:18:03 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	*f_handle_direct_path(char *cmd, int *err, int *err2);
 static void	f_print_126(int *err2);
-static void	f_print_127(char *cmd,  t_data *data);
+static void	f_print_127(char *cmd, t_data *data);
 
 char	*f_path_handler(t_data *data, char *cmd, char **envp)
 {

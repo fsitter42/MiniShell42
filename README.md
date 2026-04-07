@@ -39,3 +39,8 @@ Minishell can be used in 2 ways.
 - 42 documentation and intra subject PDF for the official pipex specification.
 
 - AI was used for conceptual explanations and not for writing or generating any code.
+
+TODO:
+- storage full error msg has to be the same
+- heredoc signal stuff
+- heredoc funcheck segfault

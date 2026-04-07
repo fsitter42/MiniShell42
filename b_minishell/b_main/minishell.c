@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/07 14:52:29 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 17:24:17 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 	{
 		// rl_on_new_line();
 		line = readline("minishell$ ");
+		//TODO error protection
 		if (g_signal_received == SIGINT)
 		{
 			g_signal_received = 0;

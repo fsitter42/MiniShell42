@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 12:05:46 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/07 09:38:54 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 10:19:18 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,12 @@ static void	f_handle_sigint(int sig);
 
 static void	f_handle_sigint(int sig)
 {
-	g_signal_received = SIGINT;
+	(void)sig;
 	write(1, "^C\n", 3);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
-
-// static void	f_handle_sigint(int sig)
-// {
-// 	(void)sig;
-// 	write(1, "^C\n", 3);
-// 	rl_on_new_line();
-// 	rl_replace_line("", 0);
-// 	rl_redisplay();
-// }
 
 void	f_setup_signals(void)
 {

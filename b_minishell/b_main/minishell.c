@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/05 17:59:32 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/07 09:53:12 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t g_signal_received;
+volatile sig_atomic_t g_signal_received = 0;
 
 //int					f_is_syntax_valid(t_data *data);
 void				*test_calloc(size_t nmemb, size_t size);
@@ -156,8 +156,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 	int		last_exit_code;
-
-	g_signal_received = 0;
 
 	if (argc != 1 && argc != 3)
 		return (printf("wrong syntax - argc not 1 or 3\n"), 1);

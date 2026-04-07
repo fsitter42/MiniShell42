@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/07 09:32:27 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 09:51:49 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,14 @@
 # include <sys/wait.h>
 # include <signal.h>
 
+extern volatile sig_atomic_t g_signal_received;
+
 typedef struct s_envl	t_envl;
 typedef struct s_envp	t_envp;
 typedef struct s_cmd	t_cmd;
 typedef struct s_data	t_data;
 typedef struct s_redir	t_redir;
+typedef struct s_cd t_cd;
 
 // structs
 typedef struct s_envl
@@ -97,6 +100,15 @@ typedef struct s_token
 	int					consume_status;
 	struct s_token		*next;
 }						t_token;
+
+typedef struct s_cd
+{
+	char	*old_pwd;
+	char	*new_pwd;
+	char	*export_str;
+	char	*target;
+    int     has_target;
+}			t_cd;
 
 enum					e_token_types
 {
@@ -223,14 +235,84 @@ void					f_redir_restore(int saved_fds[2], t_data *data);
 void					print_tokens(t_token *start);
 void					*test_calloc(size_t nmemb, size_t size);
 
-# include "f_minishell/builtin/cd/f_cd.h"
-# include "f_minishell/builtin/echo/f_echo.h"
-# include "f_minishell/builtin/env/f_env.h"
-# include "f_minishell/builtin/export/f_export.h"
-# include "f_minishell/builtin/pwd/f_pwd.h"
-# include "f_minishell/builtin/unset/f_unset.h"
-# include "f_minishell/envp/f_envp.h"
-# include "f_minishell/execution/f_exe.h"
-# include "f_minishell/signal/f_signal.h"
+// f_cd.c
+int			f_cd(t_data *data, char **args);
+
+// f_echo.c
+int	f_echo(t_data *data, char **args);
+
+// f_env.c
+int	f_env(t_data *data, char **args);
+int	f_print_env(t_envl *list_head);
+
+// f_export_no_key.c
+int		f_print_export(t_envl *original_list, t_data *data);
+t_envl	*f_copy_list(t_envl *head);
+void	f_sort_env_list(t_envl *head);
+int		f_strcmp(const char *s1, const char *s2);
+
+// f_export_key.c
+int		f_lst_add_one(t_envl *list, char *key, char *val);
+void	f_free_node(t_envl *node);
+int		f_valid_identifier(char *s);
+int		f_export_with_key(t_envl *envl, char *s, t_data *data, int *err);
+
+// f_export.c
+int		f_export(t_data *data, char **args);
+
+// f_pwd.c
+int	f_pwd(t_data *data);
+
+// f_unset.c
+int		f_unset(t_data *data, char **args);
+int		f_lst_del_one(t_envl **list, char *key);
+char	*f_get_env_val(t_envl *list, char *key, t_data *data);
+
+// f_envp_to_lst.c
+t_envl	*f_copy_env(char **envp);
+t_envl	*f_new_node(void);
+t_envl	*f_free_env_list(t_envl *head);
+int		f_fill_node(t_envl *node, char *env_str);
+
+// f_lst_to_new_envp.c
+int		f_update_envp(t_envp *data, t_data *bigdata);
+char	**f_free_envp(char **envp);
+size_t	f_lst_len_active(t_envl *list);
+char	**f_envp_lst_to_p(t_envl *list, size_t keylen, size_t vallen, size_t i);
+
+// f_envp_init_destroy.c
+t_envp	*f_init_envp(char **envp);
+t_envp	*f_destroy_envp(t_envp *p);
+
+// f_pathfinder.c
+char	*f_find_path(char *cmd, char **envp, int *err, int *err2);
+void	f_validate_path(char *path, int *err, int *err2);
+
+// f_pathhandler.c
+char	*f_path_handler(t_data *data, char *cmd, char **envp);
+void	f_print_error(char *context, char *msg);
+
+// f_singlecmd.c
+void	f_exec_cmd(t_data *data, t_cmd *cmd, char **envp);
+int		f_is_builtin(char *cmd);
+int		f_exec_builtin(t_cmd *cmd, t_data *data);
+
+// f_exe.c
+int		f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2]);
+// int		f_exec_pipeline(t_data *data, t_cmd *cmds);
+
+// f_exe2.c
+int		f_redir_wrapper(t_data *data, t_cmd *cmd);
+
+// b_heredoc.c
+int		b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir);
+
+// f_exec_wrapper.c
+int		f_pipeline_wrapper(t_data *data);
+void	f_close_pipe(t_cmd *cmd, int pipe_fd[2], int *prev_fd);
+void	f_close_child(int *pipe_fd, int prev_fd, t_cmd *cmd);
+
+// f_signal.c
+void	f_setup_signals(void);
 
 #endif

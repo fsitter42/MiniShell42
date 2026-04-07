@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/07 09:22:16 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 10:22:29 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static void	f_wait_all(t_data *data)
 			sig = WTERMSIG(status);
 			if (sig == SIGQUIT)
 				ft_putendl_fd("Quit (core dumped)", 2);
-			if (sig == SIGSEGV)
+			else if (sig == SIGSEGV)
 				ft_putendl_fd("Segmentation fault (core dumped)", 2);
 			else if (sig == SIGINT)
 				write(1, "\n", 1);

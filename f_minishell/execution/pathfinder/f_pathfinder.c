@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_pathfinder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 11:59:42 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/29 12:47:47 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 13:01:46 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*f_find_path(char *cmd, char **envp, int *err, int *err2)
 	char	**dirs;
 	char	*full;
 	int		i;
-
+	//TODOF is path there checken 
 	full = f_get_path_var(envp);
 	if (!full)
 		return (*err = 127, NULL);

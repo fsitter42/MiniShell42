@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/07 10:59:20 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 14:50:34 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,6 +292,9 @@ void	f_validate_path(char *path, int *err, int *err2);
 // f_pathhandler.c
 char	*f_path_handler(t_data *data, char *cmd, char **envp);
 void	f_print_error(char *context, char *msg);
+
+// f_unsetpath
+int f_path_set(t_data *data);
 
 // f_singlecmd.c
 void	f_exec_cmd(t_data *data, t_cmd *cmd, char **envp);

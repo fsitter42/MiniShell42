@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
+#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/05 17:36:32 by slambert         ###   ########.fr        #
+#    Updated: 2026/04/07 14:54:26 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ SRC_EXE     = f_minishell/execution/f_exe.c \
               f_minishell/execution/f_exe2.c \
               f_minishell/execution/pathfinder/f_pathfinder.c \
               f_minishell/execution/pathfinder/f_pathhandler.c \
+              f_minishell/execution/pathfinder/f_unsetpath.c \
               f_minishell/execution/singlecmd/f_singlecmd.c \
               f_minishell/execution/b_heredoc.c \
               f_minishell/execution/f_exec_wrapper.c 

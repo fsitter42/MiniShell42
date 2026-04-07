@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 12:05:46 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/07 12:04:52 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 12:09:09 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ static int f_sigint_event_hook(void)
 {
     if (g_signal_received == SIGINT)
     {
-		write(1, "\n", 1);
     	rl_on_new_line();
     	rl_replace_line("", 0);
         rl_done = 1;
@@ -122,6 +121,7 @@ static void f_handle_sigint(int sig)
 {
     (void)sig;
     g_signal_received = SIGINT;
+	write(1, "\n", 1);
     
 }
 

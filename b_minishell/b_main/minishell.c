@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/07 10:18:55 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 11:31:22 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,16 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 
 	while (1)
 	{
+		// rl_on_new_line();
 		line = readline("minishell$ ");
+		if (g_signal_received == SIGINT)
+		{
+			g_signal_received = 0;
+			data->last_exit_code = 130;
+			if (line)
+				free(line);
+			continue;
+		}
 		if (!line)
 		{
 			ft_putendl_fd("exit", 1);

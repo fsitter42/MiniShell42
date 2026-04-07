@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/07 09:51:49 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/07 10:59:20 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <signal.h>
+#include <sys/ioctl.h>
 
 extern volatile sig_atomic_t g_signal_received;
 

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/08 11:24:17 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:15:18 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 	{
 		// rl_on_new_line();
 		line = readline("minishell$ ");
+		// line = NULL;
+		// errno = 42;
 		//TODO error protection?? funcheck gives hard error
 		if (g_signal_received == SIGINT)
 		{
@@ -118,6 +120,13 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 		//readline error here or not?
 		if (!line)
 		{
+			if (errno != 0)
+				ft_putendl_fd("error", 1);
+			else
+				ft_putendl_fd("no error", 1);
+
+
+				
 			ft_putendl_fd("exit", 1);
 			break ;
 		}

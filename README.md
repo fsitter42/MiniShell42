@@ -41,6 +41,5 @@ Minishell can be used in 2 ways.
 - AI was used for conceptual explanations and not for writing or generating any code.
 
 TODO:
-- storage full error msg has to be the same
-- heredoc signal stuff
 - heredoc funcheck segfault
+- normal mode while (1) segfault

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/09 00:06:58 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/09 00:09:12 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ static void	f_wait_all(t_data *data)
 	f_setup_signals();
 }
 
-/*	tests
+/*	tests TODO show bert because of kill
 
 int			i = 0; i++;
 

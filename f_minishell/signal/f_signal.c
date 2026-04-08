@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_signal.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 12:05:46 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/07 16:16:47 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/08 15:13:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ static int	f_sigint_event_hook(void)
 
 static void	f_handle_sigint(int sig)
 {
-	(void)sig;
-	g_signal_received = SIGINT;
+	g_signal_received = sig;
 	write(1, "\n", 1);
 }
 

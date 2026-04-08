@@ -3,14 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
+#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/07 14:54:26 by fsitter          ###   ########.fr        #
+#    Updated: 2026/04/08 14:30:46 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-#TODO wenn nix zum ändern is "nothing to be made"
 NAME        = minishell
 
 # -- Dateien --

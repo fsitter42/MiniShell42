@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/08 14:29:05 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:29:55 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,7 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 			add_history((const char *)line);
 		ret_from_hsl = handle_single_line(line, envp, data);
 		free(line);
-		if (ret_from_hsl == ERROR_SOFT || ret_from_hsl == RET_OK)
-			continue ;
-		else if (ret_from_hsl == ERROR_HARD)
+		if (ret_from_hsl == ERROR_HARD)
 			break ;
 	}
 }

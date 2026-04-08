@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/07 14:59:02 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/08 11:53:43 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,22 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 
 	if (f_redir_wrapper(data, cmd) == -1)
 		return (data->last_exit_code = 1, -1);
+		
+	//TODO we overwrite last_exit_code always with 1 on failure.
+	//if ctrl+c happens during heredoc we can't do that 
+	//also in f_redir_wrapper we have to preserve exit code 130
+	/* 	if (f_redir_setup(cmd, saved_fds) == -1)
+	{
+		if (data->last_exit_code == 130)
+			return (-1);
+		else 
+			return (data->last_exit_code = 1, -1);
+	} */
 	if (f_redir_setup(cmd, saved_fds) == -1)
 		return (data->last_exit_code = 1, -1);
+
+
+		
 	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
 		data->last_exit_code = f_echo(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "cd", 3) == 0)

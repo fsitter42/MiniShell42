@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_heredoc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/19 14:18:02 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/08 11:46:33 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,21 @@ static char	*b_create_heredoc_path(int id)
 	return (filename);
 }
 
-static int	b_heredoc_loop(t_cmd *cmd, t_redir *redir, char *filename, int fd)
+static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 {
 	char	*line;
 
 	while (1)
 	{
 		line = readline(">");
+		if (g_signal_received == SIGINT)
+		{
+			g_signal_received = 0;
+			data->last_exit_code = 130;
+			if (line)
+				free(line);
+			return (-1);
+		}
 		if (!line)
 			break ;
 		if (ft_strlen(line) == ft_strlen(redir->delimiter) && ft_strncmp(line,
@@ -65,14 +73,15 @@ int	b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir)
 	char	*line;
 	char	*filename;
 
-	(void)data;
+	//(void)data;
+	line = NULL;
 	filename = b_create_heredoc_path(redir->id);
 	if (!filename)
 		return (-1);
 	fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 	if (fd == -1)
 		return (free(filename), -1);
-	if (b_heredoc_loop(cmd, redir, filename, fd) == -1)
+	if (b_heredoc_loop(data, redir, filename, fd) == -1)
 		return (free(line), close(fd), free(filename), -1);
 	if (close(fd) == -1)
 		return (free(filename), -1);

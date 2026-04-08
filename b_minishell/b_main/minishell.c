@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/07 17:24:17 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/08 11:24:17 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 	{
 		// rl_on_new_line();
 		line = readline("minishell$ ");
-		//TODO error protection
+		//TODO error protection?? funcheck gives hard error
 		if (g_signal_received == SIGINT)
 		{
 			g_signal_received = 0;
@@ -114,6 +114,8 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 				free(line);
 			continue;
 		}
+		//do we have to distinguish between ctrl+d (EOF) and actual
+		//readline error here or not?
 		if (!line)
 		{
 			ft_putendl_fd("exit", 1);

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/08 14:15:18 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:29:05 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,8 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 	while (1)
 	{
 		// rl_on_new_line();
+		errno = 0;
 		line = readline("minishell$ ");
-		// line = NULL;
-		// errno = 42;
-		//TODO error protection?? funcheck gives hard error
 		if (g_signal_received == SIGINT)
 		{
 			g_signal_received = 0;
@@ -116,23 +114,17 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 				free(line);
 			continue;
 		}
-		//do we have to distinguish between ctrl+d (EOF) and actual
-		//readline error here or not?
 		if (!line)
 		{
 			if (errno != 0)
-				ft_putendl_fd("error", 1);
-			else
-				ft_putendl_fd("no error", 1);
-
-
-				
+				data->last_exit_code = 1;
 			ft_putendl_fd("exit", 1);
 			break ;
 		}
 		if (quote_syntax_check(line))
 		{
 			printf("minishell: missing quote\n");
+			free (line);
 			continue ;
 		}
 		if (*line && !line_is_empty(line))

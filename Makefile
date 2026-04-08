@@ -6,7 +6,7 @@
 #    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/08 23:26:52 by fsitter          ###   ########.fr        #
+#    Updated: 2026/04/08 23:39:14 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -113,6 +113,6 @@ fclean: clean
 re: fclean all
 
 valgrind: re
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind_readline.supp --trace-children=yes --track-fds=yes ./minishell -d "ls"
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind_readline.supp --trace-children=yes --track-fds=yes ./minishell -d "echo hello | grep h | wc -l > test"
 
 .PHONY: all clean fclean re valgrind

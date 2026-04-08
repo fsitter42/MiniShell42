@@ -6,15 +6,13 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:32:14 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 23:29:56 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:55:54 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
- *	possible TODO: don't return malloced string then we don't have to free
- *	in resolve_env_var
  *  TODO ned getenv sondern eigene funktion die auf data->env_copied extrahiert
  *  ret = f_get_env_val
  */

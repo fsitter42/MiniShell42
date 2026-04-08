@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 16:37:56 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:31:37 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,6 @@ int	handle_word(t_token **token_list, t_cmd *cmd)
 	return (RET_OK);
 }
 
-/* 
- *	TODO memory safe on error?? (free partially built cmd)
- */
 int	create_single_cmd(t_token *token_list, int size, t_cmd **cmd)
 {
 	int	ret;

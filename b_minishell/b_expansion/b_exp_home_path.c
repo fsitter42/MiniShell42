@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:31:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 23:32:42 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/08 16:26:25 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,6 @@ static char	*replace_char_with_expandable(char *original, char char_to_expand,
 	return (temp);
 }
 
-/* we can't use getenv because the PATH variable could be changed and
- * differ from
- * the PATH that is in envp (we call it with envp_updated)
- * TODO differ between var not found and ft_substr error -
- * do we maybe need a status var?
- */
 static char	*extract_home_path_from_envp(char **envp, int *ret_status)
 {
 	char	*home;

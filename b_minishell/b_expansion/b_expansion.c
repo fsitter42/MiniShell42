@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 23:28:50 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/08 16:27:05 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int	expansion(t_token *list, t_data *data)
 } */
 
 /*
- *	TODO differenzieren zwischen leerer variable und malloc fail
+ *	ODO differenzieren zwischen leerer variable und malloc fail
  *	getenv!
  */
 /* static int	resolve_env_var_value(char *var_name, char **value, char **envp)

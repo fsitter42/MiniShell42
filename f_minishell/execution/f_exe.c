@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/07 10:22:29 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/08 16:31:12 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 		if (cmd->next)
 		{
 			if (pipe(pipe_fd) == -1)
-				exit(127);
+				exit(127);	//TODO schaun ob wur da iwas freen müssen (return -1, ERROR_HARD oder so)
 		}
 		pid = fork();
 		if (pid == -1)
 			f_close_pipe(cmd, pipe_fd, &prev_fd);
+			//TODO da auch schaun
 		if (pid == 0)
 			f_child_process(data, cmd, prev_fd, pipe_fd);
 		f_parent_cleanup(cmd, &prev_fd, pipe_fd);

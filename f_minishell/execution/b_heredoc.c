@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/08 11:46:33 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/08 16:35:34 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,12 @@ static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 	return (0);
 }
 
-/*
-
- *   TODO when input is << d no heredocing is happening
- *   TODO the above case prints the heredoced stuff back to the user,
- *   i have to do that too (find out in what cases exactly)
- *	 TODO hier was mit last exit code?
- *	 TODO den schas wieder löschen
- */
 int	b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir)
 {
 	int		fd;
 	char	*line;
 	char	*filename;
 
-	//(void)data;
 	line = NULL;
 	filename = b_create_heredoc_path(redir->id);
 	if (!filename)
@@ -88,10 +79,6 @@ int	b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir)
 	if (cmd->in_fd != -1)
 		close(cmd->in_fd);
 	cmd->in_fd = open(filename, O_RDONLY);
-	// redir->file = ft_strdup(filename);
-	// free(filename);
-	// if (!redir->file)
-	// 	return -1;
 	if (cmd->in_fd == -1)
 		return (-1);
 	redir->file = filename;

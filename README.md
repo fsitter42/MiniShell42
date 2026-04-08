@@ -42,4 +42,5 @@ Minishell can be used in 2 ways.
 
 TODO:
 - heredoc funcheck segfault
-- normal mode while (1) segfault
+- normal mode while (1) segfault: das kommt von der readline function, ich glaub dass das so OK ist
+- f_exec_pipeline cleanup on error

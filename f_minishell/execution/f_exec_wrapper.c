@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exec_wrapper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 14:02:15 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/08 23:24:40 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/09 13:46:03 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	f_pipeline_wrapper(t_data *data)
 	int		ret;
 	t_cmd	*cmd;
 	int		pipe_fd[2];
-
+	
 	cmd = data->cmds;
 	ret = f_exec_pipeline(data, cmd, pipe_fd);
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/09 13:31:08 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/09 14:46:15 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 	while (1)
 	{
 		line = readline(">");
+		//TODO if heredoc is exited with ctrl+c exit code has to be 130
+		//atm it is 1
 		if (g_signal_received == SIGINT)
 		{
 			g_signal_received = 0;

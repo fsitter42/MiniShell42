@@ -41,6 +41,3 @@ Minishell can be used in 2 ways.
 - AI was used for conceptual explanations and not for writing or generating any code.
 
 TODO:
-- heredoc funcheck segfault
-- normal mode while (1) segfault: das kommt von der readline function, ich glaub dass das so OK ist
-- f_exec_pipeline cleanup on error

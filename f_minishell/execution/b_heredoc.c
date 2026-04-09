@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/08 16:35:34 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/09 13:31:08 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ int	b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir)
 		close(cmd->in_fd);
 	cmd->in_fd = open(filename, O_RDONLY);
 	if (cmd->in_fd == -1)
-		return (-1);
+		return (free (filename), -1);
+	if (redir->file)
+		free (redir->file);
 	redir->file = filename;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 13:22:19 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/05 17:45:01 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/09 13:14:48 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,13 @@ static int	process_word_split_loop(t_token *list, char *ifs, int should_split)
 	return (RET_OK);
 }
 
+//TODO da passt iwas nicht, wenn IFS gesetzt wird kann ich die var nicht
+//mit echo anzeigen? 
 static int	init_ifs_and_split(char **ifs, int *should_split, int *ifs_alloc,
 		t_data *data)
 {
 	*should_split = 1;
 	*ifs_alloc = 0;
-	// TODO is envp_list correct or updated?
 	*ifs = f_get_env_val(data->env->envp_lst, "IFS", data);
 	if (!*ifs && data->should_exit == 1)
 		return (ERROR_HARD);

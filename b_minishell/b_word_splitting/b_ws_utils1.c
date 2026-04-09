@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_ws_utils.c                                       :+:      :+:    :+:   */
+/*   b_ws_utils1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:57:29 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/22 15:01:56 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/09 13:18:26 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@
  *	empty fields, like ["a", "", "c"] for a::c.
  *	TODO Explicit  null  arguments  ("" or '') are retained and passed to
  *	commands as empty strings.
+
+ * IFS only whitespace:
+ * remove implicit null args ("")
+ * IFS contains non-whitespace:
+ * dont't remove mplicit null args ("")
+ * 
+ * 
+ * IFS=" :"
+ * asd  dsa::das
  */
 char	*ft_strchr_array(char *s, char *arr)
 {

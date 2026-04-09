@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/08 23:26:09 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/09 16:42:54 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_data
 	int					should_exit;
 	int					e_has_been_set;
 	char				**strs;
+	int					ret_from_hsl;
 }						t_data;
 
 // s
@@ -322,5 +323,8 @@ int	f_fork_error(t_data *data, t_cmd *cmd, int pipe_fd[2], int *prev_fd);
 
 // f_signal.c
 void	f_setup_signals(void);
+
+//TODO move to another file
+void set_exit_code_to_130_and_free(t_data *data, char *line);
 
 #endif

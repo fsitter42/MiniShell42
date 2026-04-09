@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/09 14:46:15 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/09 15:58:21 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ static char	*b_create_heredoc_path(int id)
 	return (filename);
 }
 
+void set_exit_code_to_130_and_free(t_data *data, char *line)
+{
+	g_signal_received = 0;
+	data->last_exit_code = 130;
+	if (line)
+		free(line);
+}
+
 static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 {
 	char	*line;
@@ -34,14 +42,9 @@ static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 	while (1)
 	{
 		line = readline(">");
-		//TODO if heredoc is exited with ctrl+c exit code has to be 130
-		//atm it is 1
 		if (g_signal_received == SIGINT)
 		{
-			g_signal_received = 0;
-			data->last_exit_code = 130;
-			if (line)
-				free(line);
+			set_exit_code_to_130_and_free(data, line);
 			return (-1);
 		}
 		if (!line)

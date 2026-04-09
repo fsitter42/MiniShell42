@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/09 14:55:20 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/09 16:44:37 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,44 +94,58 @@ static int	handle_single_line(char *line, char **envp, t_data *data)
 	return (hsl_helper(token_list, cmd_list, data));
 }
 
+static void print_and_free_line(char *line)
+{
+	printf("minishell: missing quote\n");
+	free (line);
+}
+
+static void errno_and_exit_code_helper(t_data *data)
+{
+	if (errno != 0)
+		data->last_exit_code = 1;
+	ft_putendl_fd("exit", 1);
+}
+
+static int add_to_history_and_hsl(char *line, char **envp, t_data *data)
+{
+	int ret;
+	
+	if (*line && !line_is_empty(line))
+		add_history((const char *)line);
+	ret = handle_single_line(line, envp, data);
+	free(line);
+	return (ret);
+}
+
+
 /* this is the default mode in where the users enters stuff
  */
 void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 {
 	char	*line;
-	int		ret_from_hsl;
 	
 	while (1)
 	{
-		// rl_on_new_line();
 		errno = 0;
 		line = readline("minishell$ ");
 		if (g_signal_received == SIGINT)
 		{
-			g_signal_received = 0;
-			data->last_exit_code = 130;
-			if (line)
-				free(line);
+			set_exit_code_to_130_and_free(data, line);
 			continue;
 		}
 		if (!line)
 		{
-			if (errno != 0)
-				data->last_exit_code = 1;
-			ft_putendl_fd("exit", 1);
+			errno_and_exit_code_helper(data);
 			break ;
 		}
 		if (quote_syntax_check(line))
 		{
-			printf("minishell: missing quote\n");
-			free (line);
+			print_and_free_line(line);
 			continue ;
 		}
-		if (*line && !line_is_empty(line))
-			add_history((const char *)line);
-		ret_from_hsl = handle_single_line(line, envp, data);
-		free(line);
-		if (ret_from_hsl == ERROR_HARD)
+		data->ret_from_hsl = add_to_history_and_hsl(line, envp, data);
+		if (data->ret_from_hsl == ERROR_HARD)
 			break ;
 	}
 }
@@ -168,7 +182,7 @@ int	main(int argc, char **argv, char **envp)
 	t_data	*data;
 	int		last_exit_code;
 
-	printf ("%i\n", getpid());
+	//printf ("%i\n", getpid());
 	if (argc != 1 && argc != 3)
 		return (printf("wrong syntax - argc not 1 or 3\n"), 1);
 	if (argc == 1)

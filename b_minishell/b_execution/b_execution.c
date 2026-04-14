@@ -6,14 +6,12 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/08 15:32:59 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 14:25:18 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// TODO this segfaults at funcheck simulated error 
-// f_join_cmd_to_path full
 void	remove_heredoc_files(t_cmd *cmds)
 {
 	t_redir	*redir;

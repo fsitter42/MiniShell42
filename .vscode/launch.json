@@ -16,8 +16,8 @@
             // "args": ["-d", "echo asdf | exit 42 s"],
             //"args": ["-d", "echo $;echo $;echo $;echo $;echo $;echo $;echo $;echo $"],
             //"args": ["-d", "echo hi | echo bye >>./test_files/invalid_permission"],
-            "args": [],
-            //"args": ["-d", "| >"],
+            //"args": [],
+            "args": ["-d", "cat <\"./minishell_tester/test_files/infile\" | echo hi "],
             //"args": ["-d", "cat < file1.txt -e > file2.txt -n"],
             //"args": ["-d", "< input.txt > output.txt"],
             //"args": ["-d", "ls | | wc"],
@@ -74,12 +74,12 @@
                 },
                 {
                     "description": "Follow child after fork",
-                    "text": "set follow-fork-mode child",
+                    "text": "set follow-fork-mode parent",
                     "ignoreFailures": false
                 },
                 {
                     "description": "Keep both parent and child under debugger control",
-                    "text": "set detach-on-fork off",
+                    "text": "set detach-on-fork on",
                     "ignoreFailures": false
                 }
             ],

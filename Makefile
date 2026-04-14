@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
+#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/08 23:39:14 by fsitter          ###   ########.fr        #
+#    Updated: 2026/04/14 15:13:44 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ OBJS        = $(SRC:.c=.o)
 # -- Compiler & Flags --
 CC          = cc
 #CFLAGS      = -Wall -Wextra -Werror -g
-CFLAGS      = -Wall -g
+CFLAGS      = -Wall -g -Wextra -Werror
 INCLUDE     = -I .
 
 # -- Bibliotheken --

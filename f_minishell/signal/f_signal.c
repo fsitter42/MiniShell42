@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 12:05:46 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/08 15:13:20 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 14:33:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,19 @@ void	f_setup_signals(void)
 {
 	struct sigaction	sa;
 
-	rl_event_hook = f_sigint_event_hook;
+	rl_signal_event_hook = f_sigint_event_hook;
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = f_handle_sigint;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+void set_exit_code_to_130_and_free(t_data *data, char *line)
+{
+	g_signal_received = 0;
+	data->last_exit_code = 130;
+	if (line)
+		free(line);
 }

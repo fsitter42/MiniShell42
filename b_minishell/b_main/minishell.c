@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/09 16:44:37 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:16:50 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,6 @@ void	*test_calloc(size_t nmemb, size_t size)
 	(void)size;
 	return (NULL);
 }
-
-/*
-	TODO:
-	- handle exit status (should work now, test)
-	- ctrl-C displays a new prompt on a new line
-	- ctrl-D exits the shell
-	- ctrl-\ does nothing
-*/
 
 static int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 {
@@ -68,7 +60,7 @@ static int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 			return (ret);
 		} */
 
-static int	handle_single_line(char *line, char **envp, t_data *data)
+static int	handle_single_line(char *line, t_data *data)
 {
 	int		ret;
 	t_token	*token_list;
@@ -76,7 +68,6 @@ static int	handle_single_line(char *line, char **envp, t_data *data)
 
 	cmd_list = NULL;
 	token_list = tokenizer(line);
-	// token_list = test_calloc(1,1);  doublefree TODOS
 	if (!token_list)
 		return (ERROR_HARD);
 	ret = b_validate_token_sequence(token_list->next, data);
@@ -107,13 +98,13 @@ static void errno_and_exit_code_helper(t_data *data)
 	ft_putendl_fd("exit", 1);
 }
 
-static int add_to_history_and_hsl(char *line, char **envp, t_data *data)
+static int add_to_history_and_hsl(char *line, t_data *data)
 {
 	int ret;
 	
 	if (*line && !line_is_empty(line))
 		add_history((const char *)line);
-	ret = handle_single_line(line, envp, data);
+	ret = handle_single_line(line, data);
 	free(line);
 	return (ret);
 }
@@ -121,7 +112,7 @@ static int add_to_history_and_hsl(char *line, char **envp, t_data *data)
 
 /* this is the default mode in where the users enters stuff
  */
-void	normal_mode(int argc, char **argv, char **envp, t_data *data)
+void	normal_mode(t_data *data)
 {
 	char	*line;
 	
@@ -144,13 +135,13 @@ void	normal_mode(int argc, char **argv, char **envp, t_data *data)
 			print_and_free_line(line);
 			continue ;
 		}
-		data->ret_from_hsl = add_to_history_and_hsl(line, envp, data);
+		data->ret_from_hsl = add_to_history_and_hsl(line, data);
 		if (data->ret_from_hsl == ERROR_HARD)
 			break ;
 	}
 }
 
-void	debug_mode(char *input, char **envp, t_data *data)
+void	debug_mode(char *input, t_data *data)
 {
 	int		i;
 	int		ret;
@@ -162,7 +153,7 @@ void	debug_mode(char *input, char **envp, t_data *data)
 	i = -1;
 	while (data->strs[++i])
 	{
-		ret = handle_single_line(data->strs[i], envp, data);
+		ret = handle_single_line(data->strs[i], data);
 		if (ret == ERROR_HARD)
 		{
 			cleanup_split_result(data->strs, 0);
@@ -182,7 +173,6 @@ int	main(int argc, char **argv, char **envp)
 	t_data	*data;
 	int		last_exit_code;
 
-	//printf ("%i\n", getpid());
 	if (argc != 1 && argc != 3)
 		return (printf("wrong syntax - argc not 1 or 3\n"), 1);
 	if (argc == 1)
@@ -191,7 +181,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!data)
 			return (1);
 		f_setup_signals();
-		normal_mode(argc, argv, envp, data);
+		normal_mode(data);
 	}
 	else
 	{
@@ -200,43 +190,9 @@ int	main(int argc, char **argv, char **envp)
 		data = sfbf_init_all(envp);
 		if (!data)
 			return (1);
-		debug_mode(argv[2], envp, data);
+		debug_mode(argv[2], data);
 	}
 	last_exit_code = data->last_exit_code;
 	sfbf_free_all(data);
 	return (last_exit_code);
 }
-
-// TODO brauch ma des noch? oder hama des eh mit validate_token_sequence
-// TODO Frido schhaun ob des ok is wenn ma des so machen
-/* int	f_is_syntax_valid(t_data *data)
-{
-	t_cmd	*tmp;
-
-	tmp = data->cmds;
-	while (tmp)
-	{
-		if (!tmp->cmd && !tmp->redirs)
-		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n",
-				2);
-			data->last_exit_code = 2;
-			return (ERROR_SOFT);
-		}
-		tmp = tmp->next;
-	}
-	return (RET_OK);
-} */
-
-/* size_t count_cmds(t_token *cmd_list)
-{
-	size_t size;
-
-	size = 0;
-	while (cmd_list)
-	{
-		size++;
-		cmd_list = cmd_list->next;
-	}
-	return (size);
-} */

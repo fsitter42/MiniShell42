@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/14 11:48:31 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/14 15:12:49 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,8 +328,8 @@ int f_redir_error(int saved_fds[2], int fd, char *err);
 
 // f_signal.c
 void	f_setup_signals(void);
-
-//TODO move to another file
 void set_exit_code_to_130_and_free(t_data *data, char *line);
+
+void beidl();
 
 #endif

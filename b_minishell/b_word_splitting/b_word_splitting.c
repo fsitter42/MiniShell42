@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 13:22:19 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/09 13:14:48 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:07:38 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ static int	process_word_split_loop(t_token *list, char *ifs, int should_split)
 	return (RET_OK);
 }
 
-//TODO da passt iwas nicht, wenn IFS gesetzt wird kann ich die var nicht
-//mit echo anzeigen? 
 static int	init_ifs_and_split(char **ifs, int *should_split, int *ifs_alloc,
 		t_data *data)
 {
@@ -88,10 +86,6 @@ static int	init_ifs_and_split(char **ifs, int *should_split, int *ifs_alloc,
 	return (RET_OK);
 }
 
-/*
- *   TODO give the command back to the user on empty input (now it is
- *   removed so no cmd is created, commandizer fails)
- */
 int	word_split(t_token *list, t_data *data)
 {
 	char	*ifs;

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/09 15:58:21 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 14:27:08 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,6 @@ static char	*b_create_heredoc_path(int id)
 	return (filename);
 }
 
-void set_exit_code_to_130_and_free(t_data *data, char *line)
-{
-	g_signal_received = 0;
-	data->last_exit_code = 130;
-	if (line)
-		free(line);
-}
-
 static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 {
 	char	*line;
@@ -45,7 +37,7 @@ static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 		if (g_signal_received == SIGINT)
 		{
 			set_exit_code_to_130_and_free(data, line);
-			return (-1);
+			return (unlink(filename), -1);
 		}
 		if (!line)
 			break ;

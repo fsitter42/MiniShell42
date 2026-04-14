@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:32:14 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/08 16:22:45 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 14:27:31 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,3 @@ int	append_env_var(char **out, char *word, int *i, t_data *data)
 	*i += 1 + var_name_len - 1;
 	return (RET_OK);
 }
-
-/*
- *  TODO checken ob die funktion noch relevant is, wenn ned löschen
- *  TODO ned getenv sondern eigene funktion die auf data->env_copied extrahiert
- *  ret = f_get_env_val
- */
-/* static char	*extract_var_from_envp(char *var_name)
-{
-	char	*ret;
-
-	ret = getenv(var_name);
-	if (!ret)
-		return (ft_strdup(""));
-	return (ft_strdup(ret));
-} */

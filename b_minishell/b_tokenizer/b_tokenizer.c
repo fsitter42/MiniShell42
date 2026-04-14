@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 19:53:49 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:17:51 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	quote_syntax_check(char *line)
 	return (cur_status);
 }
 
-// TODO this shit is ugly af, refactor!! i as a pointer
 int	word_handler(int i, char *line, t_token *list_start, int *quote_status)
 {
 	int		word_start;
@@ -72,6 +71,7 @@ int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 {
 	int	type;
 
+	type = WORD;
 	if (line[*i] == '|')
 		type = PIPE;
 	else if (line[*i] == '<' && line[*i + 1] == '<')

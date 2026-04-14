@@ -6,27 +6,12 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:57:29 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/09 13:18:26 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:13:04 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
- *	TODO When non-whitespace IFS chars, adjacent delimiters can create
- *	empty fields, like ["a", "", "c"] for a::c.
- *	TODO Explicit  null  arguments  ("" or '') are retained and passed to
- *	commands as empty strings.
-
- * IFS only whitespace:
- * remove implicit null args ("")
- * IFS contains non-whitespace:
- * dont't remove mplicit null args ("")
- * 
- * 
- * IFS=" :"
- * asd  dsa::das
- */
 char	*ft_strchr_array(char *s, char *arr)
 {
 	int		i;
@@ -98,4 +83,9 @@ void	normalize_ifs_chars(char *s, char *ifs)
 			s[i] = ifs[0];
 		i++;
 	}
+}
+
+void beidl()
+{
+	printf("beidl");
 }

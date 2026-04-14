@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 11:51:02 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/14 12:46:45 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 
 	if (f_redir_wrapper(data, cmd) == -1)
 		return (redir_return(data));
+		//return -1;
 	if (f_redir_setup(cmd, saved_fds) == -1)
 		return (data->last_exit_code = 1, -1);
 	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)

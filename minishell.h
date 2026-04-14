@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/14 11:12:10 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/14 11:45:24 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,6 +323,7 @@ void f_setup_cmd_fds(t_data *data, t_cmd *cmd, int *pipe_fd, int prev_fd);
 int	f_pipe_error(t_data *data, t_cmd *cmd, int *prev_fd);
 int	f_fork_error(t_data *data, t_cmd *cmd, int pipe_fd[2], int *prev_fd);
 void f_dup_error(t_data *data, t_cmd *cmd, int *pipe_fd, int prev_fd);
+int f_redir_error(int saved_fds[2], int fd, char *err);
 
 // f_signal.c
 void	f_setup_signals(void);

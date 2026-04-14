@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 10:36:15 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/14 11:44:42 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,38 +52,49 @@ int	f_is_builtin(char *cmd)
 	return (0);
 }
 
-int	f_redir_setup(t_cmd *cmd, int saved_fds[2])
+int f_redir_setup(t_cmd *cmd, int saved_fds[2])
 {
 	saved_fds[0] = dup(STDIN_FILENO);
 	saved_fds[1] = dup(STDOUT_FILENO);
+	if (saved_fds[0] == -1 || saved_fds[1] == -1)
+		return (f_redir_error(saved_fds, -1, "dup"));
 	if (cmd->in_fd != -1)
 	{
 		if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
-			return (-1); // TODOF f_printerror callen DUP2
+			return (f_redir_error(saved_fds, cmd->in_fd, "dup2"));
 		close(cmd->in_fd);
+		cmd->in_fd = -1;
 	}
 	if (cmd->out_fd != -1)
 	{
 		if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
-			return (-1);
+			return (f_redir_error(saved_fds, cmd->out_fd, "dup2"));
 		close(cmd->out_fd);
+		cmd->out_fd = -1;
 	}
 	return (0);
 }
 
-void	f_redir_restore(int saved_fds[2], t_data *data)
+void f_redir_restore(int saved_fds[2], t_data *data)
 {
 	if (dup2(saved_fds[0], STDIN_FILENO) == -1)
 	{
-		data->last_exit_code = 1;
-		return ;
-	}
-	if (dup2(saved_fds[1], STDOUT_FILENO) == -1)
-	{
-		data->last_exit_code = 1;
+		f_print_error("dup2", strerror(errno));
+		close(saved_fds[0]);
+		close(saved_fds[1]);
+		if (data->last_exit_code != 130)
+			data->last_exit_code = 1;
 		return ;
 	}
 	close(saved_fds[0]);
+	if (dup2(saved_fds[1], STDOUT_FILENO) == -1)
+	{
+		f_print_error("dup2", strerror(errno));
+		close(saved_fds[1]);
+		if (data->last_exit_code != 130)
+			data->last_exit_code = 1;
+		return ;
+	}
 	close(saved_fds[1]);
 }
 

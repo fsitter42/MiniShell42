@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 23:12:59 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 11:09:59 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/14 11:45:06 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,16 @@ static void f_close_cmd_fds(t_cmd *cmd)
         close(cmd->out_fd);
         cmd->out_fd = -1;
     }
+}
+
+int f_redir_error(int saved_fds[2], int fd, char *err)
+{
+	f_print_error(err, strerror(errno));
+	if (fd != -1)
+		close(fd);
+	if (saved_fds[0] != -1)
+		close(saved_fds[0]);
+	if (saved_fds[1] != -1)
+		close(saved_fds[1]);
+	return (-1);
 }

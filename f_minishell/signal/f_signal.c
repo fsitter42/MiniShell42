@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 12:05:46 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 14:33:20 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:38:14 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ static int	f_sigint_event_hook(void)
 {
 	if (g_signal_received == SIGINT)
 	{
-		rl_on_new_line();
+		// rl_on_new_line();
+		// rl_replace_line("", 0);
+		// rl_done = 1;
+		ioctl(STDOUT_FILENO, TIOCSTI, "\n");
 		rl_replace_line("", 0);
-		rl_done = 1;
 	}
 	return (0);
 }
@@ -29,7 +31,7 @@ static int	f_sigint_event_hook(void)
 static void	f_handle_sigint(int sig)
 {
 	g_signal_received = sig;
-	write(1, "\n", 1);
+	//write(1, "\n", 1);
 }
 
 void	f_setup_signals(void)

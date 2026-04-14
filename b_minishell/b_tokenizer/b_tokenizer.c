@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:06 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/14 15:17:51 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:55:23 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	everything_except_word_handler(t_token *list_start, char *line, int *i)
 {
 	int	type;
 
-	type = WORD;
+	type = START;
 	if (line[*i] == '|')
 		type = PIPE;
 	else if (line[*i] == '<' && line[*i + 1] == '<')
@@ -101,6 +101,7 @@ int	tokenizer_loop(char *line, t_token *list_start, int *quote_status)
 	while (line[++i])
 	{
 		*quote_status = quote_handler(*quote_status, line[i]);
+		//TODO ft_isspace bauen lol
 		if (isspace(line[i]))
 			continue ;
 		if (not_a_word(line[i], line[i + 1]))

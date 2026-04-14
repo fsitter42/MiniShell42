@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/14 14:25:18 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:49:26 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int	eggsecute(t_data *data)
 		status = f_exec_builtin(data->cmds, data);
 	else
 	{
-		status = f_pipeline_wrapper(data);
+		//status = f_pipeline_wrapper(data);
+		printf("hallo du beidl\n");
+		status = 0;
 	}
 	remove_heredoc_files(data->cmds);
 	return (status);

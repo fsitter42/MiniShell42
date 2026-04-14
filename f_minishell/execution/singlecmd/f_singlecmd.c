@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 11:44:42 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/14 11:51:02 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	f_is_builtin(char *cmd)
 	return (0);
 }
 
-int f_redir_setup(t_cmd *cmd, int saved_fds[2])
+int	f_redir_setup(t_cmd *cmd, int saved_fds[2])
 {
 	saved_fds[0] = dup(STDIN_FILENO);
 	saved_fds[1] = dup(STDOUT_FILENO);
@@ -75,7 +75,7 @@ int f_redir_setup(t_cmd *cmd, int saved_fds[2])
 	return (0);
 }
 
-void f_redir_restore(int saved_fds[2], t_data *data)
+void	f_redir_restore(int saved_fds[2], t_data *data)
 {
 	if (dup2(saved_fds[0], STDIN_FILENO) == -1)
 	{
@@ -98,21 +98,12 @@ void f_redir_restore(int saved_fds[2], t_data *data)
 	close(saved_fds[1]);
 }
 
-static int redir_return (t_data *data)
-{
-	
-	if (data->last_exit_code == 130)
-		return (-1);
-	else 
-		return (data->last_exit_code = 1, -1);
-}
-
 int	f_exec_builtin(t_cmd *cmd, t_data *data)
 {
 	int	saved_fds[2];
 
 	if (f_redir_wrapper(data, cmd) == -1)
-		return redir_return(data);
+		return (redir_return(data));
 	if (f_redir_setup(cmd, saved_fds) == -1)
 		return (data->last_exit_code = 1, -1);
 	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)

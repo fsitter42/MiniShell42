@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 11:12:42 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/14 11:50:45 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static void	f_wait_all(t_data *data)
 	f_setup_signals();
 }
 
-static void f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
+static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);

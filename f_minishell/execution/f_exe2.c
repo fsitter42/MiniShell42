@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/24 15:52:46 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/14 11:49:55 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,12 @@ static int	f_open_outfile(t_data *data, t_cmd *cmd, char *file, int append)
 		return (-1);
 	}
 	return (0);
+}
+
+int	redir_return(t_data *data)
+{
+	if (data->last_exit_code == 130)
+		return (-1);
+	else
+		return (data->last_exit_code = 1, -1);
 }

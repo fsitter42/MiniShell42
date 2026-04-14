@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 14:02:15 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 11:11:46 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/14 11:50:56 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	f_pipeline_wrapper(t_data *data)
 	int		ret;
 	t_cmd	*cmd;
 	int		pipe_fd[2];
-	
+
 	cmd = data->cmds;
 	ret = f_exec_pipeline(data, cmd, pipe_fd);
 	return (ret);
@@ -45,7 +45,7 @@ void	f_close_child(int *pipe_fd, int prev_fd, t_cmd *cmd)
 	}
 }
 
-void f_setup_pipe_fds(t_data *data, t_cmd *cmd, int *prev_fd, int *pipe_fd)
+void	f_setup_pipe_fds(t_data *data, t_cmd *cmd, int *prev_fd, int *pipe_fd)
 {
 	if (*prev_fd != -1)
 	{
@@ -61,7 +61,7 @@ void f_setup_pipe_fds(t_data *data, t_cmd *cmd, int *prev_fd, int *pipe_fd)
 	}
 }
 
-void f_setup_cmd_fds(t_data *data, t_cmd *cmd, int *pipe_fd, int prev_fd)
+void	f_setup_cmd_fds(t_data *data, t_cmd *cmd, int *pipe_fd, int prev_fd)
 {
 	if (cmd->in_fd != -1)
 	{

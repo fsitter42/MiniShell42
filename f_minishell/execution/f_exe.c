@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/09 15:04:08 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:12:42 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,6 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 	if (prev_fd != -1)
 		close(prev_fd);
 	return (f_wait_all(data), data->last_exit_code);
-}
-
-static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	if (cmd->redir_failed)
-		exit(data->last_exit_code);
-	if (prev_fd != -1)
-		dup2(prev_fd, STDIN_FILENO);
-	if (cmd->next)
-		dup2(pipe_fd[1], STDOUT_FILENO);
-	if (cmd->in_fd != -1)
-		(dup2(cmd->in_fd, STDIN_FILENO), close(cmd->in_fd));
-	if (cmd->out_fd != -1)
-		(dup2(cmd->out_fd, STDOUT_FILENO), close(cmd->out_fd));
-	f_close_child(pipe_fd, prev_fd, cmd);
-	if (cmd->is_builtin)
-		f_exec_builtin_child(cmd, data);
-	else
-		f_exec_cmd(data, cmd, data->env->envp_updated);
 }
 
 static void	f_exec_builtin_child(t_cmd *cmd, t_data *data)
@@ -118,24 +97,17 @@ static void	f_wait_all(t_data *data)
 	f_setup_signals();
 }
 
-/*	tests TODO show bert because of kill
-
-int			i = 0; i++;
-
-if	(pipe(pipe_fd) == -1)
-		return (f_pipe_error(data, cmd, &prev_fd));
-	if (i == 1)
-	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		return (f_pipe_error(data, cmd, &prev_fd));
-	}
-
-pid = fork();
-if (pid > 0 && i == 1)
+static void f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 {
-	kill(pid, SIGKILL);
-	waitpid(pid, NULL, 0);
-	return (f_fork_error(data, cmd, pipe_fd, &prev_fd));
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (cmd->redir_failed)
+		exit(data->last_exit_code);
+	f_setup_pipe_fds(data, cmd, &prev_fd, pipe_fd);
+	f_setup_cmd_fds(data, cmd, pipe_fd, prev_fd);
+	f_close_child(pipe_fd, prev_fd, cmd);
+	if (cmd->is_builtin)
+		f_exec_builtin_child(cmd, data);
+	else
+		f_exec_cmd(data, cmd, data->env->envp_updated);
 }
-*/

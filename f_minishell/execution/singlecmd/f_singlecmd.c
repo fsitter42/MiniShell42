@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/08 13:58:18 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 10:36:15 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	f_redir_setup(t_cmd *cmd, int saved_fds[2])
 	if (cmd->in_fd != -1)
 	{
 		if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
-			return (-1);
+			return (-1); // TODOF f_printerror callen DUP2
 		close(cmd->in_fd);
 	}
 	if (cmd->out_fd != -1)

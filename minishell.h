@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/09 16:42:54 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:12:10 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,10 +316,13 @@ int		b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir);
 int		f_pipeline_wrapper(t_data *data);
 void	f_close_pipe(t_cmd *cmd, int pipe_fd[2], int *prev_fd);
 void	f_close_child(int *pipe_fd, int prev_fd, t_cmd *cmd);
+void f_setup_pipe_fds(t_data *data, t_cmd *cmd, int *prev_fd, int *pipe_fd);
+void f_setup_cmd_fds(t_data *data, t_cmd *cmd, int *pipe_fd, int prev_fd);
 
 // f_exec_error.c
 int	f_pipe_error(t_data *data, t_cmd *cmd, int *prev_fd);
 int	f_fork_error(t_data *data, t_cmd *cmd, int pipe_fd[2], int *prev_fd);
+void f_dup_error(t_data *data, t_cmd *cmd, int *pipe_fd, int prev_fd);
 
 // f_signal.c
 void	f_setup_signals(void);

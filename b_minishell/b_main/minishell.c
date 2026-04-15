@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/14 17:53:05 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 12:55:20 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ void	normal_mode(t_data *data)
 	while (1)
 	{
 		errno = 0;
-		//line = readline("minishell$ ");
-		line = get_next_line(STDIN_FILENO);
+		line = readline("minishell$ ");
+		//line = get_next_line(STDIN_FILENO);
 		if (g_signal_received == SIGINT)
 		{
 			set_exit_code_to_130_and_free(data, line);

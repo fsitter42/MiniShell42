@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
+#    (linux)Makefile                                    :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
+#    By: a600 <a600@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/15 16:45:16 by slambert         ###   ########.fr        #
+#    Updated: 2026/04/15 23:28:35 by a600             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,13 +75,13 @@ OBJS        = $(SRC:.c=.o)
 # -- Compiler & Flags --
 CC          = cc
 #CFLAGS      = -Wall -Wextra -Werror -g
-CFLAGS      = -Wall -g -Wextra -Werror
+CFLAGS      = -g
 INCLUDE     = -I .
 
 # -- Bibliotheken --
-#LIBFT_PATH  = b_minishell/libft
+LIBFT_PATH  = b_minishell/libft
 #LIBFT_PATH  = f_includes/Libfs	#//frido libft
-LIBFT_PATH   = b_minishell/stolen_libft
+#LIBFT_PATH   = b_minishell/stolen_libft
 LIBFT       = $(LIBFT_PATH)/libft.a
 
 # WICHTIG: -lreadline muss HINTER den Objekten stehen

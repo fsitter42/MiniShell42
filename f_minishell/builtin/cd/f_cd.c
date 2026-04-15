@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_cd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: a600 <a600@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/07 16:17:23 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/15 23:19:08 by a600             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,49 @@ static void	f_deinit_cd(t_cd *cd)
 	return ;
 }
 
-static int	f_init_cd(t_cd *cd, t_data *data, char **args)
+// static int	f_init_cd(t_cd *cd, t_data *data, char **args)
+// {
+// 	cd->old_pwd = NULL;
+// 	cd->new_pwd = NULL;
+// 	cd->export_str = NULL;
+// 	cd->target = NULL;
+// 	cd->has_target = 0;
+// 	if (args[1] && args[2] != NULL)
+// 		return (f_print_error("cd", "too many arguments"), EXIT_FAILURE);
+// 	if (args[1])
+// 	{
+// 		cd->target = args[1];
+// 		cd->has_target = 1;
+// 	}
+// 	else
+// 		cd->target = f_get_env_val(data->env->envp_lst, "HOME", data);
+// 	if (!cd->target)
+// 		return (EXIT_FAILURE);
+// 	cd->old_pwd = getcwd(NULL, 0);
+// 	if (!cd->old_pwd)
+// 	{
+// 		data->should_exit = 1;
+// 		return (EXIT_FAILURE);
+// 	}
+// 	return (EXIT_SUCCESS);
+// }
+
+static void f_init_init_cd(t_cd *cd)
 {
 	cd->old_pwd = NULL;
 	cd->new_pwd = NULL;
 	cd->export_str = NULL;
 	cd->target = NULL;
 	cd->has_target = 0;
+	return ;
+}
+
+static int	f_init_cd(t_cd *cd, t_data *data, char **args)
+{
+	int val_not_null;
+
+	val_not_null = 0;
+	f_init_init_cd(cd);
 	if (args[1] && args[2] != NULL)
 		return (f_print_error("cd", "too many arguments"), EXIT_FAILURE);
 	if (args[1])
@@ -76,14 +112,15 @@ static int	f_init_cd(t_cd *cd, t_data *data, char **args)
 		cd->has_target = 1;
 	}
 	else
-		cd->target = f_get_env_val(data->env->envp_lst, "HOME", data);
+		cd->target = f_get_env_val_with_check(data->env->envp_lst, "HOME", data, &val_not_null);
 	if (!cd->target)
-		return (EXIT_FAILURE);
-	cd->old_pwd = getcwd(NULL, 0);
-	if (!cd->old_pwd)
 	{
-		data->should_exit = 1;
+		if (val_not_null != 1)
+			printf("HOME not set"); //TODO F checken wie bash es macht wsl fd2 
 		return (EXIT_FAILURE);
 	}
+	cd->old_pwd = getcwd(NULL, 0);
+	if (!cd->old_pwd)
+		return (data->should_exit = 1, EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

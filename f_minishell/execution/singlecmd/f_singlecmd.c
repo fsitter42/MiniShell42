@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: a600 <a600@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/15 17:12:05 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 23:27:36 by a600             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,17 @@ int	f_is_builtin(char *cmd)
 {
 	char	**bi;
 	size_t	i;
-	size_t	len;
 
 	if (!cmd)
 		return (0);
-	len = ft_strlen(cmd);
 	i = 0;
 	bi = (char *[]){"echo", "cd", "pwd", "export", "unset", "env", "exit",
 		NULL};
 	while (bi[i])
 	{
-		//TODO wenn zb "e", "ec" etc. eingegeben wird, wird der input 
-		//fälschlicherweise als builtin erkannt
-		if (ft_strncmp(cmd, bi[i], len) == 0)
+		//SOLLTE PASSEN TODO wenn zb "e", "ec" etc. eingegeben wird, wird der input 
+		//fälschlicherweise als builtin erkannt SOLLTE PASSEN
+		if (ft_strncmp(cmd, bi[i], (ft_strlen(bi[i]) + 1)) == 0)
 			return (1);
 		i++;
 	}

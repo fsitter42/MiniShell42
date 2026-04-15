@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_unset.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: a600 <a600@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:09:18 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/15 17:57:17 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 23:29:27 by a600             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,29 @@ char	*f_get_env_val(t_envl *list, char *key, t_data *data)
 	{
 		if (f_strcmp(key, list->key) == 0)
 		{
-			//TODO do we have to safeguard against NULL here?
+			//FUNKTION DARUNTER WENN DU BRAUCHST TODO do we have to safeguard against NULL here?
 			//can list->val be NULL?
+			ret = ft_strdup(list->val);
+			if (!ret)
+				data->should_exit = 1;
+			return (ret);
+		}
+		list = list->next;
+	}
+	return (NULL);
+}
+
+char	*f_get_env_val_with_check(t_envl *list, char *key, t_data *data, int *val_not_null)
+{
+	char	*ret;
+
+	if (!list || !key)
+		return (NULL);
+	while (list)
+	{
+		if (f_strcmp(key, list->key) == 0)
+		{
+			*val_not_null = 1;
 			ret = ft_strdup(list->val);
 			if (!ret)
 				data->should_exit = 1;

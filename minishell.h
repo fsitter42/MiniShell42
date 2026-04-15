@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: a600 <a600@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 16:48:23 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 23:09:45 by a600             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 # define _POSIX_C_SOURCE 200809L
 # define MAX_ENV_LEN 600
 
+# include <stdio.h>
 # include "./b_minishell/libft/libft.h"
 # include "f_includes/Libfs/libft.h"
 # include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <stdio.h>
 # include <stdlib.h>
 
 // f
@@ -292,6 +292,7 @@ int								f_unset(t_data *data, char **args);
 int								f_lst_del_one(t_envl **list, char *key);
 char							*f_get_env_val(t_envl *list, char *key,
 									t_data *data);
+char	*f_get_env_val_with_check(t_envl *list, char *key, t_data *data, int *val_not_null);
 
 // f_envp_to_lst.c
 t_envl							*f_copy_env(char **envp);

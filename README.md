@@ -22,6 +22,7 @@ not supported:
 
 **Instructions**
 Run make to create an executable file called minishell.
+you can't separate lines by semicolon (;) - e.g. "cd ..;ls".
 
 Minishell can be used in 2 ways.
 1. debug mode: usage with -d flag and ONE additional argument. This argument can hold one or multiple line(s) to be interpreted. If multiple lines should be passed, they have to be separated by a semicolon (;)
@@ -41,5 +42,5 @@ Minishell can be used in 2 ways.
 - AI was used for conceptual explanations and not for writing or generating any code.
 
 TODO:
-- ft_isspace
+- semicolon split in interactive mode
 - check ob atoi overflow (char * größer als long long) safe is

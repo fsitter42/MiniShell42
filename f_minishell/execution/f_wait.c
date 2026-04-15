@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_wait.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 12:22:41 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/15 14:47:20 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/15 16:04:31 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	f_wait_all(t_data *data)
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
+	data->pids->i = 0;
 	while (data->pids->i < data->pids->cc)
 	{
 		if (waitpid(data->pids->cpid[data->pids->i], &status, 0) == -1)

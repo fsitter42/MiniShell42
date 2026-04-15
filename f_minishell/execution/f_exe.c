@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/15 14:49:57 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/15 16:04:01 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd);
 
 int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 {
-	pid_t	pid;
-	int		prev_fd;
+	int	prev_fd;
 
 	prev_fd = -1;
 	while (cmd)
@@ -32,11 +31,12 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 			if (pipe(pipe_fd) == -1)
 				return (f_pipe_error(data, cmd, &prev_fd));
 		}
-		pid = fork();
-		if (pid == -1)
+		data->pids->cpid[data->pids->i] = fork();
+		if (data->pids->cpid[data->pids->i] == -1)
 			return (f_fork_error(data, cmd, pipe_fd, &prev_fd));
-		if (pid == 0)
+		if (data->pids->cpid[data->pids->i] == 0)
 			f_child_process(data, cmd, prev_fd, pipe_fd);
+		data->pids->i++;
 		f_parent_cleanup(cmd, &prev_fd, pipe_fd);
 		cmd = cmd->next;
 	}
@@ -100,7 +100,6 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	data->pids->cpid[data->pids->i] = getpid();
 	data->pids->i++;
 	if (cmd->redir_failed)
 		exit(data->last_exit_code);

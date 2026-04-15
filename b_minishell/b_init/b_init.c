@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_init.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 12:08:25 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/09 16:44:01 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 12:41:58 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,3 +37,14 @@ t_data	*sfbf_init_all(char **envp)
 	data->ret_from_hsl = 0;
 	return (data);
 }
+
+t_pid *f_init_pid(void)
+{
+	t_pid *pids = ft_calloc(sizeof(t_pid), 1);
+	if (!pids)
+		return (NULL);
+	pids->cc = 0;
+	pids->
+}
+
+

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:49:47 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/14 16:57:19 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 13:55:26 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,8 @@ int	not_a_word(char c1, char c2)
 
 int	is_part_of_word(char c, int *quote_status)
 {
-	//TODO eigene isspace
 	if (*quote_status == DEFAULT_Q && (c == '|' || c == '<' || c == '>'
-			|| isspace(c) || c == '\0'))
+			|| ft_isspace(c) || c == '\0'))
 		return (0);
 	return (1);
 }

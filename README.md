@@ -41,3 +41,5 @@ Minishell can be used in 2 ways.
 - AI was used for conceptual explanations and not for writing or generating any code.
 
 TODO:
+- ft_isspace
+- check ob atoi overflow (char * größer als long long) safe is

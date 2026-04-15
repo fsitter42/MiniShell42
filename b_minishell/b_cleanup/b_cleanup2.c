@@ -6,13 +6,11 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 14:05:17 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 13:58:55 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-
 
 void	cleanup_split_result(char **strs, int start)
 {
@@ -46,8 +44,18 @@ void	sfbf_free_all(t_data *data)
 	if (data->strs)
 		free(data->strs);
 	cleanup_command_list(data->cmds);
+	// TODO remove das before abgabe, das is fürs get_next_line funchecken
+	// get_next_line(-1);
 	clear_history();
 	rl_clear_history();
 	rl_free_line_state();
 	free(data);
+}
+
+int	ft_isspace(int c)
+{
+	if (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\v'
+		|| c == '\f')
+		return (1);
+	return (0);
 }

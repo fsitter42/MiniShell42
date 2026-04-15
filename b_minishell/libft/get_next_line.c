@@ -1,209 +1,155 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dabdulla <dabdulla@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/23 19:09:53 by dabdulla          #+#    #+#             */
-/*   Updated: 2026/02/19 12:49:06 by dabdulla         ###   ########.fr       */
+/*   Created: 2025/10/23 17:21:16 by slambert          #+#    #+#             */
+/*   Updated: 2025/10/23 17:21:16 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stdlib.h>
-# include <unistd.h>
+#include "libft.h"
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
+static void	ft_strjoin_and_free(char **read_buffer, char **stash);
+static char	*return_handler(char **stash);
+static char	*free_read_buffer_and_stash(char **read_buffer, char **stash);
+static char	*extract_line_and_remainder(char **line_to_ret, char **stash,
+				char *newline_pointer, char **temp);
 
-char	*free_and_null(char **s)
+char	*get_next_line(int fd)
 {
-	if (*s)
+	static char	*stash;
+	char		*read_buffer;
+	ssize_t		read_bytes;
+
+	if (fd == -1)
 	{
-		free(*s);
-		*s = NULL;
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
+	if (fd < 0 || BUFFER_SIZE < 1)
+		return (NULL);
+	read_buffer = malloc(BUFFER_SIZE + 1);
+	if (!read_buffer)
+		return (NULL);
+	while (1)
+	{
+		read_bytes = read(fd, read_buffer, BUFFER_SIZE);
+		if (read_bytes < 0)
+			return (free_read_buffer_and_stash(&read_buffer, &stash));
+		read_buffer[read_bytes] = '\0';
+		if (read_bytes == 0)
+			break ;
+		ft_strjoin_and_free(&read_buffer, &stash);
+		if (!stash)
+			return (free(read_buffer), NULL);
+		if (ft_strchr(stash, '\n'))
+			break ;
+	}
+	free(read_buffer);
+	return (return_handler(&stash));
+}
+
+static char	*free_read_buffer_and_stash(char **read_buffer, char **stash)
+{
+	free(*read_buffer);
+	if (*stash)
+	{
+		free(*stash);
+		*stash = NULL;
 	}
 	return (NULL);
 }
 
-int	ft_strlen_int(const char *s)
+/* takes the buffer and the stash and stringjoins them.
+this string is stored in the static stash */
+static void	ft_strjoin_and_free(char **read_buffer, char **stash)
 {
-	int	i;
+	char	*temp;
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	temp = ft_strjoin(*stash, *read_buffer);
+	free(*stash);
+	if (!temp)
+	{
+		*stash = NULL;
+		return ;
+	}
+	*stash = temp;
 }
 
-char	*ft_strdup_gnl(char *src)
+/* sets the newline_pointer and calls extract_line_and_remainder
+including safety checks */
+static char	*return_handler(char **stash)
 {
-	int		i;
-	char	*dupsrc;
+	char	*newline_pointer;
+	char	*line_to_ret;
+	char	*temp;
 
-	i = 0;
-	dupsrc = malloc(ft_strlen_int(src) + 1);
-	if (!dupsrc)
+	if (!(*stash) || (*stash)[0] == '\0')
+	{
+		free(*stash);
+		*stash = NULL;
 		return (NULL);
-	while (src[i])
-	{
-		dupsrc[i] = src[i];
-		i++;
 	}
-	dupsrc[i] = '\0';
-	return (dupsrc);
+	newline_pointer = ft_strchr(*stash, '\n');
+	if (!newline_pointer)
+	{
+		line_to_ret = *stash;
+		*stash = NULL;
+		return (line_to_ret);
+	}
+	return (extract_line_and_remainder(&line_to_ret, stash, newline_pointer,
+			&temp));
 }
 
-char	*ft_strjoin_gnl(char *s1, char *s2)
+/* helper function that splits the stash and returns the characters up to \n
+(the line to be returned). the remainder (stuff after \n) will get stored in
+the static variable stash*/
+static char	*extract_line_and_remainder(char **line_to_ret, char **stash,
+		char *newline_pointer, char **temp)
 {
-	int		i;
-	int		j;
-	char	*new_arr;
-
-	i = 0;
-	new_arr = malloc((ft_strlen_int(s1) + ft_strlen_int(s2)) + 1);
-	if (!new_arr)
-		return (free_and_null(&s1), NULL);
-	while (s1[i])
+	*line_to_ret = ft_substr(*stash, 0, (newline_pointer - *stash) + 1);
+	if (!*line_to_ret)
 	{
-		new_arr[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j])
-	{
-		new_arr[i] = s2[j];
-		i++;
-		j++;
-	}
-	if (s1)
-		free(s1);
-	new_arr[i] = '\0';
-	return (new_arr);
-}
-
-static char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t	slen;
-	char	*str;
-	size_t	i;
-
-	if (!s)
+		free(*stash);
+		*stash = NULL;
 		return (NULL);
-	slen = ft_strlen_int(s);
-	if (start >= slen)
-		return (ft_strdup_gnl(""));
-	if (len > slen - start)
-		len = slen - start;
-	str = malloc(len + 1);
-	if (!str)
+	}
+	*temp = ft_substr(*stash, (newline_pointer - *stash) + 1, ft_strlen(*stash)
+			- (newline_pointer - *stash + 1));
+	if (!*temp)
+	{
+		free(*line_to_ret);
+		free(*stash);
+		*stash = NULL;
 		return (NULL);
-	i = 0;
-	while (i < len && s[start + i])
-	{
-		str[i] = s[start + i];
-		i++;
 	}
-	str[len] = '\0';
-	return (str);
+	free(*stash);
+	*stash = *temp;
+	return (*line_to_ret);
 }
-
-char	*join_free(char *s1, char *s2)
+/* 
+int	main(void)
 {
-	char	*tmp;
+	int i = 0;
+	int fd;
+	char *p;
 
-	tmp = ft_strjoin_gnl(s1, s2);
-	if (!tmp)
-		return (NULL);
-	return (tmp);
-}
-
-int	find_new_line(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (*str == '\0')
-		return (0);
-	while (str[i])
+	//fd = open();
+	//fd = open("test.txt", O_RDONLY);
+	fd = open("gnl_edge_cases.txt", O_RDONLY);
+	//fd = open("empty.txt", O_RDONLY);
+	//fd = open("newline.txt", O_RDONLY);
+	while (1)
 	{
-		if (str[i] == '\n')
-			return (i + 1);
-		i++;
-	}
-	return (i);
-}
-
-int	is_newline(char *s)
-{
-	int	i;
-
-	i = 0;
-	if (!s)
-		return (1);
-	while (s[i])
-	{
-		if (s[i] == '\n')
-			return (i + 1);
-		i++;
-	}
-	return (0);
-}
-
-char	*read_loop(int fd, char *file)
-{
-	char	*buffer;
-	int		r;
-
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
-		return (free_and_null(&file));
-	if (!file)
-	{
-		file = malloc(1);
-		if (!file)
-			return (free_and_null(&buffer));
-		file[0] = '\0';
-	}
-	r = 1;
-	while (r > 0 && !is_newline(file))
-	{
-		r = read(fd, buffer, BUFFER_SIZE);
-		if (r <= 0)
+		p = get_next_line(fd);
+		if (!p)
 			break ;
-		buffer[r] = '\0';
-		file = join_free(file, buffer);
-		if (!file)
-			return (free_and_null(&buffer), free_and_null(&file));
+		printf("Line %d: '%s'", i + 1, p);
+		free(p);
+		i++;
 	}
-	return (free_and_null(&buffer), file);
-}
-
-char	*get_next_line(int fd)
-{
-	static char	*file;
-	char		*tmp;
-	char		*str;
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (free_and_null(&file));
-	file = read_loop(fd, file);
-	if (!file)
-		return (NULL);
-	if (*file == '\0')
-		return (free_and_null(&file));
-	tmp = ft_substr(file, 0, find_new_line(file));
-	if (!tmp)
-		return (free_and_null(&file), free_and_null(&tmp));
-	str = ft_substr(file, find_new_line(tmp), ft_strlen_int(file)
-			- ft_strlen_int(tmp));
-	free_and_null(&file);
-	if (!str)
-		return (free_and_null(&tmp));
-	file = ft_strdup_gnl(str);
-	if (!file)
-		return (free_and_null(&str), free_and_null(&file), free_and_null(&tmp));
-	free_and_null(&str);
-	return (tmp);
-}
+} */

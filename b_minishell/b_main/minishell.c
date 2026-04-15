@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 12:55:20 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/15 15:38:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 		data->e_has_been_set = 1;
 		cleanup_token_list(token_list);
 	}
-	if (ret == 1 && data->should_exit == 1)
+	if (data->should_exit == 1)
 		return (ERROR_HARD);
 	cleanup_command_list(cmd_list);
 	data->cmds = NULL;
@@ -111,6 +111,7 @@ static int add_to_history_and_hsl(char *line, t_data *data)
 
 
 /* this is the default mode in where the users enters stuff
+ * TODO wenn ";" in einer line, simulation mehrerer pipes
  */
 void	normal_mode(t_data *data)
 {

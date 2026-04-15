@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 18:09:04 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 12:51:49 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	f_is_builtin(char *cmd)
 		NULL};
 	while (bi[i])
 	{
+		//TODO wenn zb "e", "ec" etc. eingegeben wird, wird der input 
+		//fälschlicherweise als builtin erkannt
 		if (ft_strncmp(cmd, bi[i], len) == 0)
 			return (1);
 		i++;
@@ -121,7 +123,7 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
 		data->last_exit_code = f_env(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
-		b_exit(data, cmd, (int *)&saved_fds);
+		b_exit(data, cmd);
 	f_redir_restore(saved_fds, data);
 	return (data->last_exit_code);
 }

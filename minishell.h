@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/14 15:12:49 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 12:32:21 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,14 @@ typedef struct s_cmd	t_cmd;
 typedef struct s_data	t_data;
 typedef struct s_redir	t_redir;
 typedef struct s_cd t_cd;
+typedef struct s_pid t_pid;
+
+typedef struct s_pid 
+{
+	pid_t				*cpid; //new initialize and free
+	int					cc;
+	int					i;
+}						t_pid;
 
 // structs
 typedef struct s_envl
@@ -90,6 +98,7 @@ typedef struct s_data
 	int					e_has_been_set;
 	char				**strs;
 	int					ret_from_hsl;
+	t_pid				*pids;
 }						t_data;
 
 // s

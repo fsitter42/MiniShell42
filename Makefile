@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
+#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/14 15:13:44 by slambert         ###   ########.fr        #
+#    Updated: 2026/04/15 14:50:45 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,8 @@ SRC_EXE     = f_minishell/execution/f_exe.c \
               f_minishell/execution/singlecmd/f_singlecmd.c \
               f_minishell/execution/b_heredoc.c \
               f_minishell/execution/f_exec_wrapper.c \
-              f_minishell/execution/f_exec_error.c
+              f_minishell/execution/f_exec_error.c \
+              f_minishell/execution/f_wait.c
               
 
 SRC_SIG     = f_minishell/signal/f_signal.c

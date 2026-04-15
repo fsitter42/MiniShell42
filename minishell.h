@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 12:32:21 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/15 14:48:22 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,6 @@ typedef struct s_data	t_data;
 typedef struct s_redir	t_redir;
 typedef struct s_cd t_cd;
 typedef struct s_pid t_pid;
-
-typedef struct s_pid 
-{
-	pid_t				*cpid; //new initialize and free
-	int					cc;
-	int					i;
-}						t_pid;
 
 // structs
 typedef struct s_envl
@@ -120,6 +113,13 @@ typedef struct s_cd
 	char	*target;
     int     has_target;
 }			t_cd;
+
+typedef struct s_pid 
+{
+	pid_t				*cpid; //new initialize and free
+	int					cc;
+	int					i;
+}						t_pid;
 
 enum					e_token_types
 {
@@ -338,6 +338,10 @@ int f_redir_error(int saved_fds[2], int fd, char *err);
 // f_signal.c
 void	f_setup_signals(void);
 void set_exit_code_to_130_and_free(t_data *data, char *line);
+
+// f_wait.c
+void	f_collect_status(t_data *data, int status);
+void	f_wait_all(t_data *data);
 
 void beidl();
 

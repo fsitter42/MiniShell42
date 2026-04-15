@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 11:50:45 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/15 14:49:57 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd,
 				int *pipe_fd);
 static void	f_exec_builtin_child(t_cmd *cmd, t_data *data);
-static void	f_wait_all(t_data *data);
 static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd);
 
 int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
@@ -71,36 +70,38 @@ static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd)
 	}
 }
 
-static void	f_wait_all(t_data *data)
-{
-	int	status;
-	int	sig;
+// static void	f_wait_all(t_data *data)
+// {
+// 	int	status;
+// 	int	sig;
 
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	while (waitpid(-1, &status, 0) > 0)
-	{
-		if (WIFEXITED(status))
-			data->last_exit_code = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			sig = WTERMSIG(status);
-			if (sig == SIGQUIT)
-				ft_putendl_fd("Quit (core dumped)", 2);
-			else if (sig == SIGSEGV)
-				ft_putendl_fd("Segmentation fault (core dumped)", 2);
-			else if (sig == SIGINT)
-				write(1, "\n", 1);
-			data->last_exit_code = 128 + sig;
-		}
-	}
-	f_setup_signals();
-}
+// 	signal(SIGINT, SIG_IGN);
+// 	signal(SIGQUIT, SIG_IGN);
+// 	while (waitpid(-1, &status, 0) > 0)
+// 	{
+// 		if (WIFEXITED(status))
+// 			data->last_exit_code = WEXITSTATUS(status);
+// 		else if (WIFSIGNALED(status))
+// 		{
+// 			sig = WTERMSIG(status);
+// 			if (sig == SIGQUIT)
+// 				ft_putendl_fd("Quit (core dumped)", 2);
+// 			else if (sig == SIGSEGV)
+// 				ft_putendl_fd("Segmentation fault (core dumped)", 2);
+// 			else if (sig == SIGINT)
+// 				write(1, "\n", 1);
+// 			data->last_exit_code = 128 + sig;
+// 		}
+// 	}
+// 	f_setup_signals();
+// }
 
 static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	data->pids->cpid[data->pids->i] = getpid();
+	data->pids->i++;
 	if (cmd->redir_failed)
 		exit(data->last_exit_code);
 	f_setup_pipe_fds(data, cmd, &prev_fd, pipe_fd);

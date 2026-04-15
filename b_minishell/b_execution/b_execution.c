@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 13:03:17 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/15 14:52:19 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static t_pid	*f_init_pid(t_data *data);
 static int		f_command_count(t_data *data);
+static t_pid	*f_free_pids(t_data *data);
 
 void	remove_heredoc_files(t_cmd *cmds)
 {
@@ -46,12 +47,14 @@ int	eggsecute(t_data *data)
 		if (!data->pids)
 			status = 1;
 		else
-			// status = f_pipeline_wrapper(data);
-		printf("%i\n", data->pids->i);
-		status = 0;
+		{
+			status = f_pipeline_wrapper(data);
+			// printf("%i\n", data->pids->cc);
+			// status = 0;
+		}
 	}
 	if (data->pids)
-		f_free_pids(data);
+		data->pids = f_free_pids(data);
 	remove_heredoc_files(data->cmds);
 	return (status);
 }
@@ -63,9 +66,16 @@ static t_pid	*f_init_pid(t_data *data)
 	pids = ft_calloc(sizeof(t_pid), 1);
 	if (!pids)
 		return (NULL);
-	pids->cc = 0;
-	pids->cc = f_command_count(data);
 	pids->i = 0;
+	pids->cc = 0;
+	pids->cpid = NULL;
+	pids->cc = f_command_count(data);
+	if (pids->cc > 0)
+	{
+		pids->cpid = ft_calloc(sizeof(pid_t), pids->cc);
+		if (!pids->cpid)
+			free(pids);
+	}
 	return (pids);
 }
 
@@ -84,8 +94,16 @@ static int	f_command_count(t_data *data)
 	return (cc);
 }
 
-t_pid *f_free_pids(data)
+static t_pid	*f_free_pids(t_data *data)
 {
-	//built this
+	int	i;
+
+	i = 0;
+	if (!data)
+		return (NULL);
+	if (data->pids && data->pids->cpid)
+		free(data->pids->cpid);
+	if (data->pids)
+		free(data->pids);	
 	return (NULL);
 }

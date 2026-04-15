@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:09:18 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/31 22:54:51 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 17:57:17 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ char	*f_get_env_val(t_envl *list, char *key, t_data *data)
 	{
 		if (f_strcmp(key, list->key) == 0)
 		{
+			//TODO do we have to safeguard against NULL here?
+			//can list->val be NULL?
 			ret = ft_strdup(list->val);
 			if (!ret)
 				data->should_exit = 1;

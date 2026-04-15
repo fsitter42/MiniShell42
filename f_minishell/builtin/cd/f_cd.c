@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_cd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a600 <a600@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/15 23:19:08 by a600             ###   ########.fr       */
+/*   Updated: 2026/04/16 00:13:54 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static int	f_init_cd(t_cd *cd, t_data *data, char **args)
 	if (!cd->target)
 	{
 		if (val_not_null != 1)
-			printf("HOME not set"); //TODO F checken wie bash es macht wsl fd2 
+			f_print_error("cd", "HOME not set"); //TODO F checken wie bash es macht wsl fd2 
 		return (EXIT_FAILURE);
 	}
 	cd->old_pwd = getcwd(NULL, 0);

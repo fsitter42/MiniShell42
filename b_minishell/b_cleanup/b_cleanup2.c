@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 13:58:55 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 16:48:08 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,11 @@ int	ft_isspace(int c)
 		|| c == '\f')
 		return (1);
 	return (0);
+}
+
+void	ft_putendl_fd_no_nl(char *s, int fd)
+{
+	if (!s)
+		return ;
+	write(fd, s, ft_strlen(s));
 }

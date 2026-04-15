@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 15:38:14 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 16:48:23 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@
 
 extern volatile sig_atomic_t	g_signal_received;
 
-typedef struct s_envl	t_envl;
-typedef struct s_envp	t_envp;
-typedef struct s_cmd	t_cmd;
-typedef struct s_data	t_data;
-typedef struct s_redir	t_redir;
-typedef struct s_cd t_cd;
-typedef struct s_pid t_pid;
+typedef struct s_envl			t_envl;
+typedef struct s_envp			t_envp;
+typedef struct s_cmd			t_cmd;
+typedef struct s_data			t_data;
+typedef struct s_redir			t_redir;
+typedef struct s_cd				t_cd;
+typedef struct s_pid			t_pid;
 
 // structs
 typedef struct s_envl
@@ -84,15 +84,15 @@ typedef struct s_cmd
 
 typedef struct s_data
 {
-	t_cmd				*cmds;
-	t_envp				*env;
-	int					last_exit_code;
-	int					should_exit;
-	int					e_has_been_set;
-	char				**strs;
-	int					ret_from_hsl;
-	t_pid				*pids;
-}						t_data;
+	t_cmd						*cmds;
+	t_envp						*env;
+	int							last_exit_code;
+	int							should_exit;
+	int							e_has_been_set;
+	char						**strs;
+	int							ret_from_hsl;
+	t_pid						*pids;
+}								t_data;
 
 // s
 
@@ -114,14 +114,14 @@ typedef struct s_cd
 	int							has_target;
 }								t_cd;
 
-typedef struct s_pid 
+typedef struct s_pid
 {
-	pid_t				*cpid; //new initialize and free
-	int					cc;
-	int					i;
-}						t_pid;
+	pid_t *cpid; // new initialize and free
+	int							cc;
+	int							i;
+}								t_pid;
 
-enum					e_token_types
+enum							e_token_types
 {
 	START = 0,
 	WORD,
@@ -198,6 +198,7 @@ void							cleanup_t_data_list(t_data *data);
 void							cleanup_split_result(char **strs, int start);
 void							sfbf_free_all(t_data *data);
 int								ft_isspace(int c);
+void							ft_putendl_fd_no_nl(char *s, int fd);
 
 // tokenizer
 void							init_token(t_token *token);
@@ -369,9 +370,9 @@ void							set_exit_code_to_130_and_free(t_data *data,
 									char *line);
 
 // f_wait.c
-void	f_collect_status(t_data *data, int status);
-void	f_wait_all(t_data *data);
+void							f_collect_status(t_data *data, int status);
+void							f_wait_all(t_data *data);
 
-void beidl();
+void							beidl(void);
 
 #endif

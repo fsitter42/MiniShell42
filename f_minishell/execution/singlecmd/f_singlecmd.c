@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/15 12:51:49 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/15 17:12:05 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,13 @@ int	f_is_builtin(char *cmd)
 	return (0);
 }
 
+//TODO F blabalbla
+//echo -ne "echo 'Hello World'\n" | env LD_PRELOAD="$HOME/42_minishell_tester/utils/libintercept/libintercept.so" valgrind --leak-check=full --show-leak-kinds=all --suppressions="$HOME/42_minishell_tester/utils/minishell.supp" --trace-children=yes --track-fds=all -s ./minishell
+
 int	f_redir_setup(t_cmd *cmd, int saved_fds[2])
 {
+	// if (cmd->in_fd == -1 && cmd->out_fd == -1)
+	// 	return 0;
 	saved_fds[0] = dup(STDIN_FILENO);
 	//TODO if fail exit here, else do 2nd dup
 	saved_fds[1] = dup(STDOUT_FILENO);

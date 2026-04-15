@@ -6,7 +6,7 @@
 /*   By: a600 <a600@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/15 23:27:36 by a600             ###   ########.fr       */
+/*   Updated: 2026/04/15 23:36:22 by a600             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ int	f_is_builtin(char *cmd)
 
 int	f_redir_setup(t_cmd *cmd, int saved_fds[2])
 {
-	// if (cmd->in_fd == -1 && cmd->out_fd == -1)
-	// 	return 0;
+
 	saved_fds[0] = dup(STDIN_FILENO);
-	//TODO if fail exit here, else do 2nd dup
+	if (saved_fds[0] == -1)
+    	return (f_redir_error(saved_fds, -1, "dup"));
 	saved_fds[1] = dup(STDOUT_FILENO);
-	if (saved_fds[0] == -1 || saved_fds[1] == -1)
-		return (f_redir_error(saved_fds, -1, "dup"));
+	if (saved_fds[1] == -1)
+    	return (f_redir_error(saved_fds, -1, "dup"));
 	if (cmd->in_fd != -1)
 	{
 		if (dup2(cmd->in_fd, STDIN_FILENO) == -1)

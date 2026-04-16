@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   b_cleanup2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 16:48:08 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/16 11:15:46 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+static void	f_close_duped_fds(void);
 
 void	cleanup_split_result(char **strs, int start)
 {
@@ -35,6 +37,8 @@ void	sfbf_free_all(t_data *data)
 	if (data->env->envp_updated)
 		f_free_envp(data->env->envp_updated);
 	free(data->env);
+	if (data->pids)
+		data->pids = f_free_pids(data);
 	i = 0;
 	while (data->strs && data->strs[i])
 	{
@@ -50,6 +54,7 @@ void	sfbf_free_all(t_data *data)
 	rl_clear_history();
 	rl_free_line_state();
 	free(data);
+	f_close_duped_fds();
 }
 
 int	ft_isspace(int c)
@@ -65,4 +70,14 @@ void	ft_putendl_fd_no_nl(char *s, int fd)
 	if (!s)
 		return ;
 	write(fd, s, ft_strlen(s));
+}
+
+static void	f_close_duped_fds(void)
+{
+	struct stat unoreversewithdup;
+
+	if (fstat(0, &unoreversewithdup) == 0)
+		close(0);
+	if (fstat(1, &unoreversewithdup) == 0)
+		close(1);
 }

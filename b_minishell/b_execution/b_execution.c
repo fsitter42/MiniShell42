@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 15:39:44 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/16 10:47:03 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_pid	*f_init_pid(t_data *data);
 static int		f_command_count(t_data *data);
-static t_pid	*f_free_pids(t_data *data);
+t_pid	*f_free_pids(t_data *data);
 
 void	remove_heredoc_files(t_cmd *cmds)
 {
@@ -22,9 +22,8 @@ void	remove_heredoc_files(t_cmd *cmds)
 
 	redir = NULL;
 	while (cmds)
-	{
-		if (cmds->redirs)
-			redir = cmds->redirs;
+	{	
+		redir = cmds->redirs;
 		while (redir)
 		{
 			if (redir->type == HEREDOC && redir->file)
@@ -74,7 +73,10 @@ static t_pid	*f_init_pid(t_data *data)
 	{
 		pids->cpid = ft_calloc(sizeof(pid_t), pids->cc);
 		if (!pids->cpid)
+		{
 			free(pids);
+			return (NULL);
+		}
 	}
 	return (pids);
 }
@@ -94,7 +96,7 @@ static int	f_command_count(t_data *data)
 	return (cc);
 }
 
-static t_pid	*f_free_pids(t_data *data)
+t_pid	*f_free_pids(t_data *data)
 {
 	int	i;
 

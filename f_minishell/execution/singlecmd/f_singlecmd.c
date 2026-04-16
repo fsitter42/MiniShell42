@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a600 <a600@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/15 23:36:22 by a600             ###   ########.fr       */
+/*   Updated: 2026/04/16 11:18:57 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,10 @@ void	f_redir_restore(int saved_fds[2], t_data *data)
 
 int	f_exec_builtin(t_cmd *cmd, t_data *data)
 {
-	int	saved_fds[2];
+	int	saved_fds[2] = {-1, -1};
 
 	if (f_redir_wrapper(data, cmd) == -1)
 		return (redir_return(data));
-		//return -1;
 	if (f_redir_setup(cmd, saved_fds) == -1)
 		return (data->last_exit_code = 1, -1);
 	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
@@ -126,7 +125,11 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
 		data->last_exit_code = f_env(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
+	{
+		f_redir_restore(saved_fds, data);
 		b_exit(data, cmd);
+		return (data->last_exit_code);
+	}
 	f_redir_restore(saved_fds, data);
 	return (data->last_exit_code);
 }

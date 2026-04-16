@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a600 <a600@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 23:09:45 by a600             ###   ########.fr       */
+/*   Updated: 2026/04/16 10:44:40 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,7 @@ int								replace_first_split_word(t_token *list,
 
 // execution
 int								eggsecute(t_data *data);
+t_pid	*f_free_pids(t_data *data);
 
 // builtins
 void							b_exit(t_data *data, t_cmd *cmd);

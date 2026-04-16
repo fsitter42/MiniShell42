@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/16 10:43:18 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/16 12:49:40 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 	prev_fd = -1;
 	while (cmd)
 	{
-		if (f_redir_wrapper(data, cmd) == -1)
-			cmd->redir_failed = 1;
 		if (cmd->next)
 		{
 			if (pipe(pipe_fd) == -1)
@@ -101,9 +99,14 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	data->pids->i++;
+	if (f_redir_wrapper(data, cmd) == -1)
+			cmd->redir_failed = 1;
 	if (cmd->redir_failed)
+	{
+		sfbf_free_all(data);
 		exit(data->last_exit_code);
-	f_setup_pipe_fds(data, cmd, &prev_fd, pipe_fd);
+	}
+		f_setup_pipe_fds(data, cmd, &prev_fd, pipe_fd);
 	f_setup_cmd_fds(data, cmd, pipe_fd, prev_fd);
 	f_close_child(pipe_fd, prev_fd, cmd);
 	if (cmd->is_builtin)

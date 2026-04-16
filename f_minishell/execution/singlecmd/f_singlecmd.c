@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/16 14:06:51 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/16 23:35:35 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,11 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 		data->last_exit_code = f_env(data, cmd->args);
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
 	{
-		f_redir_restore(saved_fds, data);
-		status = data->last_exit_code;
-		sfbf_free_all(data);
-		exit(status);
+		//f_redir_restore(saved_fds, data);
+		//status = data->last_exit_code;
+		//sfbf_free_all(data);
+		//exit(status);
+		b_exit(data, cmd);
 	}
 	f_redir_restore(saved_fds, data);
 	return (data->last_exit_code);

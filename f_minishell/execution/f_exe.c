@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/16 12:49:40 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/16 12:55:28 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,15 @@ static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd)
 
 static void	f_child_process(t_data *data, t_cmd *cmd, int prev_fd, int *pipe_fd)
 {
+	int status = 0;
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	data->pids->i++;
 	if (f_redir_wrapper(data, cmd) == -1)
-			cmd->redir_failed = 1;
-	if (cmd->redir_failed)
 	{
+		status = data->last_exit_code;
 		sfbf_free_all(data);
-		exit(data->last_exit_code);
+		exit(status);
 	}
 		f_setup_pipe_fds(data, cmd, &prev_fd, pipe_fd);
 	f_setup_cmd_fds(data, cmd, pipe_fd, prev_fd);

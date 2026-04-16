@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 23:12:59 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 11:50:23 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/16 14:08:01 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,14 @@ int	f_redir_error(int saved_fds[2], int fd, char *err)
 	if (fd != -1)
 		close(fd);
 	if (saved_fds[0] != -1)
+	{
 		close(saved_fds[0]);
+		saved_fds[0] = -1;
+	}
 	if (saved_fds[1] != -1)
+	{
 		close(saved_fds[1]);
+		saved_fds[1] = -1;
+	}
 	return (-1);
 }

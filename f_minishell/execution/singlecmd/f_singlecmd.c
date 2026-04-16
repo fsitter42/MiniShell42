@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/16 11:18:57 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/16 14:06:51 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	f_redir_restore(int saved_fds[2], t_data *data)
 int	f_exec_builtin(t_cmd *cmd, t_data *data)
 {
 	int	saved_fds[2] = {-1, -1};
+	int status;
 
 	if (f_redir_wrapper(data, cmd) == -1)
 		return (redir_return(data));
@@ -127,8 +128,9 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
 	{
 		f_redir_restore(saved_fds, data);
-		b_exit(data, cmd);
-		return (data->last_exit_code);
+		status = data->last_exit_code;
+		sfbf_free_all(data);
+		exit(status);
 	}
 	f_redir_restore(saved_fds, data);
 	return (data->last_exit_code);

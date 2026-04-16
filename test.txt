@@ -16,7 +16,7 @@ exit $EXIT_CODE
 
 done:
 
-echo, env, unset, pwd, pipelines
+echo, env, unset, pwd, pipelines, correction
 
 cd -> errormessage zeigt conntext und minishelldavor könnte man ändern... also extra printerror
 
@@ -26,10 +26,9 @@ export error message
 exit error message
 
 missing:
+redirs
+pathcheck
 
-correction
 scmds
 variables
 gowild
-redirs
-pathcheck

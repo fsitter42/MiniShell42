@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/16 17:33:25 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/16 23:45:30 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	sfbf_free_all(t_data *data)
 	rl_clear_history();
 	rl_free_line_state();
 	free(data);
-	f_close_duped_fds();
+	f_close_duped_fds(); //comment out after tests
 }
 
 int	ft_isspace(int c)

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 14:02:15 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 11:50:56 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/17 00:20:02 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ void	f_close_child(int *pipe_fd, int prev_fd, t_cmd *cmd)
 		close(prev_fd);
 	if (cmd->next)
 	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
+		if (pipe_fd[0] != -1)
+			close(pipe_fd[0]);
+		if (pipe_fd[1] != -1)
+			close(pipe_fd[1]);
 	}
 }
 
@@ -51,12 +53,14 @@ void	f_setup_pipe_fds(t_data *data, t_cmd *cmd, int *prev_fd, int *pipe_fd)
 	{
 		if (dup2(*prev_fd, STDIN_FILENO) == -1)
 			f_dup_error(data, cmd, pipe_fd, *prev_fd);
+		close(*prev_fd);
 		*prev_fd = -1;
 	}
 	if (cmd->next)
 	{
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
 			f_dup_error(data, cmd, pipe_fd, *prev_fd);
+		close(pipe_fd[1]);
 		pipe_fd[1] = -1;
 	}
 }

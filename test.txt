@@ -25,10 +25,13 @@ export error message
 
 exit error message
 
-missing:
-redirs
-pathcheck
+redirs multiple lines in heredoc, echo test |  <<lala
+pathcheck multiple lines
 
-scmds
-variables
+scmds "." edgecase errorcode 2 126, . 
+
+variables export X="  A  B  ";/bin/echo $?$X'2' multiple spaces become one
+
+missing:
+
 gowild

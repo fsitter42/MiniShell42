@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/16 10:47:03 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/18 01:07:27 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	remove_heredoc_files(t_cmd *cmds)
 	redir = NULL;
 	while (cmds)
 	{	
-		redir = cmds->redirs;
+		if (cmds->redirs)
+			redir = cmds->redirs;
 		while (redir)
 		{
 			if (redir->type == HEREDOC && redir->file)

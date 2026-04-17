@@ -18,31 +18,41 @@ done:
 
 echo, env, unset, pwd, pipelines, correction, compare_parsing, syntax_errors
 
-cd -> errormessage zeigt conntext und minishelldavor könnte man ändern... also extra printerror, cd ..$PWD
+cd -> errormessage zeigt conntext und minishelldavor könnte man ändern... also extra printerror
 
 export error message
 
 
 exit error message
 
-redirs multiple lines in heredoc, echo test |  <<lala
-pathcheck multiple lines
 
-scmds "." edgecase errorcode 2 126, . , ..
 
 variables export X="  A  B  ";/bin/echo $?$X'2' multiple spaces become one
 
 gowild multiple lines
 
->echo>
+
 parsing hell
-echo segfault <"<<<"<<amazing
+
 
 
 expansion
-> $notexists echo "haha"
-
-                         
+                     
  
+----------------------------------------
+WICHTIG
+
+- scmds "." edgecase errorcode 2 126, . , ..
 
 
+- cd ..$PWD
+
+- echo segfault <"<<<"<<amazing
+- >echo>
+- export X="  A  B  ";/bin/echo $?$X'2'
+- > $notexists echo "haha"  
+- exit blvalblablabl
+
+include in readme das ma des ned ham
+- redirs multiple lines in heredoc, echo test |  <<lala
+- pathcheck multiple lines

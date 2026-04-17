@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 23:12:59 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/16 14:08:01 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/18 01:26:18 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	f_fork_error(t_data *data, t_cmd *cmd, int pipe_fd[2], int *prev_fd)
 	return (-1);
 }
 
-void	f_dup_error(t_data *data, t_cmd *cmd, int *pipe_fd, int prev_fd)
+void	f_dup_error(t_data *data, t_cmd *cmd, int *pipe_fd, int *prev_fd)
 {
 	f_print_error("dup2", strerror(errno));
 	f_close_cmd_fds(cmd);

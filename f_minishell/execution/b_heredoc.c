@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 14:27:08 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 15:31:32 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ static char	*b_create_heredoc_path(int id)
 		return (free(id_as_string), NULL);
 	free(id_as_string);
 	return (filename);
+}
+
+static int	exp_and_split_heredoc_line(char **line)
+{
+	
 }
 
 static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
@@ -47,6 +52,11 @@ static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 			free(line);
 			break ;
 		}
+		// TODO line muss hier expanded und gesplittet werden
+		// problem: prototyp schaut so aus: int	expand_single_word(t_token *list_elem, t_data *data)
+		// (müssen wir hier wenn wir -1 returnen line freen? ja oder?)
+		if (exp_and_split_heredoc_line(&line) == -1)
+			return (-1);
 		if (write(fd, line, ft_strlen(line)) == -1)
 			return (-1);
 		if (write(fd, "\n", 1) == -1)

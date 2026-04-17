@@ -57,3 +57,5 @@ WICHTIG
 include in readme das ma des ned ham
 - redirs multiple lines in heredoc, echo test |  <<lala
 - pathcheck multiple lines
+- heredoc expansion
+- heredoc files werden nicht gelöscht

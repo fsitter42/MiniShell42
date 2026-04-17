@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_pathfinder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 11:59:42 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/14 15:35:34 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 23:24:52 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	f_validate_path(char *path, int *err, int *err2)
 			*err = 127;
 		return ;
 	}
-	//TODO dürfen wir das makro verwenden? wenn nicht -> stat
 	if (stat(path, &s) == 0 && S_ISDIR(s.st_mode))
 	{
 		*err = 126;

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/16 23:35:35 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/17 23:51:51 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,16 @@ int	f_is_builtin(char *cmd)
 	if (!cmd)
 		return (0);
 	i = 0;
-	bi = (char *[]){"echo", "cd", "pwd", "export", "unset", "env", "exit",
+	bi = (char *[]){"echo", "cd", "pwd", "export", "unset", "env", "exit", ".",
 		NULL};
 	while (bi[i])
 	{
-		//SOLLTE PASSEN TODO wenn zb "e", "ec" etc. eingegeben wird, wird der input 
-		//fälschlicherweise als builtin erkannt SOLLTE PASSEN
 		if (ft_strncmp(cmd, bi[i], (ft_strlen(bi[i]) + 1)) == 0)
 			return (1);
 		i++;
 	}
 	return (0);
 }
-
-//TODO F blabalbla
-//echo -ne "echo 'Hello World'\n" | env LD_PRELOAD="$HOME/42_minishell_tester/utils/libintercept/libintercept.so" valgrind --leak-check=full --show-leak-kinds=all --suppressions="$HOME/42_minishell_tester/utils/minishell.supp" --trace-children=yes --track-fds=all -s ./minishell
 
 int	f_redir_setup(t_cmd *cmd, int saved_fds[2])
 {
@@ -104,35 +99,48 @@ void	f_redir_restore(int saved_fds[2], t_data *data)
 	close(saved_fds[1]);
 }
 
+// int	f_exec_builtin(t_cmd *cmd, t_data *data)
+// {
+// 	int	saved_fds[2] = {-1, -1};
+// 	int status;
+
+// 	if (f_redir_wrapper(data, cmd) == -1)
+// 		return (redir_return(data));
+// 	if (f_redir_setup(cmd, saved_fds) == -1)
+// 		return (data->last_exit_code = 1, -1);
+// 	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
+// 		data->last_exit_code = f_echo(data, cmd->args);
+// 	else if (ft_strncmp(cmd->cmd, "cd", 3) == 0)
+// 		data->last_exit_code = f_cd(data, cmd->args);
+// 	else if (ft_strncmp(cmd->cmd, "pwd", 4) == 0)
+// 		data->last_exit_code = f_pwd(data);
+// 	else if (ft_strncmp(cmd->cmd, "export", 7) == 0)
+// 		data->last_exit_code = f_export(data, cmd->args);
+// 	else if (ft_strncmp(cmd->cmd, "unset", 6) == 0)
+// 		data->last_exit_code = f_unset(data, cmd->args);
+// 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
+// 		data->last_exit_code = f_env(data, cmd->args);
+// 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
+// 		b_exit(data, cmd);
+// 	else if (ft_strncmp(cmd->cmd, ".", 2) == 0)
+// 		f_print_dot_error(data, cmd->args);
+// 	f_redir_restore(saved_fds, data);
+// 	return (data->last_exit_code);
+// }
+
 int	f_exec_builtin(t_cmd *cmd, t_data *data)
 {
-	int	saved_fds[2] = {-1, -1};
-	int status;
+	int	saved_fds[2];
+	int	status;
+
+	saved_fds[0] = -1;
+	saved_fds[1] = -1;
 
 	if (f_redir_wrapper(data, cmd) == -1)
 		return (redir_return(data));
 	if (f_redir_setup(cmd, saved_fds) == -1)
 		return (data->last_exit_code = 1, -1);
-	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
-		data->last_exit_code = f_echo(data, cmd->args);
-	else if (ft_strncmp(cmd->cmd, "cd", 3) == 0)
-		data->last_exit_code = f_cd(data, cmd->args);
-	else if (ft_strncmp(cmd->cmd, "pwd", 4) == 0)
-		data->last_exit_code = f_pwd(data);
-	else if (ft_strncmp(cmd->cmd, "export", 7) == 0)
-		data->last_exit_code = f_export(data, cmd->args);
-	else if (ft_strncmp(cmd->cmd, "unset", 6) == 0)
-		data->last_exit_code = f_unset(data, cmd->args);
-	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
-		data->last_exit_code = f_env(data, cmd->args);
-	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
-	{
-		//f_redir_restore(saved_fds, data);
-		//status = data->last_exit_code;
-		//sfbf_free_all(data);
-		//exit(status);
-		b_exit(data, cmd);
-	}
+	f_run_builtin(cmd, data);
 	f_redir_restore(saved_fds, data);
 	return (data->last_exit_code);
 }

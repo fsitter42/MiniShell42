@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    (linux)Makefile                                    :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: a600 <a600@student.42.fr>                  +#+  +:+       +#+         #
+#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/15 23:28:35 by a600             ###   ########.fr        #
+#    Updated: 2026/04/17 23:43:22 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ SRC_EXE     = f_minishell/execution/f_exe.c \
               f_minishell/execution/pathfinder/f_pathhandler.c \
               f_minishell/execution/pathfinder/f_unsetpath.c \
               f_minishell/execution/singlecmd/f_singlecmd.c \
+              f_minishell/execution/singlecmd/f_dot.c \
               f_minishell/execution/b_heredoc.c \
               f_minishell/execution/f_exec_wrapper.c \
               f_minishell/execution/f_exec_error.c \

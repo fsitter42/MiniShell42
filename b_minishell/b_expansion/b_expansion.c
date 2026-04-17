@@ -6,33 +6,34 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/17 11:49:02 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 21:52:17 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int	append_expanded_char(char **out, char *word, int *state,
-		t_data *data)
+static int	append_expanded_char(char **out, char *word, t_exp_struct *texp,
+        t_data *data)
 {
-	int	ret;
+    int	ret;
 
-	if (consume_syntactic_quote(word[state[0]], &state[1]) == 1)
-		return (RET_OK);
-	if (word[state[0]] == '$' && state[1] != IN_SINGLE_Q && word[state[0] + 1])
-	{
-		if (word[state[0] + 1] == '?')
-			ret = expand_dollar_question(out, &state[0], data);
-		else
-			ret = append_env_var(out, word, &state[0], data);
-		if (ret != RET_OK)
-			return (ret);
-		return (RET_OK);
-	}
-	*out = append_char(*out, word[state[0]]);
-	if (!*out)
-		return (ERROR_HARD);
-	return (RET_OK);
+   	if (!texp->heredoc_mode && consume_syntactic_quote(word[texp->i], &texp->quote_status) == 1)
+        return (RET_OK);
+    if (word[texp->i] == '$' && word[texp->i + 1]
+        && (texp->heredoc_mode || texp->quote_status != IN_SINGLE_Q))
+    {
+        if (word[texp->i + 1] == '?')
+            ret = expand_dollar_question(out, &texp->i, data);
+        else
+            ret = append_env_var(out, word, &texp->i, data);
+        if (ret != RET_OK)
+            return (ret);
+        return (RET_OK);
+    }
+    *out = append_char(*out, word[texp->i]);
+    if (!*out)
+        return (ERROR_HARD);
+    return (RET_OK);
 }
 
 /*
@@ -41,27 +42,26 @@ static int	append_expanded_char(char **out, char *word, int *state,
  *  state[0] holds i
  *  state[1] holds quote_status
  */
-static char	*expand_word_one_pass(char *word, t_data *data, int *ret_status)
+char	*expand_word_one_pass(char *word, t_data *data, int heredoc_mode,
+        int *ret_status)
 {
-	char	*out;
-	int		state[2];
+    char		*out;
+    t_exp_struct tex;
 
-	*ret_status = RET_OK;
-	state[1] = DEFAULT_Q;
-	out = ft_strdup("");
-	if (!out)
-	{
-		*ret_status = ERROR_HARD;
-		return (NULL);
-	}
-	state[0] = -1;
-	while (word[++state[0]])
-	{
-		*ret_status = append_expanded_char(&out, word, state, data);
-		if (*ret_status != RET_OK)
-			return (free(out), NULL);
-	}
-	return (out);
+    *ret_status = RET_OK;
+    out = ft_strdup("");
+    if (!out)
+        return (*ret_status = ERROR_HARD, NULL);
+    tex.i = -1;
+    tex.quote_status = DEFAULT_Q;
+    tex.heredoc_mode = heredoc_mode;
+    while (word[++tex.i])
+    {
+        *ret_status = append_expanded_char(&out, word, &tex, data);
+        if (*ret_status != RET_OK)
+            return (free(out), NULL);
+    }
+    return (out);
 }
 
 /*
@@ -88,7 +88,7 @@ int	expand_single_word(t_token *list_elem, t_data *data)
 		if (ret != RET_OK)
 			return (ret);
 	}
-	expanded = expand_word_one_pass(list_elem->str, data, &ret);
+	expanded = expand_word_one_pass(list_elem->str, data, FALSE, &ret);
 	if (!expanded)
 		return (ret);
 	free(list_elem->str);

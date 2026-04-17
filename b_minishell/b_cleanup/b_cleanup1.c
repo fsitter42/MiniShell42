@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/17 15:20:35 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 22:04:11 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	cleanup_redir_list(t_redir *redirs)
 	while (redirs)
 	{
 		temp = redirs->next;
-		if (redirs->type == HEREDOC)
+		if (redirs->type == HEREDOC && redirs->file)
 			unlink(redirs->file);
 		free(redirs->file);
 		free(redirs->delimiter);

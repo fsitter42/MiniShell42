@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/17 12:26:48 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 20:56:34 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,29 @@
  *
 */
 
+static t_redir	*find_latest_heredoc_redir(t_cmd *cmd)
+{
+    t_redir	*cur;
+    t_redir	*newest;
+
+    cur = cmd->redirs;
+    newest = NULL;
+    while (cur)
+    {
+        if (cur->type == HEREDOC)
+        {
+            if (!newest || cur->id > newest->id)
+                newest = cur;
+        }
+        cur = cur->next;
+    }
+    return (newest);
+}
+
 int	handle_redirection(t_token **tl, t_cmd *cmd)
 {
+	t_redir *latest_heredoc;
+	
 	if (!is_valid_redirection_target(*tl))
 		return (ERROR_SOFT);
 	if ((*tl)->type == REDIR_IN)
@@ -58,6 +79,12 @@ int	handle_redirection(t_token **tl, t_cmd *cmd)
 	{
 		if (add_r_t_c(cmd, HEREDOC, NULL, (*tl)->next->str) == ERROR_HARD)
 			return (ERROR_HARD);
+		latest_heredoc = find_latest_heredoc_redir(cmd);
+		if (latest_heredoc)
+		{
+			if ((*tl)->next->quote_status != DEFAULT_Q)
+				latest_heredoc->delimiter_is_quoted = TRUE;
+		}
 	}
 	else if ((*tl)->type == REDIR_APPEND)
 	{

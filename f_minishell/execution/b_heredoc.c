@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/17 15:31:32 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 21:58:00 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,34 @@ static char	*b_create_heredoc_path(int id)
 	return (filename);
 }
 
-static int	exp_and_split_heredoc_line(char **line)
+static int	expand_heredoc_line(t_data *data, char **line)
 {
-	
+	char	*expanded;
+	int		ret;
+
+	if (!line || !*line)
+		return (RET_OK);
+	expanded = expand_word_one_pass(*line, data, TRUE, &ret);
+	if (!expanded)
+	{
+		free(*line);
+		*line = NULL;
+		return (ret);
+	}
+	free(*line);
+	*line = expanded;
+	return (RET_OK);
+}
+
+static int	is_delimiter_line(char *line, t_redir *redir)
+{
+	if (ft_strlen(line) == ft_strlen(redir->delimiter) && ft_strncmp(line,
+			redir->delimiter, ft_strlen(redir->delimiter)) == 0)
+	{
+		free(line);
+		return TRUE;
+	}
+	return FALSE;
 }
 
 static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
@@ -46,17 +71,11 @@ static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 		}
 		if (!line)
 			break ;
-		if (ft_strlen(line) == ft_strlen(redir->delimiter) && ft_strncmp(line,
-				redir->delimiter, ft_strlen(redir->delimiter)) == 0)
-		{
-			free(line);
+		if (is_delimiter_line(line, redir))
 			break ;
-		}
-		// TODO line muss hier expanded und gesplittet werden
-		// problem: prototyp schaut so aus: int	expand_single_word(t_token *list_elem, t_data *data)
-		// (müssen wir hier wenn wir -1 returnen line freen? ja oder?)
-		if (exp_and_split_heredoc_line(&line) == -1)
-			return (-1);
+		if (!redir->delimiter_is_quoted)
+			if (expand_heredoc_line(data, &line) == -1)
+				return (-1);
 		if (write(fd, line, ft_strlen(line)) == -1)
 			return (-1);
 		if (write(fd, "\n", 1) == -1)
@@ -87,9 +106,9 @@ int	b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir)
 		close(cmd->in_fd);
 	cmd->in_fd = open(filename, O_RDONLY);
 	if (cmd->in_fd == -1)
-		return (free (filename), -1);
+		return (free(filename), -1);
 	if (redir->file)
-		free (redir->file);
+		free(redir->file);
 	redir->file = filename;
 	return (0);
 }

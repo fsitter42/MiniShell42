@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/17 15:16:22 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 21:22:51 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@
 # include "./b_minishell/libft/libft.h"
 # include "f_includes/Libfs/libft.h"
 # include <errno.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+
 # include <stdlib.h>
-# include <limits.h>
 
 // f
 
@@ -65,8 +66,16 @@ typedef struct s_redir
 	int							type;
 	int							id;
 	char						*delimiter;
+	int							delimiter_is_quoted;
 	t_redir						*next;
 }								t_redir;
+
+typedef struct s_exp_struct
+{
+	int							i;
+	int							quote_status;
+	int							heredoc_mode;
+}								t_exp_struct;
 
 typedef struct s_cmd
 {
@@ -215,6 +224,8 @@ t_token							*tokenizer(char *line);
 
 // expansion
 int								expansion(t_token *list, t_data *data);
+char							*expand_word_one_pass(char *word, t_data *data,
+									int heredoc_mode, int *ret_status);
 int								quote_handler(int quote_status, char c);
 int								word_split(t_token *list, t_data *data);
 int								append_env_var(char **out, char *word, int *i,
@@ -247,7 +258,7 @@ int								replace_first_split_word(t_token *list,
 
 // execution
 int								eggsecute(t_data *data);
-t_pid	*f_free_pids(t_data *data);
+t_pid							*f_free_pids(t_data *data);
 
 // builtins
 void							b_exit(t_data *data, t_cmd *cmd);
@@ -295,7 +306,8 @@ int								f_unset(t_data *data, char **args);
 int								f_lst_del_one(t_envl **list, char *key);
 char							*f_get_env_val(t_envl *list, char *key,
 									t_data *data);
-char	*f_get_env_val_with_check(t_envl *list, char *key, t_data *data, int *val_not_null);
+char							*f_get_env_val_with_check(t_envl *list,
+									char *key, t_data *data, int *val_not_null);
 
 // f_envp_to_lst.c
 t_envl							*f_copy_env(char **envp);

@@ -6,11 +6,39 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:51:27 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 23:25:00 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 21:51:44 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//only used for the delimiter (we can't just blindly expand the delimiter
+//because $asdf would be expanded like that. $asdf is a valid delimiter
+//and must not be expanded)
+static char	*strip_syntactic_quotes(char *word)
+{
+	char	*out;
+	int		i;
+	int		j;
+	int		quote_status;
+
+	out = ft_calloc(ft_strlen(word) + 1, sizeof(char));
+	if (!out)
+		return (NULL);
+	i = 0;
+	j = 0;
+	quote_status = DEFAULT_Q;
+	while (word[i])
+	{
+		if (consume_syntactic_quote(word[i], &quote_status))
+		{
+			i++;
+			continue ;
+		}
+		out[j++] = word[i++];
+	}
+	return (out);
+}
 
 int	is_token_type_redirection(t_token *token)
 {
@@ -69,7 +97,7 @@ int	add_r_t_c(t_cmd *cmd, int type, char *str, char *delimiter)
 		return (ERROR_HARD);
 	if (delimiter)
 	{
-		new_redir->delimiter = ft_strdup(delimiter);
+		new_redir->delimiter = strip_syntactic_quotes(delimiter);
 		if (!new_redir->delimiter)
 			return (free(new_redir), ERROR_HARD);
 	}

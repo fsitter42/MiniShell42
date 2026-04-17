@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:54:58 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/31 16:39:14 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 12:23:40 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_cmd(t_cmd *cmd)
 	cmd->next = NULL;
 	cmd->redirs = NULL;
 	cmd->is_first = 0;
+	cmd->args_count = 0;
 }
 
 void	add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd)

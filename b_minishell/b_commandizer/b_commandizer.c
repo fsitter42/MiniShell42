@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/08 15:31:37 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 12:26:48 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	create_single_cmd(t_token *token_list, int size, t_cmd **cmd)
 		(*cmd)->is_redir_only_cmd = 1;
 	if (init_args_array(*cmd, size) == ERROR_HARD)
 		return (free(*cmd), ERROR_HARD);
+	(*cmd)->args_count = size;
 	while (token_list && token_list->type != PIPE)
 	{
 		if (is_token_type_redirection(token_list))

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 13:22:51 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 12:56:18 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 11:42:11 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ static void	write_error_and_set_exit_code(t_data *data, t_cmd *cmd)
 
 void	b_exit(t_data *data, t_cmd *cmd)
 {
-	int	exit_no;
-	int	is_num;
+	long long	exit_no;
+	int			is_num;
 
 	is_num = 0;
 	exit_no = 0;
@@ -76,6 +76,7 @@ void	b_exit(t_data *data, t_cmd *cmd)
 		ft_putendl_fd("exit", STDOUT_FILENO);
 	if (cmd->args[1])
 	{
+		
 		is_num = set_is_num(cmd->args);
 		if (is_num == 0)
 		{

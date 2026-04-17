@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/08 16:27:05 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/17 11:49:02 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int	expand_single_word(t_token *list_elem, t_data *data)
 	char	*expanded;
 	int		ret;
 
-	if (list_elem->str && list_elem->str[0] == '~')
+	//if (list_elem->str && list_elem->str[0] == '~')
+	if (list_elem->str && !ft_strncmp(list_elem->str, "~", ft_strlen(list_elem->str)))
 	{
 		ret = expand_home_dir(list_elem, data->env->envp_updated);
 		if (ret != RET_OK)

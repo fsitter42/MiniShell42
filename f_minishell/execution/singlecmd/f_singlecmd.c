@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/17 23:51:51 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/18 11:50:31 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,12 @@ int	f_is_builtin(char *cmd)
 
 int	f_redir_setup(t_cmd *cmd, int saved_fds[2])
 {
-
 	saved_fds[0] = dup(STDIN_FILENO);
 	if (saved_fds[0] == -1)
-    	return (f_redir_error(saved_fds, -1, "dup"));
+		return (f_redir_error(saved_fds, -1, "dup"));
 	saved_fds[1] = dup(STDOUT_FILENO);
 	if (saved_fds[1] == -1)
-    	return (f_redir_error(saved_fds, -1, "dup"));
+		return (f_redir_error(saved_fds, -1, "dup"));
 	if (cmd->in_fd != -1)
 	{
 		if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
@@ -99,35 +98,6 @@ void	f_redir_restore(int saved_fds[2], t_data *data)
 	close(saved_fds[1]);
 }
 
-// int	f_exec_builtin(t_cmd *cmd, t_data *data)
-// {
-// 	int	saved_fds[2] = {-1, -1};
-// 	int status;
-
-// 	if (f_redir_wrapper(data, cmd) == -1)
-// 		return (redir_return(data));
-// 	if (f_redir_setup(cmd, saved_fds) == -1)
-// 		return (data->last_exit_code = 1, -1);
-// 	if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
-// 		data->last_exit_code = f_echo(data, cmd->args);
-// 	else if (ft_strncmp(cmd->cmd, "cd", 3) == 0)
-// 		data->last_exit_code = f_cd(data, cmd->args);
-// 	else if (ft_strncmp(cmd->cmd, "pwd", 4) == 0)
-// 		data->last_exit_code = f_pwd(data);
-// 	else if (ft_strncmp(cmd->cmd, "export", 7) == 0)
-// 		data->last_exit_code = f_export(data, cmd->args);
-// 	else if (ft_strncmp(cmd->cmd, "unset", 6) == 0)
-// 		data->last_exit_code = f_unset(data, cmd->args);
-// 	else if (ft_strncmp(cmd->cmd, "env", 4) == 0)
-// 		data->last_exit_code = f_env(data, cmd->args);
-// 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
-// 		b_exit(data, cmd);
-// 	else if (ft_strncmp(cmd->cmd, ".", 2) == 0)
-// 		f_print_dot_error(data, cmd->args);
-// 	f_redir_restore(saved_fds, data);
-// 	return (data->last_exit_code);
-// }
-
 int	f_exec_builtin(t_cmd *cmd, t_data *data)
 {
 	int	saved_fds[2];
@@ -135,7 +105,6 @@ int	f_exec_builtin(t_cmd *cmd, t_data *data)
 
 	saved_fds[0] = -1;
 	saved_fds[1] = -1;
-
 	if (f_redir_wrapper(data, cmd) == -1)
 		return (redir_return(data));
 	if (f_redir_setup(cmd, saved_fds) == -1)

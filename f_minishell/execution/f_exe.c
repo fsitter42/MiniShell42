@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/18 01:32:19 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/18 11:49:21 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,33 +74,8 @@ static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd)
 	}
 }
 
-// static void	f_wait_all(t_data *data)
-// {
-// 	int	status;
-// 	int	sig;
-
-// 	signal(SIGINT, SIG_IGN);
-// 	signal(SIGQUIT, SIG_IGN);
-// 	while (waitpid(-1, &status, 0) > 0)
-// 	{
-// 		if (WIFEXITED(status))
-// 			data->last_exit_code = WEXITSTATUS(status);
-// 		else if (WIFSIGNALED(status))
-// 		{
-// 			sig = WTERMSIG(status);
-// 			if (sig == SIGQUIT)
-// 				ft_putendl_fd("Quit (core dumped)", 2);
-// 			else if (sig == SIGSEGV)
-// 				ft_putendl_fd("Segmentation fault (core dumped)", 2);
-// 			else if (sig == SIGINT)
-// 				write(1, "\n", 1);
-// 			data->last_exit_code = 128 + sig;
-// 		}
-// 	}
-// 	f_setup_signals();
-// }
-
-static void	f_child_process(t_data *data, t_cmd *cmd, int *prev_fd, int *pipe_fd)
+static void	f_child_process(t_data *data, t_cmd *cmd, int *prev_fd,
+		int *pipe_fd)
 {
 	int	status;
 

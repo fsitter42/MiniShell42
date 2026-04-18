@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 01:28:15 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/18 11:52:37 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,6 +343,9 @@ void							f_print_error(char *context, char *msg);
 
 // f_unsetpath
 int								f_path_set(t_data *data);
+void	f_print_126(int err2, char *buf, int *len);
+void	f_print_127(char *cmd, t_data *data, char *buf, int *len);
+void	f_print_path_error(char *cmd, int err, int err2, t_data *data);
 
 // f_singlecmd.c
 void							f_exec_cmd(t_data *data, t_cmd *cmd,

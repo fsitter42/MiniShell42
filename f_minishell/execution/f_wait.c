@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_wait.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 12:22:41 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/15 16:04:31 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 11:50:04 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	f_wait_all(t_data *data)
 			else
 			{
 				data->should_exit = 1;
-				return ; // TODOF was macht der 1 ist es should exit??
+				return ;
 			}
 		}
 		else

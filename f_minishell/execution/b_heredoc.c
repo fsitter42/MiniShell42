@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_heredoc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/17 21:58:00 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 11:53:19 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ static int	is_delimiter_line(char *line, t_redir *redir)
 			redir->delimiter, ft_strlen(redir->delimiter)) == 0)
 	{
 		free(line);
-		return TRUE;
+		return (TRUE);
 	}
-	return FALSE;
+	return (FALSE);
 }
 
 static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 15:38:20 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 14:35:04 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,6 @@ static int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 	data->e_has_been_set = 1;
 	return (RET_OK);
 }
-// das war vor eggsecute call
-/* 		ret = f_is_syntax_valid(data);
-		if (ret != RET_OK)
-		{
-			cleanup_command_list(cmd_list);
-			data->cmds = NULL;
-			data->e_has_been_set = 1;
-			return (ret);
-		} */
 
 static int	handle_single_line(char *line, t_data *data)
 {
@@ -109,10 +100,6 @@ static int add_to_history_and_hsl(char *line, t_data *data)
 	return (ret);
 }
 
-
-/* this is the default mode in where the users enters stuff
- * TODO wenn ";" in einer line, simulation mehrerer pipes
- */
 void	normal_mode(t_data *data)
 {
 	char	*line;
@@ -121,7 +108,6 @@ void	normal_mode(t_data *data)
 	{
 		errno = 0;
 		line = readline("minishell$ ");
-		//line = get_next_line(STDIN_FILENO);
 		if (g_signal_received == SIGINT)
 		{
 			set_exit_code_to_130_and_free(data, line);
@@ -143,7 +129,56 @@ void	normal_mode(t_data *data)
 	}
 }
 
-void	debug_mode(char *input, t_data *data)
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	*data;
+	int		last_exit_code;
+
+	if (argc != 1)
+		return (printf("no arguments allowed\n"), 1);
+	if (argc == 1)
+	{
+		data = sfbf_init_all(envp);
+		if (!data)
+			return (1);
+		f_setup_signals();
+		normal_mode(data);
+	}
+	last_exit_code = data->last_exit_code;
+	sfbf_free_all(data);
+	return (last_exit_code);
+}
+
+/* int	main(int argc, char **argv, char **envp)
+{
+	t_data	*data;
+	int		last_exit_code;
+
+	if (argc != 1)
+		return (printf("no arguments allowed\n"), 1);
+	if (argc == 1)
+	{
+		data = sfbf_init_all(envp);
+		if (!data)
+			return (1);
+		f_setup_signals();
+		normal_mode(data);
+	}
+	// else
+	// {
+	// 	if (ft_strncmp(argv[1], "-d", 2) != 0)
+	// 		return (printf("wrong syntax - did you use the -d flag?\n"), 1);
+	// 	data = sfbf_init_all(envp);
+	// 	if (!data)
+	// 		return (1);
+	// 	debug_mode(argv[2], data);
+	// }
+	last_exit_code = data->last_exit_code;
+	sfbf_free_all(data);
+	return (last_exit_code);
+} */
+
+/* void	debug_mode(char *input, t_data *data)
 {
 	int		i;
 	int		ret;
@@ -168,33 +203,4 @@ void	debug_mode(char *input, t_data *data)
 	}
 	cleanup_split_result(data->strs, 0);
 	data->strs = NULL;
-}
-
-int	main(int argc, char **argv, char **envp)
-{
-	t_data	*data;
-	int		last_exit_code;
-
-	if (argc != 1 && argc != 3)
-		return (printf("wrong syntax - argc not 1 or 3\n"), 1);
-	if (argc == 1)
-	{
-		data = sfbf_init_all(envp);
-		if (!data)
-			return (1);
-		f_setup_signals();
-		normal_mode(data);
-	}
-	else
-	{
-		if (ft_strncmp(argv[1], "-d", 2) != 0)
-			return (printf("wrong syntax - did you use the -d flag?\n"), 1);
-		data = sfbf_init_all(envp);
-		if (!data)
-			return (1);
-		debug_mode(argv[2], data);
-	}
-	last_exit_code = data->last_exit_code;
-	sfbf_free_all(data);
-	return (last_exit_code);
-}
+} */

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:54:58 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/17 12:23:40 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 14:58:55 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,14 @@ void	add_cmd_to_cmd_list(t_cmd **cmd_list, t_cmd *cmd)
 	while (current->next)
 		current = current->next;
 	current->next = cmd;
+}
+
+int	is_token_type_redirection(t_token *token)
+{
+	int	x;
+
+	x = token->type;
+	if (x == HEREDOC || x == REDIR_IN || x == REDIR_APPEND || x == REDIR_OUT)
+		return (1);
+	return (0);
 }

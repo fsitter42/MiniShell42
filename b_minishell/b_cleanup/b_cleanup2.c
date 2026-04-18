@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_cleanup2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/17 01:02:34 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/18 14:37:23 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	cleanup_split_result(char **strs, int start)
 	free(strs);
 }
 
+//TODO kommentare weg oder is da noch was offen?
 void	sfbf_free_all(t_data *data)
 {
 	int	i;
@@ -74,7 +75,7 @@ void	ft_putendl_fd_no_nl(char *s, int fd)
 
 static void	f_close_duped_fds(void)
 {
-	struct stat unoreversewithdup;
+	struct stat	unoreversewithdup;
 
 	if (fstat(0, &unoreversewithdup) == 0)
 		close(0);

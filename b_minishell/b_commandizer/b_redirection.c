@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:51:27 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/17 21:51:44 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 14:58:28 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,6 @@ static char	*strip_syntactic_quotes(char *word)
 		out[j++] = word[i++];
 	}
 	return (out);
-}
-
-int	is_token_type_redirection(t_token *token)
-{
-	int	x;
-
-	x = token->type;
-	if (x == HEREDOC || x == REDIR_IN || x == REDIR_APPEND || x == REDIR_OUT)
-		return (1);
-	return (0);
 }
 
 // returns 0 is the redirection target is not valid

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/17 20:56:34 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 14:50:04 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,63 +40,50 @@
  *
 */
 
-static t_redir	*find_latest_heredoc_redir(t_cmd *cmd)
+static int	handle_heredoc_redir(t_token **tl, t_cmd *cmd)
 {
-    t_redir	*cur;
-    t_redir	*newest;
+	t_redir	*cur;
+	t_redir	*latest_heredoc;
 
-    cur = cmd->redirs;
-    newest = NULL;
-    while (cur)
-    {
-        if (cur->type == HEREDOC)
-        {
-            if (!newest || cur->id > newest->id)
-                newest = cur;
-        }
-        cur = cur->next;
-    }
-    return (newest);
+	if (add_r_t_c(cmd, HEREDOC, NULL, (*tl)->next->str) == ERROR_HARD)
+		return (ERROR_HARD);
+	cur = cmd->redirs;
+	latest_heredoc = NULL;
+	while (cur)
+	{
+		if (cur->type == HEREDOC
+			&& (!latest_heredoc || cur->id > latest_heredoc->id))
+			latest_heredoc = cur;
+		cur = cur->next;
+	}
+	if (latest_heredoc && (*tl)->next->quote_status != DEFAULT_Q)
+		latest_heredoc->delimiter_is_quoted = TRUE;
+	return (RET_OK);
 }
 
 int	handle_redirection(t_token **tl, t_cmd *cmd)
 {
-	t_redir *latest_heredoc;
-	
+	int	ret;
+
 	if (!is_valid_redirection_target(*tl))
 		return (ERROR_SOFT);
+	ret = RET_OK;
 	if ((*tl)->type == REDIR_IN)
-	{
-		if (add_r_t_c(cmd, REDIR_IN, (*tl)->next->str, NULL) == ERROR_HARD)
-			return (ERROR_HARD);
-	}
+		ret = add_r_t_c(cmd, REDIR_IN, (*tl)->next->str, NULL);
 	else if ((*tl)->type == REDIR_OUT)
-	{
-		if (add_r_t_c(cmd, REDIR_OUT, (*tl)->next->str, NULL) == ERROR_HARD)
-			return (ERROR_HARD);
-	}
+		ret = add_r_t_c(cmd, REDIR_OUT, (*tl)->next->str, NULL);
 	else if ((*tl)->type == HEREDOC)
-	{
-		if (add_r_t_c(cmd, HEREDOC, NULL, (*tl)->next->str) == ERROR_HARD)
-			return (ERROR_HARD);
-		latest_heredoc = find_latest_heredoc_redir(cmd);
-		if (latest_heredoc)
-		{
-			if ((*tl)->next->quote_status != DEFAULT_Q)
-				latest_heredoc->delimiter_is_quoted = TRUE;
-		}
-	}
+		ret = handle_heredoc_redir(tl, cmd);
 	else if ((*tl)->type == REDIR_APPEND)
-	{
-		if (add_r_t_c(cmd, REDIR_APPEND, (*tl)->next->str, NULL) == ERROR_HARD)
-			return (ERROR_HARD);
-	}
+		ret = add_r_t_c(cmd, REDIR_APPEND, (*tl)->next->str, NULL);
+	if (ret == ERROR_HARD)
+		return (ERROR_HARD);
 	return (shift_and_consume_token_list_by_x(tl, 2), RET_OK);
 }
 
 int	handle_word(t_token **token_list, t_cmd *cmd)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	if (cmd->cmd == NULL)
@@ -174,9 +161,12 @@ int	create_command_list(t_token *token_list, t_cmd **cmd_list)
 	return (RET_OK);
 }
 
-//brauch ma nima
+// brauch ma nima
 /* int	heredoc_handler(t_cmd *cmd, t_token *token_list)
 {
+	int	i;
+	int	j;
+
 	if (token_list->next->type == WORD_AFTER_HEREDOC)
 	{
 		cmd->delimiter = ft_strdup(token_list->next->str);
@@ -187,12 +177,8 @@ int	create_command_list(t_token *token_list, t_cmd **cmd_list)
 		return (ERROR_SOFT);
 	return (RET_OK);
 } */
-
 /* void	print_command_list(t_cmd *start)
 {
-	int	i;
-	int	j;
-
 	i = 0;
 	j = 0;
 	while (start)

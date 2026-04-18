@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 13:22:19 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/15 17:53:00 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 14:29:41 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ static int	process_word_split_loop(t_token *list, char *ifs, int should_split)
 	return (RET_OK);
 }
 
-//TODO ifs is a shell variable! do not check if it is already set.
-//just set it to " \n\t", we also dont need should_split then
 static int	init_ifs_and_split(char **ifs, int *should_split, int *ifs_alloc,
 		t_data *data)
 {

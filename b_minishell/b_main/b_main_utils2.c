@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 15:03:17 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 15:05:09 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 19:48:35 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	print_and_free_line(char *line)
 {
 	printf("minishell: missing quote\n");
+	if (*line && !line_is_empty(line))
+		add_history((const char *)line);
 	free(line);
 }
 

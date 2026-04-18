@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/18 11:49:21 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/18 19:45:36 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int *prev_fd,
 	int	status;
 
 	status = 0;
-	signal(SIGINT, SIG_DFL);
+	//signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	data->pids->i++;
 	if (f_redir_wrapper(data, cmd) == -1)

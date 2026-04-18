@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 00:14:59 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 00:32:20 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,9 @@ void	normal_mode(t_data *data)
 	}
 }
 
-int	main(int argc, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
+	(void)argv;
 	t_data	*data;
 	int		last_exit_code;
 

@@ -11,7 +11,7 @@ This project does not aim to be fully Bash-compatible. Behavior that is not expl
 
 ## Build & Run
 - Build: `make`
-- Run interactive mode: `./minishell` (do not run it with any arguments)
+- Run: `./minishell` (do not run it with any arguments)
 
 ## Supported Behavior
 - Interactive prompt with readline history.

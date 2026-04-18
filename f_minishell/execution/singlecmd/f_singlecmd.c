@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 00:25:45 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 00:46:28 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	f_redir_restore(int saved_fds[2], t_data *data)
 		close(saved_fds[1]);
 		if (data->last_exit_code != 130)
 			data->last_exit_code = 1;
+		data->should_exit = 1;
 		return ;
 	}
 	close(saved_fds[0]);
@@ -93,6 +94,7 @@ void	f_redir_restore(int saved_fds[2], t_data *data)
 		close(saved_fds[1]);
 		if (data->last_exit_code != 130)
 			data->last_exit_code = 1;
+		data->should_exit = 1;
 		return ;
 	}
 	close(saved_fds[1]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exec_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 23:12:59 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/18 01:26:18 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 01:06:22 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	f_fork_error(t_data *data, t_cmd *cmd, int pipe_fd[2], int *prev_fd)
 		close(cmd->out_fd);
 	f_print_error("fork", strerror(errno));
 	data->last_exit_code = 1;
+	data->should_exit = 1;
 	return (-1);
 }
 
@@ -51,7 +52,7 @@ void	f_dup_error(t_data *data, t_cmd *cmd, int *pipe_fd, int *prev_fd)
 	f_close_cmd_fds(cmd);
 	f_close_child(pipe_fd, prev_fd, cmd);
 	sfbf_free_all(data);
-	exit(1);
+	exit(88);
 }
 
 static void	f_close_cmd_fds(t_cmd *cmd)

@@ -3,26 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 15:05:29 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 00:14:59 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t	g_signal_received = 0;
-
-// int					f_is_syntax_valid(t_data *data);
-void					*test_calloc(size_t nmemb, size_t size);
-
-void	*test_calloc(size_t nmemb, size_t size)
-{
-	(void)nmemb;
-	(void)size;
-	return (NULL);
-}
 
 static int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 {
@@ -116,21 +106,19 @@ void	normal_mode(t_data *data)
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **envp)
 {
 	t_data	*data;
 	int		last_exit_code;
 
+	data = NULL;
 	if (argc != 1)
 		return (printf("no arguments allowed\n"), 1);
-	if (argc == 1)
-	{
-		data = sfbf_init_all(envp);
-		if (!data)
-			return (1);
-		f_setup_signals();
-		normal_mode(data);
-	}
+	data = sfbf_init_all(envp);
+	if (!data)
+		return (1);
+	f_setup_signals();
+	normal_mode(data);
 	last_exit_code = data->last_exit_code;
 	sfbf_free_all(data);
 	return (last_exit_code);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
+#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/18 15:04:52 by slambert         ###   ########.fr        #
+#    Updated: 2026/04/19 00:15:49 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,7 @@ SRC_ENVP    = f_minishell/envp/f_envp_init_destroy.c \
 # Execution & Pathfinder
 SRC_EXE     = f_minishell/execution/f_exe.c \
               f_minishell/execution/f_exe2.c \
+              f_minishell/execution/f_exe3.c \
               f_minishell/execution/pathfinder/f_pathfinder.c \
               f_minishell/execution/pathfinder/f_pathhandler.c \
               f_minishell/execution/pathfinder/f_unsetpath.c \
@@ -77,8 +78,8 @@ OBJS        = $(SRC:.c=.o)
 
 # -- Compiler & Flags --
 CC          = cc
-#CFLAGS      = -Wall -Wextra -Werror -g
-CFLAGS      = -g
+CFLAGS      = -Wall -Wextra -Werror
+#CFLAGS      = -g
 INCLUDE     = -I .
 
 # -- Bibliotheken --

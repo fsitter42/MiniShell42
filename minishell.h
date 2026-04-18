@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 15:05:33 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 00:10:31 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,13 @@
 # define _POSIX_C_SOURCE 200809L
 # define MAX_ENV_LEN 600
 
-# include <stdio.h>
 # include "./b_minishell/libft/libft.h"
 # include "f_includes/Libfs/libft.h"
 # include <errno.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-
+# include <stdio.h>
 # include <stdlib.h>
 
 // f
@@ -261,19 +260,24 @@ int								replace_first_split_word(t_token *list,
 // execution
 int								eggsecute(t_data *data);
 t_pid							*f_free_pids(t_data *data);
+int								f_open_infile(t_data *data, t_cmd *cmd,
+									char *file);
+int								f_open_outfile(t_data *data, t_cmd *cmd,
+									char *file, int append);
 
 // builtins
-int			check_digit(long long *num, int neg, long long limit, char c);
-int			is_overflow(char *arg);
-long long	f_atoll(char *arg);
+int								check_digit(long long *num, int neg,
+									long long limit, char c);
+int								is_overflow(char *arg);
+long long						f_atoll(char *arg);
 void							b_exit(t_data *data, t_cmd *cmd);
 
 // singlecmds
 void							f_redir_restore(int saved_fds[2], t_data *data);
 
 // dot
-void	f_print_dot_error(t_data *data, char **args);
-void	f_run_builtin(t_cmd *cmd, t_data *data);
+void							f_print_dot_error(t_data *data, char **args);
+void							f_run_builtin(t_cmd *cmd, t_data *data);
 
 // debug
 void							print_tokens(t_token *start);
@@ -348,9 +352,11 @@ void							f_print_error(char *context, char *msg);
 
 // f_unsetpath
 int								f_path_set(t_data *data);
-void	f_print_126(int err2, char *buf, int *len);
-void	f_print_127(char *cmd, t_data *data, char *buf, int *len);
-void	f_print_path_error(char *cmd, int err, int err2, t_data *data);
+void							f_print_126(int err2, char *buf, int *len);
+void							f_print_127(char *cmd, t_data *data, char *buf,
+									int *len);
+void							f_print_path_error(char *cmd, int err, int err2,
+									t_data *data);
 
 // f_singlecmd.c
 void							f_exec_cmd(t_data *data, t_cmd *cmd,

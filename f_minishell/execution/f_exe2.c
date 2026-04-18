@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/18 14:03:40 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 00:10:54 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 static int	f_open_redirections(t_data *data, t_cmd *cmd);
-static int	f_open_infile(t_data *data, t_cmd *cmd, char *file);
-static int	f_open_outfile(t_data *data, t_cmd *cmd, char *file, int append);
 static int	f_open_all_heredocs(t_data *data, t_cmd *cmd);
 static int	f_open_non_heredoc_redirs(t_data *data, t_cmd *cmd);
 
@@ -73,45 +71,6 @@ static int	f_open_non_heredoc_redirs(t_data *data, t_cmd *cmd)
 				return (-1);
 		}
 		redir = redir->next;
-	}
-	return (0);
-}
-
-static int	f_open_infile(t_data *data, t_cmd *cmd, char *file)
-{
-	if (cmd->in_fd != -1)
-		close(cmd->in_fd);
-	cmd->in_fd = open(file, O_RDONLY);
-	if (cmd->in_fd == -1)
-	{
-		if (errno == ENOENT)
-			f_print_error(file, "No such file or directory");
-		else if (errno == EACCES)
-			f_print_error(file, "Permission denied");
-		else
-			f_print_error(file, strerror(errno));
-		data->last_exit_code = 1;
-		return (-1);
-	}
-	return (0);
-}
-
-static int	f_open_outfile(t_data *data, t_cmd *cmd, char *file, int append)
-{
-	if (cmd->out_fd != -1)
-		close(cmd->out_fd);
-	if (append)
-		cmd->out_fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		cmd->out_fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (cmd->out_fd == -1)
-	{
-		if (errno == EACCES)
-			f_print_error(file, "Permission denied");
-		else
-			f_print_error(file, strerror(errno));
-		data->last_exit_code = 1;
-		return (-1);
 	}
 	return (0);
 }

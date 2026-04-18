@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_singlecmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/18 11:50:31 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 00:15:35 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void	f_redir_restore(int saved_fds[2], t_data *data)
 int	f_exec_builtin(t_cmd *cmd, t_data *data)
 {
 	int	saved_fds[2];
-	int	status;
 
 	saved_fds[0] = -1;
 	saved_fds[1] = -1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd_no_newline.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 17:31:31 by slambert          #+#    #+#             */
-/*   Updated: 2026/03/26 12:53:49 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 00:06:34 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

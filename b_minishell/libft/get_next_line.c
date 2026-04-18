@@ -24,12 +24,6 @@ char	*get_next_line(int fd)
 	char		*read_buffer;
 	ssize_t		read_bytes;
 
-	if (fd == -1)
-	{
-		free(stash);
-		stash = NULL;
-		return (NULL);
-	}
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	read_buffer = malloc(BUFFER_SIZE + 1);

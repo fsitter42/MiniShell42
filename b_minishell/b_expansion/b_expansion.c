@@ -6,12 +6,15 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 15:01:31 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 20:26:59 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/* heredoc mode is here bc the syntactic quotes must not be removed on a
+ * delimiter. is heredoc mode dont consume quotes
+ */
 static int	append_expanded_char(char **out, char *word, t_exp_struct *texp,
 		t_data *data)
 {
@@ -37,12 +40,6 @@ static int	append_expanded_char(char **out, char *word, t_exp_struct *texp,
 	return (RET_OK);
 }
 
-/*
- *	loops through the word, consumes syntactic quotes and expands
- *	vars (either env vars or $?)
- *  state[0] holds i
- *  state[1] holds quote_status
- */
 char	*expand_word_one_pass(char *word, t_data *data, int heredoc_mode,
 		int *ret_status)
 {
@@ -52,7 +49,10 @@ char	*expand_word_one_pass(char *word, t_data *data, int heredoc_mode,
 	*ret_status = RET_OK;
 	out = ft_strdup("");
 	if (!out)
-		return (*ret_status = ERROR_HARD, NULL);
+	{
+		*ret_status = ERROR_HARD;
+		return (NULL);
+	}
 	tex.i = -1;
 	tex.quote_status = DEFAULT_Q;
 	tex.heredoc_mode = heredoc_mode;

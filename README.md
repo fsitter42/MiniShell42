@@ -1,47 +1,98 @@
 *This project has been created as part of the 42 curriculum by fsitter and slambert*
 # MiniShell42
 
-**Description**
-This project simulates the bash shell in a simplified way. It does not behave like bash in all cases. Whatever is not explicitly listed as a feature is not supported and its output is considered undefined behaviour.
+## Description
+MiniShell42 is a simplified Bash-like shell written in C.
 
-The workflow of minishell is tokenization -> variable expansion -> word splitting -> command execution
+Workflow:
+`tokenization -> variable expansion -> word splitting -> commandization -> execution`
 
-We implemented the following features:
-- input history (in normal mode)
-- quote handling
-- environment variable expansion
-- word splitting
-During word splitting, the shell divides input based on the characters defined in the Internal Field Separator (`IFS`) variable. If `IFS` is unset, it defaults to splitting by spaces, tabs, and newlines (`" \t\n"`). If `IFS` is set to an empty string, splitting is disabled. Null arguments (such as `""`) are removed during this process. This splitting mechanism applies consistently.
-- pipe handling
-- file descriptor redirection
-- ...
+This project does not aim to be fully Bash-compatible. Behavior that is not explicitly listed below should be considered out of scope.
 
-not supported:
-- command expansion
-- arithmetic expansion
+## Build & Run
+- Build: `make`
+- Run interactive mode: `./minishell` (do not run it with any arguments)
 
-**Instructions**
-Run make to create an executable file called minishell.
-you can't separate lines by semicolon (;) - e.g. "cd ..;ls".
+## Supported Behavior
+- Interactive prompt with readline history.
+- Quote handling:
+	- `'single quotes'` prevent expansion.
+	- `"double quotes"` allow `$VAR` and `$?` expansion.
+- Environment variable expansion (`$VAR`) and last exit code expansion (`$?`).
+- Word splitting using `IFS`:
+	- If `IFS` is set, its characters are used.
+	- If `IFS` is unset, fallback is `" \t\n"`.
+	- If `IFS=""`, splitting is disabled.
+	- Null arguments (for example `""`) are removed by current implementation.
+- Redirections: `<`, `>`, `>>`, `<<` (heredoc).
+- Pipes (`|`) across commands.
+- Builtins: `echo -n`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`.
+- Signal handling in interactive mode:
+	- `Ctrl-C` shows a new prompt on a new line.
+	- `Ctrl-D` exits the shell.
+	- `Ctrl-\` is ignored.
 
-Minishell can be used in 2 ways.
-1. debug mode: usage with -d flag and ONE additional argument. This argument can hold one or multiple line(s) to be interpreted. If multiple lines should be passed, they have to be separated by a semicolon (;)
+## Unsupported / Out of Scope
+- Semicolon command chaining in interactive mode (for example `cd ..; ls`).
+- Backslash escape semantics beyond required subject scope.
+- Command substitution.
+- Arithmetic expansion.
 
-- Example usage 1: ./minishell -d "< infile cat -e | wc -l > outfile"
-- Example usage 2: ./minishell -d "< infile cat -e | wc -l > outfile; echo $USER"
+## Exit Status Notes
+- `0` on successful command execution.
+- `127` for command not found.
+- `126` for permission/exec format style failures.
+- `130` after `SIGINT` (`Ctrl-C`) interruption.
 
-2. normal / interactive mode: This mode emulates the way a normal shell works. usage: run with ./minishell
+## Heredoc Notes
+- Delimiter matching is exact (line must match the delimiter text exactly).
+- Quoted heredoc delimiters disable variable expansion inside heredoc content.
+- Current known limitation: heredoc temp files are created as relative paths (`./.heredoc_dump_*`).
+	If working directory changes before cleanup (for example with `cd`), cleanup may miss those files.
 
-**Resources**
+## Quick Test Commands
+
+Basic pipeline + redirection:
+```bash
+echo hello | wc -c
+echo test > out
+cat out
+```
+
+Heredoc basic:
+```bash
+cat << EOF
+hello
+EOF
+```
+
+Heredoc quoted delimiter (no expansion expected):
+```bash
+cat << "EOF"
+$USER
+EOF
+```
+
+IFS behavior checks:
+```bash
+export IFS=,
+echo a,b,c
+unset IFS
+echo a b c
+```
+
+Redirection ordering regression check:
+```bash
+printf "echo segfault <'<<<'<<amazing\namazing\n" | ./minishell
+```
+Expected: heredoc input is consumed first, then `<<<: No such file or directory` is reported.
+
+## Resources
 - Manual pages: man 2 bash, man 2 pipe, man 2 dup2, man 2 execve, man 2 open, man 2 access, man 2 waitpid.
-
 - GNU C Library / POSIX documentation for system calls and error handling.
-
 - 42 documentation and intra subject PDF for the official pipex specification.
-
 - AI was used for conceptual explanations and not for writing or generating any code.
 
-TODO:
-- semicolon split in interactive mode: müss ma ned machen, pdf: "Not interpret unclosed quotes or special characters which are not required by the
-subject such as \ (backslash) or ; (semicolon)."
-- atoll whitespace handling check ob \n \v \f \r (ev ft_isspace verwenden)
+## TODOs
+- `atoll` whitespace handling (`\n`, `\v`, `\f`, `\r`, not only space/tab).
+- heredoc dump cleanup robustness (absolute temp paths or early unlink strategy).

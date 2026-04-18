@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 00:10:54 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 00:25:54 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,5 @@ int	redir_return(t_data *data)
 	if (data->last_exit_code == 130)
 		return (-1);
 	else
-		return (data->last_exit_code = 1, -1);
+		return (data->should_exit = 1, data->last_exit_code = 1, -1);
 }

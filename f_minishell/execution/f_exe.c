@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 01:05:11 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 01:36:32 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static void	f_exec_builtin_child(t_cmd *cmd, t_data *data)
 	f_exec_builtin(cmd, data);
 	status = data->last_exit_code;
 	sfbf_free_all(data);
+	if (status == 1)
+		status = 88;
 	exit(status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 00:46:28 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 01:47:36 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	f_exec_cmd(t_data *data, t_cmd *cmd, char **envp)
 	execve(cmd->path, cmd->args, envp);
 	f_print_error(cmd->cmd, "execve failed");
 	sfbf_free_all(data);
-	exit(126);
+	exit(88);
 }
 
 int	f_is_builtin(char *cmd)

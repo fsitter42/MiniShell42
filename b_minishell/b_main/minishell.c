@@ -6,16 +6,16 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 14:35:04 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 15:05:29 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t g_signal_received = 0;
+volatile sig_atomic_t	g_signal_received = 0;
 
-//int					f_is_syntax_valid(t_data *data);
-void				*test_calloc(size_t nmemb, size_t size);
+// int					f_is_syntax_valid(t_data *data);
+void					*test_calloc(size_t nmemb, size_t size);
 
 void	*test_calloc(size_t nmemb, size_t size)
 {
@@ -76,23 +76,10 @@ static int	handle_single_line(char *line, t_data *data)
 	return (hsl_helper(token_list, cmd_list, data));
 }
 
-static void print_and_free_line(char *line)
+static int	add_to_history_and_hsl(char *line, t_data *data)
 {
-	printf("minishell: missing quote\n");
-	free (line);
-}
+	int	ret;
 
-static void errno_and_exit_code_helper(t_data *data)
-{
-	if (errno != 0)
-		data->last_exit_code = 1;
-	ft_putendl_fd("exit", 1);
-}
-
-static int add_to_history_and_hsl(char *line, t_data *data)
-{
-	int ret;
-	
 	if (*line && !line_is_empty(line))
 		add_history((const char *)line);
 	ret = handle_single_line(line, data);
@@ -103,7 +90,7 @@ static int add_to_history_and_hsl(char *line, t_data *data)
 void	normal_mode(t_data *data)
 {
 	char	*line;
-	
+
 	while (1)
 	{
 		errno = 0;
@@ -111,7 +98,7 @@ void	normal_mode(t_data *data)
 		if (g_signal_received == SIGINT)
 		{
 			set_exit_code_to_130_and_free(data, line);
-			continue;
+			continue ;
 		}
 		if (!line)
 		{

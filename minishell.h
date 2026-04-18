@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 12:07:35 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/18 15:05:33 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,8 @@ enum							e_ret_status
 int								line_is_empty(char *line);
 int								is_token_list_empty(t_token *token_list);
 int								find_delimiters(t_token *token_list);
+void							print_and_free_line(char *line);
+void							errno_and_exit_code_helper(t_data *data);
 
 // init
 t_data							*sfbf_init_all(char **envp);

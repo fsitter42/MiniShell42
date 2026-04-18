@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:57:29 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/14 15:13:04 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 15:06:50 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,4 @@ void	normalize_ifs_chars(char *s, char *ifs)
 			s[i] = ifs[0];
 		i++;
 	}
-}
-
-void beidl()
-{
-	printf("beidl");
 }

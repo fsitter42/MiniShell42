@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 01:07:27 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/18 15:00:24 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_pid	*f_init_pid(t_data *data);
 static int		f_command_count(t_data *data);
-t_pid	*f_free_pids(t_data *data);
+t_pid			*f_free_pids(t_data *data);
 
 void	remove_heredoc_files(t_cmd *cmds)
 {
@@ -22,7 +22,7 @@ void	remove_heredoc_files(t_cmd *cmds)
 
 	redir = NULL;
 	while (cmds)
-	{	
+	{
 		if (cmds->redirs)
 			redir = cmds->redirs;
 		while (redir)
@@ -49,8 +49,6 @@ int	eggsecute(t_data *data)
 		else
 		{
 			status = f_pipeline_wrapper(data);
-			// printf("%i\n", data->pids->cc);
-			// status = 0;
 		}
 	}
 	if (data->pids)
@@ -107,6 +105,6 @@ t_pid	*f_free_pids(t_data *data)
 	if (data->pids && data->pids->cpid)
 		free(data->pids->cpid);
 	if (data->pids)
-		free(data->pids);	
+		free(data->pids);
 	return (NULL);
 }

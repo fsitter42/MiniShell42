@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_redirection.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:51:27 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 14:58:28 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 00:52:40 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*strip_syntactic_quotes(char *word)
 }
 
 // returns 0 is the redirection target is not valid
-int	is_valid_redirection_target(t_token *redir_token)
+int	is_valid_redir_t(t_token *redir_token)
 {
 	if (!redir_token || !redir_token->next)
 		return (0);

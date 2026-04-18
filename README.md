@@ -26,22 +26,23 @@ This project does not aim to be fully Bash-compatible. Behavior that is not expl
 	- Null arguments (for example `""`) are removed by current implementation.
 - Redirections: `<`, `>`, `>>`, `<<` (heredoc).
 - Pipes (`|`) across commands.
-- Builtins: `echo -n`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`.
+- Builtins: `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`.
 - Signal handling in interactive mode:
 	- `Ctrl-C` shows a new prompt on a new line.
 	- `Ctrl-D` exits the shell.
 	- `Ctrl-\` is ignored.
 
 ## Unsupported / Out of Scope
-- Semicolon command chaining in interactive mode (for example `cd ..; ls`).
+- Semicolon command chaining (for example `cd ..; ls`).
 - Backslash escape semantics beyond required subject scope.
 - Command substitution.
 - Arithmetic expansion.
 
 ## Exit Status Notes
 - `0` on successful command execution.
-- `127` for command not found.
+- `1` on error
 - `126` for permission/exec format style failures.
+- `127` for command not found.
 - `130` after `SIGINT` (`Ctrl-C`) interruption.
 
 ## Heredoc Notes

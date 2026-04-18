@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_commandizer.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 14:50:04 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 00:52:40 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	handle_redirection(t_token **tl, t_cmd *cmd)
 {
 	int	ret;
 
-	if (!is_valid_redirection_target(*tl))
+	if (!is_valid_redir_t(*tl))
 		return (ERROR_SOFT);
 	ret = RET_OK;
 	if ((*tl)->type == REDIR_IN)
@@ -78,7 +78,7 @@ int	handle_redirection(t_token **tl, t_cmd *cmd)
 		ret = add_r_t_c(cmd, REDIR_APPEND, (*tl)->next->str, NULL);
 	if (ret == ERROR_HARD)
 		return (ERROR_HARD);
-	return (shift_and_consume_token_list_by_x(tl, 2), RET_OK);
+	return (shift_and_consume_tl(tl, 2), RET_OK);
 }
 
 int	handle_word(t_token **token_list, t_cmd *cmd)
@@ -97,7 +97,7 @@ int	handle_word(t_token **token_list, t_cmd *cmd)
 	cmd->args[i] = ft_strdup((*token_list)->str);
 	if (!(cmd->args[i]))
 		return (ERROR_HARD);
-	shift_and_consume_token_list_by_x(token_list, 1);
+	shift_and_consume_tl(token_list, 1);
 	return (RET_OK);
 }
 
@@ -155,7 +155,7 @@ int	create_command_list(t_token *token_list, t_cmd **cmd_list)
 		if (ret != RET_OK)
 			return (cleanup_command_list(*cmd_list), ret);
 		add_cmd_to_cmd_list(cmd_list, cmd);
-		shift_token_list_to_next_pipe(&token_list);
+		shift_tl_to_next_pipe(&token_list);
 		cmd->is_builtin = f_is_builtin(cmd->cmd);
 	}
 	return (RET_OK);

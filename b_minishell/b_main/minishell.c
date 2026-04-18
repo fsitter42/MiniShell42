@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/23 16:52:01 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 00:32:20 by fsitter          ###   ########.fr       */
+/*   Created: 2026/04/19 01:11:02 by fsitter           #+#    #+#             */
+/*   Updated: 2026/04/19 01:13:19 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -108,10 +109,10 @@ void	normal_mode(t_data *data)
 
 int	main(int argc, char **argv, char **envp)
 {
-	(void)argv;
 	t_data	*data;
 	int		last_exit_code;
 
+	(void)argv;
 	data = NULL;
 	if (argc != 1)
 		return (printf("no arguments allowed\n"), 1);

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 00:10:31 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 00:52:40 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # define MAX_ENV_LEN 600
 
 # include "./b_minishell/libft/libft.h"
-# include "f_includes/Libfs/libft.h"
 # include <errno.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -126,7 +125,7 @@ typedef struct s_cd
 
 typedef struct s_pid
 {
-	pid_t *cpid; // new initialize and free
+	pid_t						*cpid;
 	int							cc;
 	int							i;
 }								t_pid;
@@ -192,13 +191,12 @@ void							add_cmd_to_cmd_list(t_cmd **cmd_list,
 int								create_command_list(t_token *token_list,
 									t_cmd **cmd_list);
 int								count_pipes(t_token *token_list);
-void							shift_token_list_to_next_pipe(t_token **token_list);
+void							shift_tl_to_next_pipe(t_token **token_list);
 int								count_size_for_args_array(t_token *token_list);
 int								init_args_array(t_cmd *cmd, int size);
-void							shift_and_consume_token_list_by_x(t_token **token,
-									int x);
+void							shift_and_consume_tl(t_token **token, int x);
 int								is_token_type_redirection(t_token *token);
-int								is_valid_redirection_target(t_token *redir_token);
+int								is_valid_redir_t(t_token *redir_token);
 int								add_r_t_c(t_cmd *cmd, int type, char *str,
 									char *delimiter);
 

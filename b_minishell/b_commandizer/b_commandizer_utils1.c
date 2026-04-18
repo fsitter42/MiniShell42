@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_commandizer_utils1.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:44:31 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/17 12:25:39 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 00:52:17 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	count_pipes(t_token *token_list)
 	return (pipe_count);
 }
 
-void	shift_token_list_to_next_pipe(t_token **token_list)
+void	shift_tl_to_next_pipe(t_token **token_list)
 {
 	while (*token_list && (*token_list)->type != PIPE)
 		*token_list = (*token_list)->next;
@@ -66,7 +66,7 @@ int	init_args_array(t_cmd *cmd, int size)
 	return (RET_OK);
 }
 
-void	shift_and_consume_token_list_by_x(t_token **token, int x)
+void	shift_and_consume_tl(t_token **token, int x)
 {
 	int	i;
 

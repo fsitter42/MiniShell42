@@ -42,5 +42,6 @@ Minishell can be used in 2 ways.
 - AI was used for conceptual explanations and not for writing or generating any code.
 
 TODO:
-- semicolon split in interactive mode
-- check ob atoi overflow (char * größer als long long) safe is
+- semicolon split in interactive mode: müss ma ned machen, pdf: "Not interpret unclosed quotes or special characters which are not required by the
+subject such as \ (backslash) or ; (semicolon)."
+- atoll whitespace handling check ob \n \v \f \r (ev ft_isspace verwenden)

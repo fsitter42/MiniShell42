@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 18:32:42 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/14 17:48:01 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/18 14:07:52 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*b_token_to_str(int type)
 		return (">");
 	if (type == WORD_AFTER_HEREDOC || type == WORD)
 		return ("word");
-	return ("\\n");
+	return ("newline");
 }
 
 static int	b_rep_s_err(t_data *data, char *unexpected)
@@ -44,7 +44,7 @@ int	b_validation_token_handler(t_data *data, t_token *prev, t_token *next)
 	if (!prev)
 		return (b_rep_s_err(data, "|"));
 	if (!next)
-		return (b_rep_s_err(data, "\\n"));
+		return (b_rep_s_err(data, "newline"));
 	if (next->type == PIPE)
 		return (b_rep_s_err(data, "|"));
 	return (ERROR_HARD);
@@ -68,7 +68,7 @@ int	b_validate_token_sequence(t_token *token, t_data *data)
 		if (is_token_type_redirection(token))
 		{
 			if (!next)
-				return (b_rep_s_err(data, "\\n"));
+				return (b_rep_s_err(data, "newline"));
 			if (next->type != WORD && next->type != WORD_AFTER_HEREDOC)
 				return (b_rep_s_err(data, b_token_to_str(next->type)));
 			token = next;

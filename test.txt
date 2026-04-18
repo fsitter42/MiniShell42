@@ -42,10 +42,8 @@ expansion
 ----------------------------------------
 WICHTIG
 
-- echo segfault <"<<<"<<amazing
-- >echo>
 - export X="  A  B  ";/bin/echo $?$X'2'
-- > $notexists echo "haha"  
+- > $notexists echo "haha"  - ambiguous redirect ??
 
 
 include in readme das ma des ned ham

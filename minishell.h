@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 11:52:37 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/18 12:07:35 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,9 @@ int								eggsecute(t_data *data);
 t_pid							*f_free_pids(t_data *data);
 
 // builtins
+int			check_digit(long long *num, int neg, long long limit, char c);
+int			is_overflow(char *arg);
+long long	f_atoll(char *arg);
 void							b_exit(t_data *data, t_cmd *cmd);
 
 // singlecmds

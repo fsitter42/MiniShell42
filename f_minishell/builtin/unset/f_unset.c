@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_unset.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a600 <a600@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:09:18 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/15 23:29:27 by a600             ###   ########.fr       */
+/*   Updated: 2026/04/18 11:54:58 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ char	*f_get_env_val(t_envl *list, char *key, t_data *data)
 	{
 		if (f_strcmp(key, list->key) == 0)
 		{
-			//FUNKTION DARUNTER WENN DU BRAUCHST TODO do we have to safeguard against NULL here?
-			//can list->val be NULL?
 			ret = ft_strdup(list->val);
 			if (!ret)
 				data->should_exit = 1;
@@ -75,7 +73,8 @@ char	*f_get_env_val(t_envl *list, char *key, t_data *data)
 	return (NULL);
 }
 
-char	*f_get_env_val_with_check(t_envl *list, char *key, t_data *data, int *val_not_null)
+char	*f_get_env_val_with_check(t_envl *list, char *key, t_data *data,
+		int *val_not_null)
 {
 	char	*ret;
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+         #
+#    By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/17 23:43:22 by fsitter          ###   ########.fr        #
+#    Updated: 2026/04/18 12:09:04 by fsitter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ SRC_BUILTIN = f_minishell/builtin/cd/f_cd.c \
               f_minishell/builtin/export/f_export_no_key.c \
               f_minishell/builtin/pwd/f_pwd.c \
               f_minishell/builtin/unset/f_unset.c \
-              f_minishell/builtin/exit/b_exit.c
+              f_minishell/builtin/exit/b_exit.c \
+              f_minishell/builtin/exit/b_exit2.c
 
 # Environment Handling
 SRC_ENVP    = f_minishell/envp/f_envp_init_destroy.c \

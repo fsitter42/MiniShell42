@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/17 12:06:20 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 14:36:45 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	f_nflag(char **args, size_t *i)
 {
 	size_t	j;
 
-	while (args[*i] && args[*i][0] == '-')
+	while (args[*i] && args[*i][0] == '-' && args[*i][1])
 	{
 		j = 1;
 		while (args[*i][j] == 'n')

@@ -79,7 +79,7 @@
                 },
                 {
                     "description": "Keep both parent and child under debugger control",
-                    "text": "set detach-on-fork on",
+                    "text": "set detach-on-fork off",
                     "ignoreFailures": false
                 }
             ],

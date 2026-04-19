@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 00:52:40 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 14:28:04 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,6 +272,7 @@ void							b_exit(t_data *data, t_cmd *cmd);
 
 // singlecmds
 void							f_redir_restore(int saved_fds[2], t_data *data);
+int		f_redir_setup(t_cmd *cmd, int saved_fds[2]);
 
 // dot
 void							f_print_dot_error(t_data *data, char **args);

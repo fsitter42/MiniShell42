@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_heredoc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 11:16:35 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 12:56:53 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	*b_create_heredoc_path(int id)
 	id_as_string = ft_itoa(id);
 	if (!id_as_string)
 		return (NULL);
-	filename = ft_strjoin("./.heredoc_dump_", id_as_string);
+	filename = ft_strjoin("/tmp/.heredoc_dump_", id_as_string);
 	if (!filename)
 		return (free(id_as_string), NULL);
 	free(id_as_string);
@@ -74,8 +74,8 @@ static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 		if (is_delimiter_line(line, redir))
 			break ;
 		if (!redir->delimiter_is_quoted)
-			if (expand_heredoc_line(data, &line) == -1)
-				return (-1);
+			if (expand_heredoc_line(data, &line) != RET_OK)
+				return (unlink(filename), -1);
 		if (write(fd, line, ft_strlen(line)) == -1)
 			return (-1);
 		if (write(fd, "\n", 1) == -1)
@@ -97,18 +97,17 @@ int	b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir)
 		return (-1);
 	fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 	if (fd == -1)
-		return (free(filename), -1);
+		return (unlink(filename), free(filename), -1);
 	if (b_heredoc_loop(data, redir, filename, fd) == -1)
 		return (free(line), close(fd), free(filename), -1);
 	if (close(fd) == -1)
-		return (free(filename), -1);
+		return (unlink(filename), free(filename), -1);
 	if (cmd->in_fd != -1)
 		close(cmd->in_fd);
 	cmd->in_fd = open(filename, O_RDONLY);
 	if (cmd->in_fd == -1)
-		return (free(filename), -1);
-	if (redir->file)
-		free(redir->file);
-	redir->file = filename;
+		return (unlink(filename), free(filename), -1);
+	unlink(filename);
+	free(filename);
 	return (0);
 }

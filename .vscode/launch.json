@@ -74,7 +74,7 @@
                 },
                 {
                     "description": "Follow child after fork",
-                    "text": "set follow-fork-mode parent",
+                    "text": "set follow-fork-mode child",
                     "ignoreFailures": false
                 },
                 {

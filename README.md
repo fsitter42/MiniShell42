@@ -48,8 +48,6 @@ This project does not aim to be fully Bash-compatible. Behavior that is not expl
 ## Heredoc Notes
 - Delimiter matching is exact (line must match the delimiter text exactly).
 - Quoted heredoc delimiters disable variable expansion inside heredoc content.
-- Current known limitation: heredoc temp files are created as relative paths (`./.heredoc_dump_*`).
-	If working directory changes before cleanup (for example with `cd`), cleanup may miss those files.
 
 ## Quick Test Commands
 
@@ -96,4 +94,3 @@ Expected: heredoc input is consumed first, then `<<<: No such file or directory`
 
 ## TODOs
 - `atoll` whitespace handling (`\n`, `\v`, `\f`, `\r`, not only space/tab).
-- heredoc dump cleanup robustness (absolute temp paths or early unlink strategy).

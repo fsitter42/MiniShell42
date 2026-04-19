@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_cleanup1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 23:02:37 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 12:49:34 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void	cleanup_redir_list(t_redir *redirs)
 	while (redirs)
 	{
 		temp = redirs->next;
-		if (redirs->type == HEREDOC && redirs->file)
-			unlink(redirs->file);
 		free(redirs->file);
 		free(redirs->delimiter);
 		free(redirs);

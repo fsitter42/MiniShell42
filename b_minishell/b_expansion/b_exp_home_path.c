@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_exp_home_path.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:31:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 11:27:13 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 11:57:10 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

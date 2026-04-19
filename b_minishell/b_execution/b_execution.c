@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 11:10:52 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 12:53:48 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,6 @@
 static t_pid	*f_init_pid(t_data *data);
 static int		f_command_count(t_data *data);
 t_pid			*f_free_pids(t_data *data);
-
-void	remove_heredoc_files(t_cmd *cmds)
-{
-	t_redir	*redir;
-
-	redir = NULL;
-	while (cmds)
-	{
-		if (cmds->redirs)
-			redir = cmds->redirs;
-		while (redir)
-		{
-			if (redir->type == HEREDOC && redir->file)
-				unlink(redir->file);
-			redir = redir->next;
-		}
-		cmds = cmds->next;
-	}
-}
 
 int	eggsecute(t_data *data)
 {
@@ -56,7 +37,6 @@ int	eggsecute(t_data *data)
 	}
 	if (data->pids)
 		data->pids = f_free_pids(data);
-	remove_heredoc_files(data->cmds);
 	data->last_exit_code = status;
 	return (status);
 }
@@ -109,3 +89,22 @@ t_pid	*f_free_pids(t_data *data)
 		free(data->pids);
 	return (NULL);
 }
+
+/* void	remove_heredoc_files(t_cmd *cmds)
+{
+	t_redir	*redir;
+
+	redir = NULL;
+	while (cmds)
+	{
+		if (cmds->redirs)
+			redir = cmds->redirs;
+		while (redir)
+		{
+			if (redir->type == HEREDOC && redir->file)
+				unlink(redir->file);
+			redir = redir->next;
+		}
+		cmds = cmds->next;
+	}
+} */

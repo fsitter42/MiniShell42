@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 14:15:57 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 14:26:39 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int *prev_fd,
 				int *pipe_fd);
 static void	f_exec_builtin_child(t_cmd *cmd, t_data *data);
 static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd);
+static int	f_exec_builtin_c(t_cmd *cmd, t_data *data);
 
 int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 {
@@ -31,7 +32,8 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 		}
 		data->pids->cpid[data->pids->i] = fork();
 		if (data->pids->cpid[data->pids->i] == -1)
-			return (f_wait_all(data), f_fork_error(data, cmd, pipe_fd, &prev_fd));
+			return (f_wait_all(data), f_fork_error(data, cmd, pipe_fd,
+					&prev_fd));
 		if (data->pids->cpid[data->pids->i] == 0)
 			f_child_process(data, cmd, &prev_fd, pipe_fd);
 		data->pids->i++;
@@ -43,12 +45,24 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 	return (f_wait_all(data), data->last_exit_code);
 }
 
+static int	f_exec_builtin_c(t_cmd *cmd, t_data *data)
+{
+	int	saved_fds[2];
+
+	saved_fds[0] = -1;
+	saved_fds[1] = -1;
+	if (f_redir_setup(cmd, saved_fds) == -1)
+		return (data->should_exit = 1, data->last_exit_code = 1, -1);
+	f_run_builtin(cmd, data);
+	f_redir_restore(saved_fds, data);
+	return (data->last_exit_code);
+}
+
 static void	f_exec_builtin_child(t_cmd *cmd, t_data *data)
 {
 	int	status;
 
-	f_exec_builtin(cmd, data);
-	status = data->last_exit_code;
+	status = f_exec_builtin_c(cmd, data);
 	sfbf_free_all(data);
 	exit(status);
 }

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 12:22:41 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 13:50:50 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 14:31:43 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,6 @@ void	f_collect_status(t_data *data, int status)
 	sig = 0;
 	if (WIFEXITED(status))
 		data->last_exit_code = WEXITSTATUS(status);
-	// if (data->last_exit_code == 1)
-	// {
-	// 	data->should_exit = 1;
-	// }
 	else if (WIFSIGNALED(status))
 	{
 		sig = WTERMSIG(status);

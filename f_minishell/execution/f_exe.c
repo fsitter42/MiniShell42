@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 01:36:32 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 02:51:54 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,18 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int *prev_fd,
 				int *pipe_fd);
 static void	f_exec_builtin_child(t_cmd *cmd, t_data *data);
 static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd);
+
+int mypipe(int fd[2])
+{
+	(void)fd[0];
+	(void)fd[1];
+	return (-1);
+}
+
+int myfork()
+{
+	return (-1);
+}
 
 int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 {
@@ -50,8 +62,6 @@ static void	f_exec_builtin_child(t_cmd *cmd, t_data *data)
 	f_exec_builtin(cmd, data);
 	status = data->last_exit_code;
 	sfbf_free_all(data);
-	if (status == 1)
-		status = 88;
 	exit(status);
 }
 
@@ -79,17 +89,13 @@ static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd)
 static void	f_child_process(t_data *data, t_cmd *cmd, int *prev_fd,
 		int *pipe_fd)
 {
-	int	status;
-
-	status = 0;
 	signal(SIGQUIT, SIG_DFL);
 	data->pids->i++;
 	if (f_redir_wrapper(data, cmd) == -1)
 	{
-		status = 88;
 		f_close_child(pipe_fd, prev_fd, cmd);
 		sfbf_free_all(data);
-		exit(status);
+		exit(1);
 	}
 	f_setup_pipe_fds(data, cmd, prev_fd, pipe_fd);
 	f_setup_cmd_fds(data, cmd, pipe_fd, prev_fd);

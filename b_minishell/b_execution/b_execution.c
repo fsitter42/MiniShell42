@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 15:00:24 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 02:42:35 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,6 @@ static int	f_command_count(t_data *data)
 
 t_pid	*f_free_pids(t_data *data)
 {
-	int	i;
-
-	i = 0;
 	if (!data)
 		return (NULL);
 	if (data->pids && data->pids->cpid)

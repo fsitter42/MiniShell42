@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:44:31 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 00:52:17 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 02:42:02 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ int	count_size_for_args_array(t_token *token_list)
 
 int	init_args_array(t_cmd *cmd, int size)
 {
-	int	i;
-
-	i = 0;
+	
 	cmd->args = ft_calloc(size + 1, sizeof(char *));
 	if (!(cmd->args))
 		return (ERROR_HARD);

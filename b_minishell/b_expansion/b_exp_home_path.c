@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:31:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 10:49:54 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 11:27:13 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	expand_dollar_question(char **out, int *i, t_data *data)
 {
 	char	*temp;
 
-	temp = NULL;//ft_itoa(data->last_exit_code); // TODO wenn das failt exit code = 0 keine message
+	temp = ft_itoa(data->last_exit_code); // TODO B wenn das failt im HEREDOC cmd: pwd | << eof; $?: eof
 	if (!temp)
 		return (ERROR_HARD);
 	*out = append_str(*out, temp);

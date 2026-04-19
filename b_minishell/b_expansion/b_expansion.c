@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 11:18:53 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 11:22:07 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,19 @@ static int	append_expanded_char(char **out, char *word, t_exp_struct *texp,
 			|| texp->quote_status != IN_SINGLE_Q))
 	{
 		if (word[texp->i + 1] == '?')
-			ret = expand_dollar_question(out, &texp->i, data);
+			ret = expand_dollar_question(out, &texp->i, data); // welcher cmd um hier rein zu kommen
 		else
-			ret = append_env_var(out, word, &texp->i, data);
+			ret = append_env_var(out, word, &texp->i, data); // welcher cmd um hier rein zu kommen
 		if (ret != RET_OK)
 			return (ret);
 		return (RET_OK);
 	}
 	*out = append_char(*out, word[texp->i]);
 	if (!*out)
+	{
+		data->last_exit_code = 1;
 		return (ERROR_HARD);
+	}
 	return (RET_OK);
 }
 
@@ -47,7 +50,7 @@ char	*expand_word_one_pass(char *word, t_data *data, int heredoc_mode,
 	t_exp_struct	tex;
 
 	*ret_status = RET_OK;
-	out = NULL;//ft_strdup(""); // NULL;// TODO F B leak glaube bei hd exit code = 0
+	out = ft_strdup(""); // NULL;// TODO F B leak glaube bei hd exit code = 0
 	if (!out)
 	{
 		data->last_exit_code = 1;

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 10:52:26 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 11:18:08 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ char	*expand_word_one_pass(char *word, t_data *data, int heredoc_mode,
 	t_exp_struct	tex;
 
 	*ret_status = RET_OK;
-	out = ft_strdup(""); // NULL;// TODO F B leak glaube bei hd
+	out = NULL;//ft_strdup(""); // NULL;// TODO F B leak glaube bei hd exit code = 0
 	if (!out)
 	{
+		data->last_exit_code = 1;
 		*ret_status = ERROR_HARD;
 		return (NULL);
 	}

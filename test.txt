@@ -75,3 +75,12 @@ int mydup(int a)
     (void) a;
     return -1;
 }
+
+TODO F
+NULL; // in builtins checken
+nochmal mit den tests hier darüber testen :d
+norm
+
+TODO b
+malloc passt
+auch überall seine returnvalues triggern und auf sauberkeit checken

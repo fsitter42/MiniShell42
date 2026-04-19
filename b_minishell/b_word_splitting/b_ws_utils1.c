@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:57:29 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 15:06:50 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 13:48:41 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	free_str_array(char **arr)
 	free(arr);
 }
 
-// removes implcit null arguments (arguments that are empty - "")
+// removes implicit null arguments (only unquoted empty words)
 void	remove_implicit_null_arg(t_token **prev, t_token *next, t_token **list)
 {
 	if (*prev)

@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by fsitter and slambert*
+*This project has been created as part of the 42 curriculum by fsitter, slambert*
 # MiniShell42
 
 ## Description
@@ -9,7 +9,7 @@ Workflow:
 
 This project does not aim to be fully Bash-compatible. Behavior that is not explicitly listed below should be considered out of scope.
 
-## Build & Run
+## Instructions
 - Build: `make`
 - Run: `./minishell` (do not run it with any arguments)
 
@@ -23,7 +23,7 @@ This project does not aim to be fully Bash-compatible. Behavior that is not expl
 	- If `IFS` is set, its characters are used.
 	- If `IFS` is unset, fallback is `" \t\n"`.
 	- If `IFS=""`, splitting is disabled.
-	- Null arguments (for example `""`) are removed by current implementation.
+	- Null arguments (for example "") are removed after word splitting if they were not quoted.
 - Redirections: `<`, `>`, `>>`, `<<` (heredoc).
 - Pipes (`|`) across commands.
 - Builtins: `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`.

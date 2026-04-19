@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 17:38:20 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/05 17:39:43 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 13:54:46 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,17 @@
 
 int	is_implicit_null_word(t_token *list)
 {
+	int ret;
+	
 	if (list->type != WORD || !list->str)
 		return (FALSE);
-	return (list->str[0] == '\0');
+	if (list->str[0] != '\0')
+		return (FALSE);
+	if (list->quote_status == DEFAULT_Q)
+		ret = 1;
+	else
+		ret = 0;
+	return (ret);
 }
 
 int	cleanup_ifs_and_return(char *ifs, int ifs_is_allocated, int ret)

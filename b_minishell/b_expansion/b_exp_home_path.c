@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_exp_home_path.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:31:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/08 16:26:25 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 10:49:54 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	expand_dollar_question(char **out, int *i, t_data *data)
 {
 	char	*temp;
 
-	temp = ft_itoa(data->last_exit_code);
+	temp = NULL;//ft_itoa(data->last_exit_code); // TODO wenn das failt exit code = 0 keine message
 	if (!temp)
 		return (ERROR_HARD);
 	*out = append_str(*out, temp);

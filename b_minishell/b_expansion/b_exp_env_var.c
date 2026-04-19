@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_exp_env_var.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:32:14 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/14 14:27:31 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 10:51:57 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int	append_literal_dollar(char **out)
 	return (RET_OK);
 }
 
+// failen lassen
 int	append_env_var(char **out, char *word, int *i, t_data *data)
 {
 	int		var_name_len;
@@ -43,8 +44,8 @@ int	append_env_var(char **out, char *word, int *i, t_data *data)
 
 	var_name_len = get_var_name_len(word, *i);
 	if (var_name_len == 0)
-		return (append_literal_dollar(out));
-	var_name = ft_substr(word, *i + 1, var_name_len);
+		return (append_literal_dollar(out)); // TODO wie kann ich das failen lassen also welchen befehl muss ich ausfuehren dass ich hier hinkomme glaube auch exitcode 0 keine mesage
+	var_name = ft_substr(word, *i + 1, var_name_len); // TODO geliche wie darueber
 	if (!var_name)
 		return (ERROR_HARD);
 	ret = resolve_env_var_value(var_name, &value, data);

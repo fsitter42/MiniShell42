@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_heredoc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 00:12:06 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 10:41:55 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 		if (g_signal_received == SIGINT)
 		{
 			set_exit_code_to_130_and_free(data, line);
-			printf("Dsjdkjsdsa\n");
 			return (unlink(filename), -1);
 		}
 		if (!line)

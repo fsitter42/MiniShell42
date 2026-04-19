@@ -49,3 +49,29 @@ WICHTIG
 include in readme das ma des ned ham
 - redirs multiple lines in heredoc, echo test |  <<lala
 - pathcheck multiple lines
+
+
+
+int mypipe(int fd[2])
+{
+	(void)fd[0];
+	(void)fd[1];
+	return (-1);
+}
+
+int myfork()
+{
+	return (-1);
+}
+
+int mydup2(int a, int b)
+{
+    (void) a;
+    return b;
+}
+
+int mydup(int a)
+{
+    (void) a;
+    return -1;
+}

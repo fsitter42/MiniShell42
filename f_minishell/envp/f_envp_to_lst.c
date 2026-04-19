@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_envp_to_lst.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 15:11:44 by fsitter           #+#    #+#             */
-/*   Updated: 2026/03/30 12:36:10 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 15:06:02 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_envl	*f_copy_env(char **envp)
 
 	i = 0;
 	if (!envp || !envp[0])
-		return (NULL);
+		return (ft_putendl_fd("minishell: error: no env", 2), NULL);
 	head = NULL;
 	current = NULL;
 	while (envp[i])

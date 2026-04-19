@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 03:17:32 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 11:13:00 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int *prev_fd,
 static void	f_exec_builtin_child(t_cmd *cmd, t_data *data);
 static void	f_parent_cleanup(t_cmd *cmd, int *prev_fd, int *pipe_fd);
 
+int mypipe(int fd[2])
+{
+    (void)fd[0];
+    (void)fd[1];
+    return (-1);
+}
+
 int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 {
 	int	prev_fd;
@@ -26,7 +33,7 @@ int	f_exec_pipeline(t_data *data, t_cmd *cmd, int pipe_fd[2])
 	{
 		if (cmd->next)
 		{
-			if (pipe(pipe_fd) == -1)
+			if (mypipe(pipe_fd) == -1)
 				return (f_pipe_error(data, cmd, &prev_fd));
 		}
 		data->pids->cpid[data->pids->i] = fork();

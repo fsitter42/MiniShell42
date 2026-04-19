@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 17:38:20 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 13:54:46 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 15:14:17 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	is_implicit_null_word(t_token *list)
 {
-	int ret;
-	
+	int	ret;
+
 	if (list->type != WORD || !list->str)
 		return (FALSE);
 	if (list->str[0] != '\0')

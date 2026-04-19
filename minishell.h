@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 14:28:04 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 17:57:57 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # define _POSIX_C_SOURCE 200809L
-# define MAX_ENV_LEN 600
+# define MAX_ENV_LEN 10000
 
 # include "./b_minishell/libft/libft.h"
 # include <errno.h>
@@ -204,7 +204,6 @@ int								add_r_t_c(t_cmd *cmd, int type, char *str,
 void							free_token(t_token *token);
 void							cleanup_token_list(t_token *token_list);
 void							cleanup_command_list(t_cmd *cmd_list);
-void							cleanup_t_data_list(t_data *data);
 void							cleanup_split_result(char **strs, int start);
 void							sfbf_free_all(t_data *data);
 int								ft_isspace(int c);
@@ -272,15 +271,11 @@ void							b_exit(t_data *data, t_cmd *cmd);
 
 // singlecmds
 void							f_redir_restore(int saved_fds[2], t_data *data);
-int		f_redir_setup(t_cmd *cmd, int saved_fds[2]);
+int								f_redir_setup(t_cmd *cmd, int saved_fds[2]);
 
 // dot
 void							f_print_dot_error(t_data *data, char **args);
 void							f_run_builtin(t_cmd *cmd, t_data *data);
-
-// debug
-void							print_tokens(t_token *start);
-void							*test_calloc(size_t nmemb, size_t size);
 
 // f_cd.c
 int								f_cd(t_data *data, char **args);
@@ -405,7 +400,5 @@ void							set_exit_code_to_130_and_free(t_data *data,
 // f_wait.c
 void							f_collect_status(t_data *data, int status);
 void							f_wait_all(t_data *data);
-
-void							beidl(void);
 
 #endif

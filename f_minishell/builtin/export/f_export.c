@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_export.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:26:09 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/05 11:48:49 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 18:02:48 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	f_check_arg(char *arg)
 	if (!arg || !*arg || (!ft_isalpha(*arg) && *arg != '_'))
 		return (f_print_error(arg, "not a valid identifier"), 1);
 	if (ft_strlen(arg) > MAX_ENV_LEN)
-		return (f_print_error(arg, "argument too long"), 1);
+		return (f_print_error("memmory allocation", "argument too long"), 1);
 	return (0);
 }
 

@@ -91,6 +91,3 @@ Expected: heredoc input is consumed first, then `<<<: No such file or directory`
 - GNU C Library / POSIX documentation for system calls and error handling.
 - 42 documentation and intra subject PDF for the official pipex specification.
 - AI was used for conceptual explanations and not for writing or generating any code.
-
-## TODOs
-- `atoll` whitespace handling (`\n`, `\v`, `\f`, `\r`, not only space/tab).

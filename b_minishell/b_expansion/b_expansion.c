@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_expansion.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:33:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 11:22:07 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 15:14:27 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static int	append_expanded_char(char **out, char *word, t_exp_struct *texp,
 			|| texp->quote_status != IN_SINGLE_Q))
 	{
 		if (word[texp->i + 1] == '?')
-			ret = expand_dollar_question(out, &texp->i, data); // welcher cmd um hier rein zu kommen
+			ret = expand_dollar_question(out, &texp->i, data);
 		else
-			ret = append_env_var(out, word, &texp->i, data); // welcher cmd um hier rein zu kommen
+			ret = append_env_var(out, word, &texp->i, data);
 		if (ret != RET_OK)
 			return (ret);
 		return (RET_OK);
@@ -50,7 +50,7 @@ char	*expand_word_one_pass(char *word, t_data *data, int heredoc_mode,
 	t_exp_struct	tex;
 
 	*ret_status = RET_OK;
-	out = ft_strdup(""); // NULL;// TODO F B leak glaube bei hd exit code = 0
+	out = ft_strdup("");
 	if (!out)
 	{
 		data->last_exit_code = 1;
@@ -62,7 +62,7 @@ char	*expand_word_one_pass(char *word, t_data *data, int heredoc_mode,
 	tex.heredoc_mode = heredoc_mode;
 	while (word[++tex.i])
 	{
-		*ret_status = append_expanded_char(&out, word, &tex, data); //TODO failen lassen exit code
+		*ret_status = append_expanded_char(&out, word, &tex, data);
 		if (*ret_status != RET_OK)
 			return (free(out), NULL);
 	}

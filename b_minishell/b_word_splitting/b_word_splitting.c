@@ -6,13 +6,12 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 13:22:19 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 14:29:41 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/19 15:13:52 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-//TODO checken ob ifs eine env oder eine shell var is
 /*
  *  executes the word splitting on a singular word. a word is split if it has
  *	IFS characters AND is not in double quotes

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_commandizer_utils1.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 12:44:31 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 02:42:02 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 15:15:26 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	count_size_for_args_array(t_token *token_list)
 
 int	init_args_array(t_cmd *cmd, int size)
 {
-	
 	cmd->args = ft_calloc(size + 1, sizeof(char *));
 	if (!(cmd->args))
 		return (ERROR_HARD);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 14:19:00 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 10:17:24 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 15:13:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	reverse_string(char *p, long n, int minus);
 static int	calc_digits(long num);
 static int	minus_handler(long *nlong);
 
-// TODO B overflow??
 char	*ft_itoa(int n)
 {
 	int		i;

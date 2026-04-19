@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 02:42:35 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 02:56:19 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ int	eggsecute(t_data *data)
 	{
 		data->pids = f_init_pid(data);
 		if (!data->pids)
+		{
 			status = 1;
+			data->should_exit = 1;
+		}
 		else
 		{
 			status = f_pipeline_wrapper(data);

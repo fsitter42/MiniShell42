@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+         #
+#    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/19 10:29:34 by fsitter          ###   ########.fr        #
+#    Updated: 2026/04/19 15:07:57 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,15 +78,61 @@ OBJS        = $(SRC:.c=.o)
 
 # -- Compiler & Flags --
 CC          = cc
-#CFLAGS      = -Wall -Wextra -Werror -g TODO
-CFLAGS      = -g
+CFLAGS      = -Wall -Wextra -Werror -g
 INCLUDE     = -I .
 
 # -- Bibliotheken --
 LIBFT_PATH  = b_minishell/libft
-#LIBFT_PATH  = f_includes/Libfs	#//frido libft
-#LIBFT_PATH   = b_minishell/stolen_libft
 LIBFT       = $(LIBFT_PATH)/libft.a
+
+LIBFT_SRC   = $(LIBFT_PATH)/ft_tolower.c \
+              $(LIBFT_PATH)/ft_toupper.c \
+              $(LIBFT_PATH)/ft_isprint.c \
+              $(LIBFT_PATH)/ft_isascii.c \
+              $(LIBFT_PATH)/ft_isalnum.c \
+              $(LIBFT_PATH)/ft_isdigit.c \
+              $(LIBFT_PATH)/ft_isalpha.c \
+              $(LIBFT_PATH)/ft_atoi.c \
+              $(LIBFT_PATH)/ft_strlen.c \
+              $(LIBFT_PATH)/ft_strlcat.c \
+              $(LIBFT_PATH)/ft_strncmp.c \
+              $(LIBFT_PATH)/ft_strdup.c \
+              $(LIBFT_PATH)/ft_calloc.c \
+              $(LIBFT_PATH)/ft_memcpy.c \
+              $(LIBFT_PATH)/ft_strchr.c \
+              $(LIBFT_PATH)/ft_strrchr.c \
+              $(LIBFT_PATH)/ft_strnstr.c \
+              $(LIBFT_PATH)/ft_bzero.c \
+              $(LIBFT_PATH)/ft_memchr.c \
+              $(LIBFT_PATH)/ft_memcmp.c \
+              $(LIBFT_PATH)/ft_memset.c \
+              $(LIBFT_PATH)/ft_memmove.c \
+              $(LIBFT_PATH)/ft_strlcpy.c \
+              $(LIBFT_PATH)/ft_putendl_fd_no_newline.c \
+              $(LIBFT_PATH)/ft_itoa.c \
+              $(LIBFT_PATH)/ft_strjoin.c \
+              $(LIBFT_PATH)/ft_split.c \
+              $(LIBFT_PATH)/ft_striteri.c \
+              $(LIBFT_PATH)/ft_strmapi.c \
+              $(LIBFT_PATH)/ft_substr.c \
+              $(LIBFT_PATH)/ft_strtrim.c \
+              $(LIBFT_PATH)/ft_putchar_fd.c \
+              $(LIBFT_PATH)/ft_putstr_fd.c \
+              $(LIBFT_PATH)/ft_putendl_fd.c \
+              $(LIBFT_PATH)/ft_putnbr_fd.c \
+              $(LIBFT_PATH)/ft_printf.c \
+              $(LIBFT_PATH)/ft_putnbr_unsigned.c \
+              $(LIBFT_PATH)/utils_hex.c \
+              $(LIBFT_PATH)/get_next_line.c \
+              $(LIBFT_PATH)/ft_lstnew.c \
+              $(LIBFT_PATH)/ft_lstadd_front.c \
+              $(LIBFT_PATH)/ft_lstsize.c \
+              $(LIBFT_PATH)/ft_lstlast.c \
+              $(LIBFT_PATH)/ft_lstadd_back.c \
+              $(LIBFT_PATH)/ft_lstdelone.c \
+              $(LIBFT_PATH)/ft_lstclear.c \
+              $(LIBFT_PATH)/ft_lstiter.c \
+              $(LIBFT_PATH)/ft_lstmap.c
 
 # WICHTIG: -lreadline muss HINTER den Objekten stehen
 LIBS        = -L$(LIBFT_PATH) -lft -lreadline
@@ -103,6 +149,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(LIBFT):
+$(LIBFT): $(LIBFT_SRC)
 	$(MAKE) -C $(LIBFT_PATH)
 
 all:	${NAME}
@@ -110,7 +157,6 @@ all:	${NAME}
 clean:
 	$(MAKE) -C $(LIBFT_PATH) clean
 	$(RM) $(OBJS)
-#	$(RM) $(OBJS) $(BONUS_OBJS)
 
 fclean: clean
 	$(MAKE) -C $(LIBFT_PATH) fclean
@@ -118,7 +164,4 @@ fclean: clean
 
 re: fclean all
 
-valgrind: re
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind_readline.supp --trace-children=yes --track-fds=yes ./minishell -d "echo hello | grep h | wc -l > test"
-
-.PHONY: all clean fclean re valgrind
+.PHONY: all clean fclean re

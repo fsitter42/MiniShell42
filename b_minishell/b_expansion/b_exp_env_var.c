@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_exp_env_var.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:32:14 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 10:51:57 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 15:04:39 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

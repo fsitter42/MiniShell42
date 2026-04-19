@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_exp_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 14:32:44 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 11:23:09 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/19 15:07:52 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*append_str(char *dst, char *src)
 {
 	char	*new_str;
 
-	new_str = ft_strjoin(dst, src); // TODO wenn das failt exitcode = 0 und keine errormessage
+	new_str = ft_strjoin(dst, src);
 	if (!new_str)
 		return (free(dst), NULL);
 	free(dst);

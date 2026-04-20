@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_pathhandler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 13:01:08 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 15:13:47 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:39:45 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,14 @@ void	f_print_error(char *context, char *msg)
 {
 	char	buf[512];
 	int		len;
+	size_t	context_len;
 
+	if (context)
+		context_len = ft_strlen(context);
+	else
+		context_len = 0;
+	if (context_len > 300)
+		context = "memmory protection";
 	len = 0;
 	len += ft_strlcpy(buf + len, "minishell: ", sizeof(buf) - len);
 	len += ft_strlcpy(buf + len, context, sizeof(buf) - len);
@@ -65,3 +72,22 @@ void	f_print_error(char *context, char *msg)
 	buf[len++] = '\n';
 	write(2, buf, len);
 }
+
+// void    f_print_error(char *context, char *msg)
+// {
+//     int     len;
+//     char    *buf;
+
+//     len = 11 + ft_strlen(context) + 2 + ft_strlen(msg) + 1 + 1;
+//     buf = ft_calloc(len, 1);
+//     if (!buf)
+//         return ;
+//     len = 0;
+//     len += ft_strlcpy(buf + len, "minishell: ", len + 12);
+//     len += ft_strlcpy(buf + len, context, len + ft_strlen(context) + 1);
+//     len += ft_strlcpy(buf + len, ": ", len + 3);
+//     len += ft_strlcpy(buf + len, msg, len + ft_strlen(msg) + 1);
+//     buf[len++] = '\n';
+//     write(2, buf, len);
+//     free(buf);
+// }

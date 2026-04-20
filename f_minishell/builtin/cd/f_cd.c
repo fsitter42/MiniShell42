@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/18 11:56:30 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/20 17:09:51 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,6 @@ static int	f_init_cd(t_cd *cd, t_data *data, char **args)
 	}
 	cd->old_pwd = getcwd(NULL, 0);
 	if (!cd->old_pwd)
-		return (data->should_exit = 1, EXIT_FAILURE);
+		return (data->should_exit = 1, EXIT_FAILURE); // TODO F wenn ich das mit parent dir loeschen machen will, hier nicht exit failure sondern immer nach home gehen old und new pwd auf home setzen
 	return (EXIT_SUCCESS);
 }

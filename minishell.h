@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/21 10:30:13 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/21 13:24:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,9 +396,10 @@ int								f_redir_error(int saved_fds[2], int fd,
 void							f_setup_signals(void);
 void							set_exit_code_to_130_and_free(t_data *data,
 									char *line);
+void							f_setup_child_signals(void);
 
 // f_wait.c
-void							f_collect_status(t_data *data, int status);
+void	f_collect_status(t_data *data, int status, int *saw_sig);
 void							f_wait_all(t_data *data);
 
 #endif

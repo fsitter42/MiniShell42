@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_signal.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 12:05:46 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/18 11:48:45 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/21 13:15:24 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ static int	f_sigint_event_hook(void)
 	if (g_signal_received == SIGINT)
 	{
 		ioctl(STDOUT_FILENO, TIOCSTI, "\n");
+		//write(1, "\n", 1);
 		rl_replace_line("", 0);
+		//rl_on_new_line();
+		//rl_done = 1;
 	}
 	return (0);
 }
@@ -28,6 +31,13 @@ static int	f_sigint_event_hook(void)
 static void	f_handle_sigint(int sig)
 {
 	g_signal_received = sig;
+	//write(1, "\n", 1);
+}
+
+void    f_setup_child_signals(void)
+{
+    signal(SIGINT, SIG_DFL);
+    signal(SIGQUIT, SIG_DFL);
 }
 
 void	f_setup_signals(void)

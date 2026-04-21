@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   f_wait.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 12:22:41 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 14:31:43 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/21 13:23:58 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 // suwi
-void	f_collect_status(t_data *data, int status)
+void	f_collect_status(t_data *data, int status, int *saw_sig)
 {
 	int	sig;
 
@@ -28,7 +28,11 @@ void	f_collect_status(t_data *data, int status)
 		else if (sig == SIGSEGV)
 			ft_putendl_fd("Segmentation fault (core dumped)", 2);
 		else if (sig == SIGINT)
-			write(1, "\n", 1);
+		{
+			if (*saw_sig == 0)
+				write(1, "\n", 1);
+			(*saw_sig)++;
+		}
 		data->last_exit_code = 128 + sig;
 	}
 }
@@ -36,9 +40,11 @@ void	f_collect_status(t_data *data, int status)
 void	f_wait_all(t_data *data)
 {
 	int	status;
+	int	saw_sig;
 
-	signal(SIGINT, SIG_IGN);
+	saw_sig = 0;
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 	data->pids->i = 0;
 	while (data->pids->i < data->pids->cc)
 	{
@@ -52,7 +58,7 @@ void	f_wait_all(t_data *data)
 			}
 		}
 		else
-			f_collect_status(data, status);
+			f_collect_status(data, status, &saw_sig);
 		data->pids->i++;
 	}
 	f_setup_signals();

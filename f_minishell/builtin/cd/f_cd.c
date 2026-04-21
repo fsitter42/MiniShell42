@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/20 17:09:51 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/21 10:50:44 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ int	f_cd(t_data *data, char **args)
 	if (f_init_cd(&cd, data, args) != EXIT_SUCCESS)
 		return (f_deinit_cd(&cd), EXIT_FAILURE);
 	if (chdir(cd.target) == -1)
-		return (f_print_error(cd.target, strerror(errno)), free(cd.old_pwd), 1);
+		return (f_print_error(cd.target, strerror(errno)), 1);
 	cd.new_pwd = getcwd(NULL, 0);
 	if (!cd.new_pwd)
-		return (data->should_exit = 1, f_deinit_cd(&cd), EXIT_FAILURE);
+		return (f_print_error(cd.target, strerror(errno)), f_deinit_cd(&cd),
+			EXIT_FAILURE);
 	if (f_path_exporter(&cd, data) != EXIT_SUCCESS)
 		return (f_deinit_cd(&cd), EXIT_FAILURE);
 	return (f_deinit_cd(&cd), EXIT_SUCCESS);
@@ -52,8 +53,6 @@ static void	f_deinit_cd(t_cd *cd)
 {
 	if (cd->export_str)
 		free(cd->export_str);
-	if (cd->old_pwd)
-		free(cd->old_pwd);
 	if (cd->new_pwd)
 		free(cd->new_pwd);
 	if (!cd->has_target && cd->target)
@@ -63,7 +62,7 @@ static void	f_deinit_cd(t_cd *cd)
 
 static void	f_init_init_cd(t_cd *cd)
 {
-	cd->old_pwd = NULL;
+	// cd->old_pwd = NULL;
 	cd->new_pwd = NULL;
 	cd->export_str = NULL;
 	cd->target = NULL;
@@ -93,8 +92,7 @@ static int	f_init_cd(t_cd *cd, t_data *data, char **args)
 			f_print_error("cd", "HOME not set");
 		return (EXIT_FAILURE);
 	}
-	cd->old_pwd = getcwd(NULL, 0);
-	if (!cd->old_pwd)
-		return (data->should_exit = 1, EXIT_FAILURE); // TODO F wenn ich das mit parent dir loeschen machen will, hier nicht exit failure sondern immer nach home gehen old und new pwd auf home setzen
+	if (!getcwd(cd->old_pwd, sizeof(cd->old_pwd)))
+		cd->old_pwd[0] = '\0';
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 01:09:18 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/20 17:10:27 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/21 10:23:59 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,18 @@ char	*f_get_env_val_with_check(t_envl *list, char *key, t_data *data,
 
 	if (!list || !key)
 		return (NULL);
+	ret = NULL;
 	while (list)
 	{
 		if (f_strcmp(key, list->key) == 0)
 		{
-			*val_not_null = 1;
-			ret = ft_strdup(list->val);
-			if (!ret)
-				data->should_exit = 1;
+			if (list->val)
+			{
+				*val_not_null = 1;
+				ret = ft_strdup(list->val);
+				if (!ret)
+					data->should_exit = 1;
+			}
 			return (ret);
 		}
 		list = list->next;

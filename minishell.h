@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/20 15:32:14 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/21 10:30:13 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # define _POSIX_C_SOURCE 200809L
-# define MAX_ENV_LEN 1080
+# define MAX_ENV_LEN 4096
 
 # include "./b_minishell/libft/libft.h"
 # include <errno.h>
@@ -116,7 +116,7 @@ typedef struct s_token
 
 typedef struct s_cd
 {
-	char						*old_pwd;
+	char						old_pwd[4096];
 	char						*new_pwd;
 	char						*export_str;
 	char						*target;

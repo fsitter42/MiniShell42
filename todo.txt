@@ -5,7 +5,7 @@ TODO:
 valgrind ./minishell ctrl c
 scan-build 12 make
 
-cd .. in gelöschtes directory: derzeit crash ohne error message - edge case beachten
+
 
 
 DONE:
@@ -13,3 +13,4 @@ DONE:
 var limit 600 weg
 export hat was: export PATH=. :$PATH
 ft_strlcpy checken (buffer)
+cd .. in gelöschtes directory: derzeit crash ohne error message - edge case beachten

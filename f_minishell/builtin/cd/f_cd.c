@@ -6,7 +6,7 @@
 /*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:49:53 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/21 10:50:44 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/21 11:02:30 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static void	f_deinit_cd(t_cd *cd)
 
 static void	f_init_init_cd(t_cd *cd)
 {
-	// cd->old_pwd = NULL;
 	cd->new_pwd = NULL;
 	cd->export_str = NULL;
 	cd->target = NULL;

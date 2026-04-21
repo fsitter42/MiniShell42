@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_pathhandler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 13:01:08 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/20 17:06:09 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/21 15:23:20 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	f_print_error(char *context, char *msg)
 	else
 		context_len = 0;
 	if (context_len > 300)
-		context = "memmory protection";
+		context = "memory protection";
 	len = 0;
 	len += ft_strlcpy(buf + len, "minishell: ", sizeof(buf) - len);
 	len += ft_strlcpy(buf + len, context, sizeof(buf) - len);

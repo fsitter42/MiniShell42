@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 14:19:15 by slambert          #+#    #+#             */
-/*   Updated: 2025/10/10 16:09:25 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/21 15:24:29 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,3 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	}
 	return (dest);
 }
-/*
-#include <stdio.h>
-#include <string.h>
-
-int	main(void)
-{
-	char str1[]="1234";
-	char *p;
-
-	p = malloc (50);
-	p = ft_memcpy(NULL, NULL, 4);
-	//p = memcpy(NULL, NULL, 4);
-	printf("%s\n", p);
-} */

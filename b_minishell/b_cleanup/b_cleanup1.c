@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 15:20:35 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/21 13:27:10 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,3 @@ void	cleanup_command_list(t_cmd *cmd_list)
 		cmd_list = temp;
 	}
 }
-

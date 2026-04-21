@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/21 13:24:20 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/21 13:26:59 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,7 +399,8 @@ void							set_exit_code_to_130_and_free(t_data *data,
 void							f_setup_child_signals(void);
 
 // f_wait.c
-void	f_collect_status(t_data *data, int status, int *saw_sig);
+void							f_collect_status(t_data *data, int status,
+									int *saw_sig);
 void							f_wait_all(t_data *data);
 
 #endif

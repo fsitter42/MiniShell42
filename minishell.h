@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/21 15:39:36 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 20:39:45 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,9 +258,11 @@ int								replace_first_split_word(t_token *list,
 int								eggsecute(t_data *data);
 t_pid							*f_free_pids(t_data *data);
 int								f_open_infile(t_data *data, t_cmd *cmd,
-									char *file);
+									t_redir *redir);
 int								f_open_outfile(t_data *data, t_cmd *cmd,
 									char *file, int append);
+int								f_open_all_heredocs_for_cmd(t_data *data,
+									t_cmd *cmd);
 
 // builtins
 int								check_digit(long long *num, int neg,
@@ -368,8 +370,7 @@ int								f_redir_wrapper(t_data *data, t_cmd *cmd);
 int								redir_return(t_data *data);
 
 // b_heredoc.c
-int								b_handle_heredoc(t_data *data, t_cmd *cmd,
-									t_redir *redir);
+int								b_handle_heredoc(t_data *data, t_redir *redir);
 
 // f_exec_wrapper.c
 int								f_pipeline_wrapper(t_data *data);

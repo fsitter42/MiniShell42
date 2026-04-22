@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:03:13 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/19 12:53:48 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 19:03:16 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,30 @@ static t_pid	*f_init_pid(t_data *data);
 static int		f_command_count(t_data *data);
 t_pid			*f_free_pids(t_data *data);
 
+int	open_all_heredocs(t_data *data)
+{
+	t_cmd	*cur_cmd;
+
+	cur_cmd = data->cmds;
+	while (cur_cmd)
+	{
+		if (f_open_all_heredocs_for_cmd(data, cur_cmd) == -1)
+			return (-1);
+		cur_cmd = cur_cmd->next;
+	}
+	return (0);
+}
+
 int	eggsecute(t_data *data)
 {
 	int	status;
 
+	if (open_all_heredocs(data) == -1)
+	{
+		if (data->last_exit_code != 130)
+			data->last_exit_code = 1;
+		return (data->last_exit_code);
+	}
 	if (!data->cmds->next && data->cmds->is_builtin)
 		status = f_exec_builtin(data->cmds, data);
 	else
@@ -31,9 +51,7 @@ int	eggsecute(t_data *data)
 			data->should_exit = 1;
 		}
 		else
-		{
 			status = f_pipeline_wrapper(data);
-		}
 	}
 	if (data->pids)
 		data->pids = f_free_pids(data);

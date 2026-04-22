@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   f_exe2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 10:57:05 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/22 20:39:57 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int	f_open_redirections(t_data *data, t_cmd *cmd);
-static int	f_open_all_heredocs(t_data *data, t_cmd *cmd);
-static int	f_open_non_heredoc_redirs(t_data *data, t_cmd *cmd);
+static int	f_open_redirs(t_data *data, t_cmd *cmd);
 
 int	f_redir_wrapper(t_data *data, t_cmd *cmd)
 {
@@ -22,20 +20,11 @@ int	f_redir_wrapper(t_data *data, t_cmd *cmd)
 
 	data->cmds->in_fd = -1;
 	data->cmds->out_fd = -1;
-	ret = f_open_redirections(data, cmd);
+	ret = f_open_redirs(data, cmd);
 	return (ret);
 }
 
-int	f_open_redirections(t_data *data, t_cmd *cmd)
-{
-	if (f_open_all_heredocs(data, cmd) == -1)
-		return (-1);
-	if (f_open_non_heredoc_redirs(data, cmd) == -1)
-		return (-1);
-	return (0);
-}
-
-static int	f_open_all_heredocs(t_data *data, t_cmd *cmd)
+int	f_open_all_heredocs_for_cmd(t_data *data, t_cmd *cmd)
 {
 	t_redir	*redir;
 
@@ -44,7 +33,7 @@ static int	f_open_all_heredocs(t_data *data, t_cmd *cmd)
 	{
 		if (redir->type == HEREDOC)
 		{
-			if (b_handle_heredoc(data, cmd, redir) == -1)
+			if (b_handle_heredoc(data, redir) == -1)
 				return (-1);
 		}
 		redir = redir->next;
@@ -52,16 +41,16 @@ static int	f_open_all_heredocs(t_data *data, t_cmd *cmd)
 	return (0);
 }
 
-static int	f_open_non_heredoc_redirs(t_data *data, t_cmd *cmd)
+static int	f_open_redirs(t_data *data, t_cmd *cmd)
 {
 	t_redir	*redir;
 
 	redir = cmd->redirs;
 	while (redir)
 	{
-		if (redir->type == REDIR_IN)
+		if (redir->type == REDIR_IN || redir->type == HEREDOC)
 		{
-			if (f_open_infile(data, cmd, redir->file) == -1)
+			if (f_open_infile(data, cmd, redir) == -1)
 				return (-1);
 		}
 		else if (redir->type == REDIR_OUT || redir->type == REDIR_APPEND)

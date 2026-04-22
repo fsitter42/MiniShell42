@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 14:15:57 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/19 12:56:53 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 20:39:33 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,11 @@ static int	b_heredoc_loop(t_data *data, t_redir *redir, char *filename, int fd)
 	return (0);
 }
 
-int	b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir)
+int	b_handle_heredoc(t_data *data, t_redir *redir)
 {
 	int		fd;
-	char	*line;
 	char	*filename;
 
-	line = NULL;
 	filename = b_create_heredoc_path(redir->id);
 	if (!filename)
 		return (-1);
@@ -99,15 +97,9 @@ int	b_handle_heredoc(t_data *data, t_cmd *cmd, t_redir *redir)
 	if (fd == -1)
 		return (unlink(filename), free(filename), -1);
 	if (b_heredoc_loop(data, redir, filename, fd) == -1)
-		return (free(line), close(fd), free(filename), -1);
+		return (close(fd), free(filename), -1);
 	if (close(fd) == -1)
 		return (unlink(filename), free(filename), -1);
-	if (cmd->in_fd != -1)
-		close(cmd->in_fd);
-	cmd->in_fd = open(filename, O_RDONLY);
-	if (cmd->in_fd == -1)
-		return (unlink(filename), free(filename), -1);
-	unlink(filename);
-	free(filename);
+	redir->file = filename;
 	return (0);
 }

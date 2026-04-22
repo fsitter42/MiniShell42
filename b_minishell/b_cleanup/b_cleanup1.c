@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/22 21:08:56 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 21:38:25 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@ void	cleanup_redir_list(t_redir *redirs, int par)
 {
 	t_redir	*temp;
 
+	(void)par;
 	temp = NULL;
 	while (redirs)
 	{
 		temp = redirs->next;
-		if (redirs->file && redirs->type != HEREDOC)
-			free(redirs->file);
-		else if (redirs->file && redirs->type == HEREDOC && par)
+		if (redirs->file)
 			free(redirs->file);
 		free(redirs->delimiter);
 		free(redirs);

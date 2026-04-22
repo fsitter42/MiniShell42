@@ -1,0 +1,11 @@
+syntax error near unexpected token `>'
+minishell: fe: command not found
+minishell: wf: command not found
+minishell: fwe: command not found
+minishell: f: command not found
+minishell: stop: command not found
+minishell: dw: command not found
+minishell: stop1: command not found
+minishell: dwasd: command not found
+minishell: stop2: command not found
+cat: Makefile: No such file or directory

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 00:09:05 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/22 18:05:00 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 21:37:43 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	f_open_infile(t_data *data, t_cmd *cmd, t_redir *redir)
 	{
 		unlink(redir->file);
 		free(redir->file);
+		redir->file = NULL;
 	}
 	return (0);
 }

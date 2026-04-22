@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_signal.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fsitter <fsitter@student.42vienna.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 12:05:46 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/21 13:26:26 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 16:08:59 by fsitter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,15 @@ static void	f_handle_sigint(int sig)
 
 void	f_setup_child_signals(void)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	struct sigaction	sa;
+
+	rl_signal_event_hook = f_sigint_event_hook;
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = f_handle_sigint;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	f_setup_signals(void)

@@ -6,7 +6,7 @@
 #    By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/11 13:28:23 by slambert          #+#    #+#              #
-#    Updated: 2026/04/22 20:40:46 by slambert         ###   ########.fr        #
+#    Updated: 2026/04/22 20:51:55 by slambert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ OBJS        = $(SRC:.c=.o)
 
 # -- Compiler & Flags --
 CC          = cc
-CFLAGS      = -Wall -Wextra -Werror
+CFLAGS      = -Wall -Wextra -Werror -g
 INCLUDE     = -I .
 
 # -- Bibliotheken --

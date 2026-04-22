@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_cleanup2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsitter <fsitter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/18 23:59:51 by fsitter          ###   ########.fr       */
+/*   Updated: 2026/04/22 21:07:36 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	cleanup_split_result(char **strs, int start)
 	free(strs);
 }
 
-void	sfbf_free_all(t_data *data)
+void	sfbf_free_all(t_data *data, int par)
 {
 	int	i;
 
@@ -47,7 +47,7 @@ void	sfbf_free_all(t_data *data)
 	}
 	if (data->strs)
 		free(data->strs);
-	cleanup_command_list(data->cmds);
+	cleanup_command_list(data->cmds, par);
 	clear_history();
 	rl_clear_history();
 	rl_free_line_state();

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 01:38:55 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/22 20:39:45 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 21:10:31 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,9 +203,9 @@ int								add_r_t_c(t_cmd *cmd, int type, char *str,
 // cleanup
 void							free_token(t_token *token);
 void							cleanup_token_list(t_token *token_list);
-void							cleanup_command_list(t_cmd *cmd_list);
+void							cleanup_command_list(t_cmd *cmd_list, int par);
 void							cleanup_split_result(char **strs, int start);
-void							sfbf_free_all(t_data *data);
+void							sfbf_free_all(t_data *data, int par);
 int								ft_isspace(int c);
 void							ft_putendl_fd_no_nl(char *s, int fd);
 

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/22 21:38:25 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 21:39:02 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@ void	cleanup_token_list(t_token *token_list)
 	}
 }
 
-void	cleanup_redir_list(t_redir *redirs, int par)
+void	cleanup_redir_list(t_redir *redirs)
 {
 	t_redir	*temp;
 
-	(void)par;
 	temp = NULL;
 	while (redirs)
 	{
@@ -49,7 +48,7 @@ void	cleanup_redir_list(t_redir *redirs, int par)
 	}
 }
 
-void	cleanup_command_list(t_cmd *cmd_list, int par)
+void	cleanup_command_list(t_cmd *cmd_list)
 {
 	int		i;
 	t_cmd	*temp;
@@ -68,7 +67,7 @@ void	cleanup_command_list(t_cmd *cmd_list, int par)
 		}
 		free(cmd_list->args);
 		if (cmd_list->redirs)
-			cleanup_redir_list(cmd_list->redirs, par);
+			cleanup_redir_list(cmd_list->redirs);
 		if (cmd_list->in_fd != -1)
 			close(cmd_list->in_fd);
 		if (cmd_list->out_fd != -1)

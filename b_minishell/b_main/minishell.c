@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 01:11:02 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/22 21:14:35 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 21:39:41 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	hsl_helper(t_token *token_list, t_cmd *cmd_list, t_data *data)
 	}
 	if (data->should_exit == 1)
 		return (ERROR_HARD);
-	cleanup_command_list(cmd_list, 1);
+	cleanup_command_list(cmd_list);
 	data->cmds = NULL;
 	data->e_has_been_set = 1;
 	return (RET_OK);
@@ -121,7 +121,7 @@ int	main(int argc, char **argv, char **envp)
 	f_setup_signals();
 	normal_mode(data);
 	last_exit_code = data->last_exit_code;
-	sfbf_free_all(data, 1);
+	sfbf_free_all(data);
 	return (last_exit_code);
 }
 

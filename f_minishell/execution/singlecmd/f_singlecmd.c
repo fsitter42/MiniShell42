@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/22 21:11:57 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 21:40:39 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	f_exec_cmd(t_data *data, t_cmd *cmd, char **envp)
 	if (!cmd->path)
 	{
 		status = data->last_exit_code;
-		sfbf_free_all(data, 0);
+		sfbf_free_all(data);
 		exit(status);
 	}
 	execve(cmd->path, cmd->args, envp);
 	f_print_error(cmd->cmd, "execve failed");
-	sfbf_free_all(data, 0);
+	sfbf_free_all(data);
 	exit(1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:53:57 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/22 21:11:28 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 21:40:02 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,12 @@ int	create_single_cmd(t_token *token_list, int size, t_cmd **cmd)
 		{
 			ret = handle_redirection(&token_list, *cmd);
 			if (ret != RET_OK)
-				return (cleanup_command_list(*cmd, 1), ret);
+				return (cleanup_command_list(*cmd), ret);
 			continue ;
 		}
 		ret = handle_word(&token_list, *cmd);
 		if (ret != RET_OK)
-			return (cleanup_command_list(*cmd, 1), ret);
+			return (cleanup_command_list(*cmd), ret);
 	}
 	return (RET_OK);
 }
@@ -153,7 +153,7 @@ int	create_command_list(t_token *token_list, t_cmd **cmd_list)
 		cmd = NULL;
 		ret = create_single_cmd(token_list, size, &cmd);
 		if (ret != RET_OK)
-			return (cleanup_command_list(*cmd_list, 1), ret);
+			return (cleanup_command_list(*cmd_list), ret);
 		add_cmd_to_cmd_list(cmd_list, cmd);
 		shift_tl_to_next_pipe(&token_list);
 		cmd->is_builtin = f_is_builtin(cmd->cmd);

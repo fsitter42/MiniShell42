@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 14:01:22 by fsitter           #+#    #+#             */
-/*   Updated: 2026/04/22 21:11:44 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 21:40:30 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	f_exec_builtin_child(t_cmd *cmd, t_data *data)
 	int	status;
 
 	status = f_exec_builtin_c(cmd, data);
-	sfbf_free_all(data, 0);
+	sfbf_free_all(data);
 	exit(status);
 }
 
@@ -96,7 +96,7 @@ static void	f_child_process(t_data *data, t_cmd *cmd, int *prev_fd,
 	if (f_redir_wrapper(data, cmd) == -1)
 	{
 		f_close_child(pipe_fd, prev_fd, cmd);
-		sfbf_free_all(data, 0);
+		sfbf_free_all(data);
 		exit(1);
 	}
 	f_setup_pipe_fds(data, cmd, prev_fd, pipe_fd);

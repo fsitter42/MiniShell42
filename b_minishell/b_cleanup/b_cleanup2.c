@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:54:32 by slambert          #+#    #+#             */
-/*   Updated: 2026/04/22 21:07:36 by slambert         ###   ########.fr       */
+/*   Updated: 2026/04/22 21:40:14 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	cleanup_split_result(char **strs, int start)
 	free(strs);
 }
 
-void	sfbf_free_all(t_data *data, int par)
+void	sfbf_free_all(t_data *data)
 {
 	int	i;
 
@@ -47,7 +47,7 @@ void	sfbf_free_all(t_data *data, int par)
 	}
 	if (data->strs)
 		free(data->strs);
-	cleanup_command_list(data->cmds, par);
+	cleanup_command_list(data->cmds);
 	clear_history();
 	rl_clear_history();
 	rl_free_line_state();
